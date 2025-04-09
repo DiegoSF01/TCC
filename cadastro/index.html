@@ -4,16 +4,33 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
     <title>Cadastro</title>
 </head>
 <body>
-    <div class="container">
-        <h1>Cadastrar</h1>
-        <input type="email" name="email" id="email" placeholder="Email" autofocus>
-        <input type="password" id="senha" placeholder="Senha">
-        <input type="password" id="confisenha" placeholder="Confirmar Senha">
-        <a href="#">Esqueceu sua senha?</a>
+    <h1 class="nome_empresa">OPI</h1>
+    <div class="form">
+         <h1>Cadastrar</h1>
+        <div class="input_box">
+            <input type="email" name="email" id="email" placeholder="Email" autofocus>
+            <i class="bx bxs-user"></i>
+        </div>
+
+        <div class="input_box">
+            <input type="password" id="senha" placeholder="Senha">
+            <i class="bx bxs-lock-alt"></i>
+        </div>
+
+        <div class="input_box">
+            <input type="password" id="confisenha" placeholder="Confirmar Senha">
+            <i class="bx bxs-lock-alt"></i>
+        </div>
+
+        <div class="input_button">
+            <button class="cadastrar">Cadastrar</button>
+        </div>
+
+        <p>Já tem uma conta? <a href="#">Conecte-se</a></p>
     </div>
-    </form>
 </body>
 </html>
