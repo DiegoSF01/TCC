@@ -23,7 +23,7 @@ form{
     justify-content: center;
     align-items: center;
     width: 30%;
-    height: 70vh;
+    height: 60vh;
     border-radius: 8px;
     margin-top: 5%;
     box-shadow: 0px 0px 8px 0px #00000038;
@@ -43,14 +43,14 @@ form{
 .input_box{
     position: relative;
     width: 90%;
-    height: 10%;
+    height: 12%;
     margin-bottom: 5%;
 }
 
 .input_boxF{
     position: relative;
     width: 90%;
-    height: 10%;
+    height: 12%;
 }
 
 input{
@@ -80,32 +80,26 @@ i{
     color: #727272;
 }
 
-.input_termos{
-    width: 100%;
+.input_esqueceu-senha{
+    width: 87%;
     display: flex;
-    justify-content: center;
     margin-top: 2%;
 }
 
-.input_termos p{
-    color: #000000bb;
-    width: 90%;
+.input_esqueceu-senha a{
     font-size: 14px;
-}
-
-.input_termos a{
     color: #3434a3;
     text-decoration: none;
 }
 
-.input_termos a:hover{
+.input_esqueceu-senha a:hover{
     color: #272777;
     text-decoration: underline;
 }
 
 .input_button{
     width: 90%;
-    height: 8%;
+    height: 12%;
     margin-top: 7%;
     display: flex;
     justify-content: center;
