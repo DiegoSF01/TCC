@@ -11,6 +11,7 @@ body{
     background-color: #fcfcfc;
     min-height: 100vh;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     color: #000000bb;
@@ -133,7 +134,6 @@ i{
 
 .mudar_acesso p{
     color: #000000bb;
-
 }
 
 .mudar_acesso a{
