@@ -1,79 +1,80 @@
-@import url('https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Oswald:wght@200..700&family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Kanit:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Oswald:wght@200..700&family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Kanit:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Oswald:wght@200..700&family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap');
+
 
 *{
     margin: 0px;
     padding: 0px;
     box-sizing: border-box;
-    font-family: "Kanit", sans-serif;
+    /*font-family: "DM Serif Display", serif;
+    */
+    font-family: "Lato", sans-serif;
 }
 
 body{
     background-color: #fcfcfc;
     min-height: 100vh;
     display: flex;
-    flex-direction: column;
     justify-content: center;
     align-items: center;
     color: #000000bb;
 }
 
-form{
-    background-color: #fcfcfc;
+.container{
+    display: flex;
+    justify-content: end;
+    align-items: center;
+    width: 70%;
+    height: 80vh;
+    box-shadow: 0px 0px 8px 0px #00000038;
+}
+
+.container form{
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    width: 30%;
-    height: 60vh;
-    border-radius: 8px;
-    margin-top: 5%;
-    box-shadow: 0px 0px 8px 0px #00000038;
+    width: 50%;
+    height: 100%;
+    
 }
 
 .titulo{
-    width: 90%;
+    width: 80%;
     margin-bottom: 5%;
 }
 
 .titulo h1{
     font-size: 35px;
+    font-weight: 400;
     letter-spacing: 3px;
     color: #000000bb;
 }
 
 .input_box{
     position: relative;
-    width: 90%;
-    height: 12%;
+    width: 80%;
+    height: 10%;
     margin-bottom: 5%;
 }
 
-.input_boxF{
-    position: relative;
-    width: 90%;
-    height: 12%;
-}
-
 input{
-    background-color: #e6e6e6;
+    background-color: #fcfcfc;
     width: 100%;
     height: 100%;
-    border-radius: 10px;
-    font-size: 16px;
-    padding: 10px;
+    font-size: 18px;
+    padding: 5px;
     outline: none;
-    border: 1px solid #ecedec;
+    border: none;
+    border-bottom: 2px solid #777777;
 }
 
 input::placeholder{
     color: #727272;
 }
 
-input:focus-within{
-    border: 2px solid #5176f0c7;
-}
-
 i{
+    font-size: 20px;
     position: absolute;
     right: 20px;
     top: 50%;
@@ -81,26 +82,9 @@ i{
     color: #727272;
 }
 
-.input_esqueceu-senha{
-    width: 87%;
-    display: flex;
-    margin-top: 2%;
-}
-
-.input_esqueceu-senha a{
-    font-size: 14px;
-    color: #3434a3;
-    text-decoration: none;
-}
-
-.input_esqueceu-senha a:hover{
-    color: #272777;
-    text-decoration: underline;
-}
-
 .input_button{
-    width: 90%;
-    height: 12%;
+    width: 80%;
+    height: 8%;
     margin-top: 7%;
     display: flex;
     justify-content: center;
@@ -110,38 +94,35 @@ i{
     width: 100%;
 }
 
-.cadastrar{
-    font-size: 20px;
-    width: 100%;
-    height: 100%;
-    border: none;
-    border-radius: 30px;
-    color: white;
+.entrar{
     background-color: #5176f0c7;
-    cursor: pointer;
+    border-radius: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #fcfcfc;
+    text-decoration: none;
+    font-size: 22px;
 }
 
-.cadastrar:hover{
+.entrar:hover{
     background-color: #233a86c7;
 }
 
-.mudar_acesso{
+.esqueceu_senha{
     width: 100%;
     margin-top: 3%;
     display: flex;
     justify-content: center;
 }
 
-.mudar_acesso p{
-    color: #000000bb;
-}
-
-.mudar_acesso a{
-    color: #3434a3;
+.esqueceu_senha a{
+    font-size: 17px;
+    color: #474747;
     text-decoration: none;
 }
 
-.mudar_acesso a:hover{
-    color: #272777;
+.esqueceu_senha a:hover{
+    color: #5454b9;
     text-decoration: underline;
 }
