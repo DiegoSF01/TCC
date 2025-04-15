@@ -1,6 +1,16 @@
 @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Kanit:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Oswald:wght@200..700&family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Kanit:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Oswald:wght@200..700&family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap');
 
+:root{
+    --color1: #fcfcfc;
+    --color2: #233a86c7;
+    --color3:  #000000bb;
+    --color4: #777777;
+    --color5: #727272;
+    --color6: #5176f0c7;
+    --color7: #474747;
+    --color8: #5454b9;
+}
 
 *{
     margin: 0px;
@@ -12,12 +22,12 @@
 }
 
 body{
-    background-color: #fcfcfc;
+    background-color: var(--color1);
     min-height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
-    color: #000000bb;
+    color: var(--color3);
 }
 
 .container{
@@ -48,7 +58,7 @@ body{
     font-size: 35px;
     font-weight: 400;
     letter-spacing: 3px;
-    color: #000000bb;
+    color: var(--color3);
 }
 
 .input_box{
@@ -59,18 +69,18 @@ body{
 }
 
 input{
-    background-color: #fcfcfc;
+    background-color: var(--color1);
     width: 100%;
     height: 100%;
     font-size: 18px;
     padding: 5px;
     outline: none;
     border: none;
-    border-bottom: 2px solid #777777;
+    border-bottom: 2px solid var(--color4);
 }
 
 input::placeholder{
-    color: #727272;
+    color: var(--color5);
 }
 
 i{
@@ -79,7 +89,7 @@ i{
     right: 20px;
     top: 50%;
     transform: translateY(-50%);
-    color: #727272;
+    color: var(--color5);
 }
 
 .input_button{
@@ -95,18 +105,18 @@ i{
 }
 
 .entrar{
-    background-color: #5176f0c7;
+    background-color: var(--color6);
     border-radius: 30px;
     display: flex;
     justify-content: center;
     align-items: center;
-    color: #fcfcfc;
+    color: var(--color1);
     text-decoration: none;
     font-size: 22px;
 }
 
 .entrar:hover{
-    background-color: #233a86c7;
+    background-color: var(--color2);
 }
 
 .esqueceu_senha{
@@ -118,11 +128,11 @@ i{
 
 .esqueceu_senha a{
     font-size: 17px;
-    color: #474747;
+    color: var(--color7);
     text-decoration: none;
 }
 
 .esqueceu_senha a:hover{
-    color: #5454b9;
+    color: var(--color8);
     text-decoration: underline;
 }
