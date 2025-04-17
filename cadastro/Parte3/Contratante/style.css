@@ -17,7 +17,7 @@ body{
 
 form{
     width: 35%;
-    height: 75vh;
+    height: 80vh;
     box-shadow: 0px 0px 8px 0px #00000038;
     display: flex;
     flex-direction: column;
@@ -30,7 +30,6 @@ form{
     border-radius: 50%;
     width: 25.3%;
     height: 23.8%;
-    margin-bottom: 100px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -47,19 +46,100 @@ form{
 
 .input_box{
     width: 80%;
-    height: 10%;
+    height: 8%;
 }
 
 .input_box input{
     height: 100%;
     width: 100%;
     font-size: 18px;
-    padding-left: 5px;
+    padding-left: 1.4%;
     outline: none;
     border: none;
     border-bottom: 2px solid #777777;
 }
 
-#nome::placeholder{
+.input_boxF{
+    width: 80%;
+    height: 8%;
+    margin-top: 5%;
+}
+
+.input_boxF input{
+    height: 100%;
+    width: 100%;
+    font-size: 18px;
+    padding-left: 1.4%;
+    outline: none;
+    border: none;
+    border-bottom: 2px solid #777777;
+}
+
+input::placeholder{
     color: #727272
+}
+
+.selects{
+    width: 80%;
+    height: 5%;
+    margin: 5% 0%;
+    display: flex;
+    justify-content: center;
+}
+
+#Pais{
+    margin-right: 5%;
+}
+
+select{
+    width: 50%;
+    height: 100%;
+    background-color: #ececec;
+    color: #4b4b4b;
+    outline: none;
+    border-radius: 20px;
+    border: 1px solid #d6d6d6;
+}
+
+select option::before{
+    border-radius: 20px;
+}
+
+.selectsF{
+    width: 76%;
+    height: 5%;
+    display: flex;
+    justify-content: center;
+}
+
+.button{
+    width: 80%;
+    height: 10%;
+    border-radius: 30px;
+    font-size: 22px;
+    margin-top: 5%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #5176f0c7;
+}
+
+.button a{
+    color: #fcfcfc;
+    text-decoration: none;
+}
+
+.input_termos{
+    width: 80%;
+    margin-top: 5%;
+    font-size: 14px;
+}
+
+.input_termos a{
+    color: #3434a3;
+    text-decoration: none;
+}
+
+.input_termos a:hover{
+    color: #272777;
 }

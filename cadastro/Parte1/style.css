@@ -23,6 +23,9 @@ body{
     background-image: url("../../img/fundo.png");
     background-repeat: no-repeat;
     background-size: cover;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .container{
@@ -103,7 +106,7 @@ i{
 .input_termos p{
     color: var(--color1);
     width: 80%;
-    font-size: 15px;
+    font-size: 14px;
 }
 
 .input_termos a{
@@ -118,7 +121,7 @@ i{
 
 .input_button{
     width: 80%;
-    height: 8%;
+    height: 10%;
     margin-top: 7%;
     display: flex;
     justify-content: center;
