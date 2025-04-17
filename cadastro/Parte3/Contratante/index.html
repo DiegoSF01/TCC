@@ -7,11 +7,40 @@
     <title>Document</title>
 </head>
 <body>
-    nome
-    foto
-    telefone
-    país
-    estado
-    cidade
+    <form action="#" method="get">
+        
+        <div class="input_foto">
+            <label for="foto"></label>
+            <input type="file" name="foto" id="foto">
+        </div>
+
+        <div class="input_box">
+            <input type="text" name="nome" id="nome" placeholder="Nome" maxlength="30">
+        </div>
+        
+        <div class="input_boxF">
+            <input type="tel" id="telefone" placeholder="Telefone" maxlength="30">
+        </div>
+        
+        <select name="pais" id="Pais" required>
+            <option value="brasil">Brasil</option>
+        </select>
+
+        <select name="estado" id="Estado" required>
+            <option value="SP">SP</option>
+        </select>
+
+        <select name="cidade" id="Cidade" required>
+            <option value="Jau">Jaú</option>
+        </select>
+
+        <div class="input_termos">
+            <p>Ao continuar, você concorda com os nossos <a href="#">Termos de Uso</a> e de <a href="#">Privacidade</a>. </p>
+        </div>
+        
+        <div class="input_button">
+            <a href="../Parte2/index.html" class="cadastrar">Cadastrar</a>
+        </div>       
+    </form>
 </body>
 </html>

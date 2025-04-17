@@ -1,0 +1,65 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap');
+
+*{
+    margin: 0px;
+    padding: 0px;
+    box-sizing: border-box;
+    font-family: "Lato", sans-serif;
+}
+
+body{
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+form{
+    width: 35%;
+    height: 75vh;
+    box-shadow: 0px 0px 8px 0px #00000038;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.input_foto{
+    background-color: gainsboro;
+    border-radius: 50%;
+    width: 25.3%;
+    height: 23.8%;
+    margin-bottom: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.input_foto label{
+    height: 100%;
+    width: 100%;
+}
+
+.input_foto input{
+    display: none;
+}
+
+.input_box{
+    width: 80%;
+    height: 10%;
+}
+
+.input_box input{
+    height: 100%;
+    width: 100%;
+    font-size: 18px;
+    padding-left: 5px;
+    outline: none;
+    border: none;
+    border-bottom: 2px solid #777777;
+}
+
+#nome::placeholder{
+    color: #727272
+}
