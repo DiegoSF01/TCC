@@ -28,8 +28,8 @@ form{
 .input_foto{
     background-color: gainsboro;
     border-radius: 50%;
-    width: 25.3%;
-    height: 23.8%;
+    width: 26%;
+    height: 23%;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -45,27 +45,12 @@ form{
 }
 
 .input_box{
+    margin-top: 5%;
     width: 80%;
     height: 8%;
 }
 
 .input_box input{
-    height: 100%;
-    width: 100%;
-    font-size: 18px;
-    padding-left: 1.4%;
-    outline: none;
-    border: none;
-    border-bottom: 2px solid #777777;
-}
-
-.input_boxF{
-    width: 80%;
-    height: 8%;
-    margin-top: 5%;
-}
-
-.input_boxF input{
     height: 100%;
     width: 100%;
     font-size: 18px;
@@ -121,7 +106,7 @@ select option::before{
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: #5176f0c7;
+    background-color: #6989f0;
 }
 
 .button a{
@@ -130,8 +115,9 @@ select option::before{
 }
 
 .input_termos{
+    text-align: center;
     width: 80%;
-    margin-top: 5%;
+    margin-top: 3%;
     font-size: 14px;
 }
 

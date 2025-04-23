@@ -1,13 +1,13 @@
 @import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap');
 
 :root{
-    --color1: #000000bb;
+    --color1: #3d3d3d;
     --color2:  #727272;
     --color3: #777777;
     --color4: #272777;
-    --color5: #233a86c7;
+    --color5: #4e64ad;
     --color6: #3434a3;
-    --color7: #5176f0c7;
+    --color7: #6989f0;
 }
 
 *{
@@ -35,7 +35,7 @@ body{
     align-items: center;
     width: 70%;
     height: 80vh;
-    box-shadow: 0px 0px 8px 0px #00000038;
+    box-shadow: 0px 0px 20px 0px #0000002e;
 }
 
 .container form{
@@ -119,7 +119,7 @@ i{
     text-decoration: underline;
 }
 
-.input_button{
+.button{
     width: 80%;
     height: 10%;
     margin-top: 7%;
@@ -127,15 +127,11 @@ i{
     justify-content: center;
 }
 
-.input_button a{
-    width: 100%;
-}
-
 .cadastrar{
     font-size: 22px;
     width: 100%;
     height: 100%;
-    border-radius: 30px;
+    border-radius: 100px;
     color: white;
     background-color: var(--color7);
     cursor: pointer;
