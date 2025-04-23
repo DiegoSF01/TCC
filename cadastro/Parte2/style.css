@@ -26,18 +26,17 @@ form{
     justify-content: center;
     align-items: center;
     width: 30%;
-    height: 57vh;
+    height: 60vh;
     border-radius: 4px;
     box-shadow: 0px 0px 20px 0px #0000002e;
 }
 
 .titulo{
-    margin: 3% 0%;
+    margin: 5% 0% 3% 0%;
 }
 
 .titulo h1{
-    font-size: 55px;
-    font-weight: 400;
+    font-size: 60px;
 }
 
 .informacao{
@@ -53,8 +52,8 @@ form{
 
 .button{
     width: 90%;
-    height: 12%;
-    margin-bottom: 7%;
+    height: 13%;
+    margin-bottom: 5%;
 }
 
 .button a{

@@ -82,12 +82,9 @@ select{
     background-color: #ececec;
     color: #4b4b4b;
     outline: none;
-    border-radius: 20px;
+    border-radius: 100px;
     border: 1px solid #d6d6d6;
-}
-
-select option::before{
-    border-radius: 20px;
+    padding-left: 1.5%;
 }
 
 .selectsF{
@@ -100,13 +97,17 @@ select option::before{
 .button{
     width: 80%;
     height: 10%;
-    border-radius: 30px;
+    border-radius: 100px;
     font-size: 22px;
     margin-top: 5%;
     display: flex;
     justify-content: center;
     align-items: center;
     background-color: #6989f0;
+}
+
+.button:hover{
+    background-color: #4e64ad;
 }
 
 .button a{
