@@ -3,7 +3,7 @@
 :root{
     --color1: #fcfcfc;
     --color2: #233a86c7;
-    --color3:  #000000bb;
+    --color3: #000000bb;
     --color4: #777777;
     --color5: #727272;
     --color6: #5176f0c7;
@@ -19,7 +19,9 @@
 }
 
 body{
-    background-color: var(--color1);
+    background-image: url("../img/fundo.png");
+    background-repeat: no-repeat;
+    background-size: cover;
     min-height: 100vh;
     display: flex;
     justify-content: center;
@@ -28,12 +30,50 @@ body{
 }
 
 .container{
+    background-color: white;
     display: flex;
     justify-content: end;
     align-items: center;
     width: 70%;
     height: 80vh;
     box-shadow: 0px 0px 8px 0px #00000038;
+}
+
+.mudarcadastro{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 50%;
+    background-image: url("../../img/fundo2.png");
+}
+
+.mudarcadastro h1{
+    color: #fcfcfc;
+    font-size: 35px;
+    font-weight: 400;
+    letter-spacing: 2px;
+}
+
+.mudarcadastro .button1{
+    width: 80%;
+    height: 10%;
+    margin-bottom: 10%;
+    margin-top: 15%;
+}
+
+.button1 a{
+    font-size: 22px;
+    width: 100%;
+    height: 100%;
+    border-radius: 100px;
+    color: #3d3d3d;
+    background-color: #fcfcfc;
+    text-decoration: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .container form{
@@ -43,7 +83,6 @@ body{
     align-items: center;
     width: 50%;
     height: 100%;
-    
 }
 
 .titulo{
@@ -65,8 +104,12 @@ body{
     margin-bottom: 5%;
 }
 
+#Final{
+    margin-bottom: 3%;
+}
+
 input{
-    background-color: var(--color1);
+    background-color: white;
     width: 100%;
     height: 100%;
     font-size: 18px;
@@ -89,7 +132,18 @@ i{
     color: var(--color5);
 }
 
-.input_button{
+.esqueceu_senha a{
+    font-size: 16px;
+    color: var(--color7);
+    text-decoration: none;
+}
+
+.esqueceu_senha a:hover{
+    color: var(--color8);
+    text-decoration: underline;
+}
+
+.button2{
     width: 80%;
     height: 10%;
     margin-top: 7%;
@@ -97,11 +151,9 @@ i{
     justify-content: center;
 }
 
-.input_button a{
-    width: 100%;
-}
-
 .entrar{
+    width: 100%;
+    height: 100%;
     background-color: var(--color6);
     border-radius: 30px;
     display: flex;
@@ -114,22 +166,4 @@ i{
 
 .entrar:hover{
     background-color: var(--color2);
-}
-
-.esqueceu_senha{
-    width: 100%;
-    margin-top: 3%;
-    display: flex;
-    justify-content: center;
-}
-
-.esqueceu_senha a{
-    font-size: 17px;
-    color: var(--color7);
-    text-decoration: none;
-}
-
-.esqueceu_senha a:hover{
-    color: var(--color8);
-    text-decoration: underline;
 }
