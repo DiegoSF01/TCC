@@ -10,7 +10,7 @@
     <form action="#" method="get">
         <div class="foto">
             <label for="foto"></label>
-            <input type="file" name="foto">
+            <input type="file" name="foto" id="foto">
         </div>
 
         <div class="input_box">
@@ -27,27 +27,33 @@
             </select>
         </div>
 
-        <div class="select">
-            <select name="profissao" id="profissao">
-                <option value="null">País</option>
-            </select>
+        <div class="selectsLocal">
+            <div class="selects">
+                <select name="pais" id="Pais">
+                    <option value="null">País</option>
+                </select>
+            </div>
+    
+            <div class="selects">
+                <select name="estado" id="Estado">
+                    <option value="null">Estado</option>
+                </select>
+            </div>
+    
+            <div class="selects">
+                <select name="cidade" id="Cidade">
+                    <option value="null">Cidade</option>
+                </select>
+            </div>
         </div>
 
-        <div class="select">
-            <select name="profissao" id="profissao">
-                <option value="null">Estado</option>
-            </select>
+        <div class="button">
+            <a href="#" class="cadastrar">Cadastrar</a>
         </div>
 
-        <div class="select">
-            <select name="profissao" id="profissao">
-                <option value="null">Cidade</option>
-            </select>
+        <div class="input_termos">
+            <p>Ao continuar, você concorda com os nossos <a href="#">Termos de Uso</a> e de <a href="#">Privacidade</a>. </p>
         </div>
     </form>
-    foto
-    descricao
-    portifolio
-    links (outras redes)
 </body>
 </html>

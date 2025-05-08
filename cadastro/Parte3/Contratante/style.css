@@ -22,6 +22,7 @@ form{
     background-color: white;
     width: 35%;
     height: 80vh;
+    border-radius: 4px;
     box-shadow: 0px 0px 8px 0px #00000038;
     display: flex;
     flex-direction: column;
@@ -59,34 +60,25 @@ form{
     height: 100%;
     width: 100%;
     font-size: 18px;
-    padding-left: 1.4%;
+    padding-left: 1.5%;
     outline: none;
     border: none;
     border-bottom: 2px solid #777777;
 }
 
-input::placeholder{
-    color: #727272
-}
-
 .selects{
     width: 80%;
-    height: 5%;
+    height: 6%;
     margin-bottom: 5%;
     display: flex;
-    justify-content: center;
 }
 
-#Pais{
-    margin-right: 3%;
-}
-
-#Cidade{
-    margin-left: 3%;
+#Estado{
+    margin: 0% 3%;
 }
 
 select{
-    width: 50%;
+    width: 100%;
     height: 100%;
     background-color: #ececec;
     color: #4b4b4b;
@@ -99,22 +91,23 @@ select{
 .button{
     width: 80%;
     height: 10%;
-    border-radius: 100px;
+}
+
+.cadastrar{
     font-size: 22px;
-    margin-top: 5%;
+    width: 100%;
+    height: 100%;
+    border-radius: 100px;
+    color: white;
+    background-color: #6989f0;
+    text-decoration: none;
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: #6989f0;
 }
 
-.button:hover{
+.cadastrar:hover{
     background-color: #4e64ad;
-}
-
-.button a{
-    color: #fcfcfc;
-    text-decoration: none;
 }
 
 .input_termos{

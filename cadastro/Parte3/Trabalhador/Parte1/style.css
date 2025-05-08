@@ -1,0 +1,135 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap');
+
+*{
+    margin: 0px;
+    padding: 0px;
+    box-sizing: border-box;
+    font-family: "Lato", sans-serif;
+}
+
+body{
+    height: 100vh;
+    width: 100%;
+    background-image: url("../../../../img/fundo.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+form{
+    background-color: white;
+    height: 80vh;
+    width: 35%;
+    border-radius: 4px;
+    box-shadow: 0px 0px 8px 0px #00000038;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.foto{
+    background-color: gainsboro;
+    height: 23%;
+    width: 26%;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.foto label{
+    width: 100%;
+    height: 100%;
+}
+
+.foto input{
+    display: none;
+}
+
+.input_box{
+    width: 80%;
+    height: 10%;
+    margin-top: 3%;
+}
+
+.input_box input{
+    height: 100%;
+    width: 100%;
+    font-size: 18px;
+    padding-left: 1.5;
+    outline: none;
+    border: none;
+    border-bottom: 2px solid #777777;
+}
+
+select{
+    height: 100%;
+    width: 100%;
+    outline: none;
+    background-color: #ececec;
+    color: #4b4b4b;
+    border: 1px solid #d6d6d6;
+    border-radius: 100px;
+    padding-left: 1%;
+}
+
+.select{
+    height: 6%;
+    width: 80%;
+    margin-top: 5%;
+}
+
+.selectsLocal{
+    width: 80%;
+    height: 6%;
+    gap: 3%;
+    margin-top: 3%;
+    display: flex;
+}
+
+.selects{
+    height: 100%;
+    width: calc(100%/3);
+}
+
+.button{
+    width: 80%;
+    height: 10%;
+    margin-top: 3%;
+}
+
+.cadastrar{
+    font-size: 22px;
+    width: 100%;
+    height: 100%;
+    border-radius: 100px;
+    color: white;
+    background-color: #6989f0;
+    text-decoration: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.cadastrar:hover{
+    background-color: #4e64ad;
+}
+
+.input_termos{
+    text-align: center;
+    width: 80%;
+    margin-top: 3%;
+    font-size: 14px;
+}
+
+.input_termos a{
+    color: #3434a3;
+    text-decoration: none;
+}
+
+.input_termos a:hover{
+    color: #272777;
+}
