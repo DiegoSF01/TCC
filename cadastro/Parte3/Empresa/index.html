@@ -7,12 +7,53 @@
     <title>Document</title>
 </head>
 <body>
-    Nome
-    cnpj
-    Pais
-    estado
-    cidade
-    ramo
-    foto
+    <form action="#" method="get">
+        <div class="input_foto">
+            <label for="foto"></label>
+            <input type="file" name="foto" id="foto">
+        </div>
+
+        <div class="input_box">
+            <input type="text" name="nome" id="nome" maxlength="30">
+        </div>
+
+        <div class="input_box">
+            <input type="tel" name="telefone" id="telefone" maxlength="9">
+        </div>
+
+        <div class="input_box">
+            <input type="number" name="cnpj" id="cnpj" maxlength="14">
+        </div>
+
+        <div class="select">
+            <select name="ramo" id="ramo">
+                <option value="Null">Ramo de Atuação</option>
+            </select>
+        </div>
+
+        <div class="selects">
+            <div id="pais">
+                <select name="Pais" id="Pais">
+                    <option value="Null">País</option>
+                </select>
+            </div>
+
+            <div class="estado">
+                <select name="Estado" id="Estado">
+                    <option value="Null">Estado</option>
+                </select>
+            </div>
+
+            <div class="cidade">
+                <select name="Cidade" id="Cidade">
+                    <option value="Null">Cidade</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="button">
+            <a href="#">Cadastrar</a>
+        </div>
+    </form>
 </body>
 </html>
