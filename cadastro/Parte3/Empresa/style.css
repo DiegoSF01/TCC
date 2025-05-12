@@ -8,20 +8,20 @@
 }
 
 body{
+    height: 100vh;
+    width: 100%;
     background-image: url("../../../img/fundo.png");
     background-repeat: no-repeat;
     background-size: cover;
-    width: 100%;
-    height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
 form{
-    background-color: white;
+    height: 85vh;
     width: 35%;
-    height: 80vh;
+    background-color: white;
     border-radius: 4px;
     box-shadow: 0px 0px 8px 0px #00000038;
     display: flex;
@@ -31,27 +31,28 @@ form{
 }
 
 .input_foto{
+    width: 26%;
+    height: 21.5%;
     background-color: gainsboro;
     border-radius: 50%;
-    width: 26%;
-    height: 23%;
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-bottom: 7%;
+    position: relative;
+    transform: translateY(-5%);
 }
 
 .input_foto label{
-    height: 100%;
     width: 100%;
+    height: 100%;
 }
 
-.input_foto input{
+#foto{
     display: none;
 }
 
 .input_box{
-    margin-bottom: 5%;
+    margin-top: 1%;
     width: 80%;
     height: 10%;
 }
@@ -61,45 +62,54 @@ form{
     width: 100%;
     font-size: 18px;
     padding-left: 1.5%;
-    outline: none;
     border: none;
     border-bottom: 2px solid #777777;
+    outline: none;
 }
 
-.selects{
+.select{
+    margin-top: 5%;
     width: 80%;
     height: 6%;
-    margin-bottom: 5%;
-    display: flex;
-}
-
-#Estado{
-    margin: 0% 3%;
 }
 
 select{
     width: 100%;
     height: 100%;
+    border-radius: 100px;
+    outline: none;
     background-color: #ececec;
     color: #4b4b4b;
-    outline: none;
-    border-radius: 100px;
-    border: 1px solid #d6d6d6;
     padding-left: 1%;
+    border: 1px solid #d6d6d6;
+}
+
+.selectsLocal{
+    width: 80%;
+    height: 6%;
+    margin-top: 3%;
+    display: flex;
+    gap: 3%;
+}
+
+.selects{
+    width: calc(100%/3);
+    height: 100%;
 }
 
 .button{
     width: 80%;
     height: 10%;
+    margin-top: 4%;
 }
 
 .cadastrar{
-    font-size: 22px;
     width: 100%;
     height: 100%;
-    border-radius: 100px;
-    color: white;
     background-color: #6989f0;
+    color: white;
+    border-radius: 100px;
+    font-size: 22px;
     text-decoration: none;
     display: flex;
     justify-content: center;
