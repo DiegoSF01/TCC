@@ -180,6 +180,10 @@ i{
     background-color: var(--color5);
 }
 
+.mudarlogar2{
+    display: none;
+}
+
 @media screen and (max-width: 1750px) {
     .mudarlogar{
         background-image: url("../../img/fundo2_1750.png");
@@ -220,6 +224,31 @@ i{
     .input_boxF{
         height: 8%;
     }
+    .button2{
+        margin-top: 10%;
+    }
+
+    .mudarlogar2{
+        display: block;
+        text-align: center;
+        width: 80%;
+        margin-top: 2%;
+    }
+    
+    .mudarlogar2 p{
+        color: var(--color1);
+        font-size: 14px;
+    }
+    
+    .mudarlogar2 a{
+        color: var(--color6);
+        text-decoration: none;
+    }
+    
+    .mudarlogar2 a:hover{
+        color: var(--color4);
+        text-decoration: underline;
+    }
 }
 
 @media screen and (max-width: 1000px){
@@ -228,73 +257,19 @@ i{
         width: 100%;
     }
 
-    .container .mudarlogar{
-        display: none;
-    }
-
-    .container form{
-        height: 100%;
-        width: 100%;
-    }
-
     .titulo h1{
         font-size: 35px;
-    }
-
-    .input_box{
-        height: 8%;
-    }
-
-    .input_boxF{
-        height: 8%;
-    }
-
-    input{
-        font-size: 18px;
-    }
-
-    i{
-        font-size: 20px;
     }
 
     .button2{
         height: 8%;
     }
-
-    .cadastrar{
-        font-size: 22px;
-    }
-
-    .input_termos p{
-        font-size: 14px;
-    }
 }
 
 @media screen and (max-width: 550px){
-    .container{
-        height: 100%;
-        width: 100%;
-    }
-
-    .container .mudarlogar{
-        display: none;
-    }
-
-    .container form{
-        height: 100%;
-        width: 100%;
-    }
 
     .titulo h1{
         font-size: 30px;
-    }
-
-    .input_box{
-        height: 8%;
-    }
-
-    .input_boxF{
-        height: 8%;
     }
 
     input{
@@ -303,10 +278,6 @@ i{
 
     i{
         font-size: 18px;
-    }
-
-    .button2{
-        height: 8%;
     }
 
     .cadastrar{
