@@ -33,6 +33,7 @@ form{
 
 .titulo{
     margin-bottom: 3%;
+    text-align: center;
 }
 
 .titulo h1{
@@ -123,5 +124,20 @@ form{
 }
 
 @media screen  and (max-width: 550px){
-    
+    .titulo h1{
+        font-size: 40px;
+    }
+
+    .informacao h2{
+        font-size: 12px;
+    }
+
+    .button{
+        width: 80%;
+        height: 8%;
+    }
+
+    .button a{
+        font-size: 22px;
+    }
 }

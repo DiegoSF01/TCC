@@ -202,7 +202,7 @@ select{
     }
 }
 
-@media screen  and (max-width: 853px){
+@media screen  and (max-width: 900px){
     .input_foto{
         width: 200px;
         height: 200px;
@@ -309,7 +309,7 @@ select{
     }
 
     .selects{
-        height: 4%;
+        height: 5%;
     }
 
     .button{
