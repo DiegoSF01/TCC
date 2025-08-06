@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ConectaTrabalho</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f3f3f3;
+    }
+
+    /* HEADER */
+    header {
+      background: linear-gradient(90deg, #3A7AFE, #6C63FF);
+      color: white;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    header h1 {
+      margin: 0;
+    }
+
+    nav a {
+      color: white;
+      margin-left: 1.5rem;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    /* BARRA DE PESQUISA */
+    .search-bar {
+      margin: 2rem auto;
+      max-width: 800px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .search-bar input {
+      width: 60%;
+      padding: 0.8rem;
+      border-radius: 20px 0 0 20px;
+      border: 1px solid #ccc;
+      outline: none;
+    }
+
+    .search-bar button {
+      padding: 0.8rem 1.5rem;
+      border: none;
+      border-radius: 0 20px 20px 0;
+      background: #3A7AFE;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    /* GRID DE CARDS */
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 20px;
+      padding: 0 2rem 2rem;
+    }
+
+    .card {
+      background: white;
+      border-radius: 15px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      padding: 1rem;
+      text-align: center;
+      transition: transform 0.2s;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+    }
+
+    .card img {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      margin-bottom: 1rem;
+    }
+
+    .card h3 {
+      margin: 0.5rem 0;
+      color: #333;
+    }
+
+    .card p {
+      margin: 0.2rem 0;
+      color: #666;
+      font-size: 0.9rem;
+    }
+
+    .card button {
+      margin-top: 0.8rem;
+      background: linear-gradient(90deg, #3A7AFE, #6C63FF);
+      border: none;
+      color: white;
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>ConectaTrabalho</h1>
+    <nav>
+      <a href="#">Home</a>
+      <a href="#">Trabalhadores</a>
+      <a href="#">Empresas</a>
+      <a href="#">Login</a>
+    </nav>
+  </header>
+
+  <div class="search-bar">
+    <input type="text" placeholder="Buscar por trabalhador ou empresa...">
+    <button>Pesquisar</button>
+  </div>
+
+  <div class="card-grid">
+    <div class="card">
+      <img src="https://via.placeholder.com/80" alt="Foto do trabalhador">
+      <h3>João Silva</h3>
+      <p>Pedreiro</p>
+      <button>Ver Perfil</button>
+    </div>
+
+    <div class="card">
+      <img src="https://via.placeholder.com/80" alt="Foto da empresa">
+      <h3>Construtora Alfa</h3>
+      <p>Construção Civil</p>
+      <button>Ver Empresa</button>
+    </div>
+
+    <div class="card">
+      <img src="https://via.placeholder.com/80" alt="Foto do trabalhador">
+      <h3>Maria Souza</h3>
+      <p>Designer</p>
+      <button>Ver Perfil</button>
+    </div>
+  </div>
+
+</body>
+</html>
+
