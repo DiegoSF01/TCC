@@ -16,3 +16,8 @@ function criarcard(){
 }
 
 window.addEventListener('DOMContentLoaded', criarcard);
+
+const a = document.querySelector('.title');
+const b = a.querySelector('h1');
+
+h1.innerText = 'Trabalhadores em todo o Brasil';
