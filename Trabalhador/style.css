@@ -69,6 +69,7 @@ nav a:hover{
     height: 100%;
     background-color: #f3f3f3;
     display: flex;
+    justify-content: center;
 }
 
 .title{
@@ -79,28 +80,41 @@ nav a:hover{
 .title h1{
     font-size: 20px;
     font-weight: 800;
-    padding-left: 10%;
+    padding-left: 11%;
     margin: 2% 0%;
 }
 
 .filter{
     background-color: white;
-    height: 10%;
-    width: 25%;
-    margin-left: 10%;
+    height: 70%;
+    width: 350px;
     border-radius: 8px;
     border: 1px solid #edecf2;
+    display: grid;
+    overflow: hidden;
+    position: sticky;
 }
 
 .filter h2{
     font-size: 16px;
-    padding-left: 4%;
-    margin-top: 15px;
+    padding-left: 5%;
+    margin: 15px 0px 10px;
+}
+
+.filter label{
+    font-size: 14px;
+    padding-left: 8%;
+    cursor: pointer;
+}
+
+.filter input:checked{
+    background-color: #3d3d3d;
+    cursor: pointer;
 }
 
 .homecards{
     height: 100%;
-    width: 100%;
+    width: 60%;
     display: flex;
 }
 
