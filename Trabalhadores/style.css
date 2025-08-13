@@ -1,10 +1,9 @@
-@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap');
-
+@import url('https://fonts.googleapis.com/css2?family=Figtree:ital,wght@0,300..900;1,300..900&display=swap');
 * {
     margin: 0px;
     padding: 0px;
     box-sizing: border-box;
-    font-family: "Lato", sans-serif;
+    font-family: "Figtree", sans-serif;
     color: #2e2d37;
 }
 
@@ -23,14 +22,14 @@ header{
     width: 100%;
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: center;
 }
 
 header h1{
     color: white;
-    margin-left: 2%;
+    margin-right: 8%;
     font-size: 40px;
-    font-weight: 800;
+    font-weight: 700;
 }
 
 nav{
@@ -64,22 +63,27 @@ nav a:hover{
     border-bottom: 2px  solid;
 }
 
+.buscador{
+    border: 1px solid #e4e4e4;
+    outline: none;
+}
+
 .container{
     width: 100%;
     height: 100%;
-    background-color: #f3f3f3;
+    background-color: #fbfbff;
     display: flex;
     justify-content: center;
 }
 
 .title{
-    background-color: #f3f3f3;
+    background-color: #fbfbff;
     width: 100%;
 }
 
 .title h1{
     font-size: 20px;
-    font-weight: 800;
+    font-weight: 700;
     padding-left: 11%;
     margin: 2% 0%;
 }
@@ -95,42 +99,71 @@ nav a:hover{
     position: sticky;
 }
 
-.filter h2{
+.categorias{
+    height: 260px;
+    border-bottom: 1px solid #e4e4e4;
+}
+
+.categorias h2{
     font-size: 16px;
+    font-weight: 600;
     padding-left: 18px;
-    margin: 15px 0px 10px;
+    margin: 20px 0px;
 }
 
-.categorias .Pedreiro{
-    display: flex;
-    align-items: center;
-}
-
-.categorias label{
-    font-size: 14px;
+.ctg-topico{
+    display: inline-block;
+    position: relative;
+    cursor: pointer;
+    user-select: none;
     padding-left: 28px;
-    cursor: pointer;
+    margin-bottom: 3%;
 }
 
-.categorias input{
-    cursor: pointer;
-    position: absolute;
-    margin-left: 85px;
+.ctg-topico p{
+    font-size: 14px;
+    font-weight: 400;
+    padding-left: 25px;
+    color: #2e2d37;
 }
 
-.categorias .checkmark {
+.categorias .checkbox{
     position: absolute;
-    height: 25px;
-    width: 25px;
-    margin-left: 85px;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+}
+
+.checkmark {
+    position: absolute;
+    height: 16px;
+    width: 16px;
     border-radius: 3px;
     background-color: white;
-    border: 1px solid #2e2d37;
+    border: 1px solid #3d3d3d;
 }
 
-.categorias input:checked ~ .checkmark{
+.checkmark:after {
+    content: "";
+    left: 5px;
+    top: 3px;
+    width: 3px;
+    height: 6px;
+    position: absolute;
+    display: none;
+    border: solid white;
+    border-width: 0 2.5px 2px 0;
+    transform: rotate(45deg);
+}
+
+.checkbox:checked ~ .checkmark{
     background-color: #6C63FF;
     border: none;
+}
+
+.checkbox:checked ~ .checkmark:after {
+    display: block;
 }
 
 .homecards{
