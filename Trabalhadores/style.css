@@ -63,9 +63,36 @@ nav a:hover{
     border-bottom: 2px  solid;
 }
 
+.buscador-div{
+    width: 320px;
+    height: 100%;
+    display: flex;
+    justify-content: end;
+    align-items: center;
+}
+
 .buscador{
     border: 1px solid #e4e4e4;
+    border-radius: 6px;
+    width: 100%;
+    height: 60%;
+    padding-left: 10px;
     outline: none;
+}
+
+svg{
+    position: absolute;
+    transform: translateX(-80%);
+    height: 2%;
+    cursor: pointer;
+}
+
+path{
+    stroke: currentcolor;
+    fill: currentcolor;
+    stroke-width: 0;
+    color: rgb(106, 105, 119);
+    height: 20%;
 }
 
 .container{
