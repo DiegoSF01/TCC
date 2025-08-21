@@ -35,74 +35,76 @@
     <div class="title"><h1>Trabalhadores em todo o Brasil</h1></div>
 
     <div class="container">
+        <button class="a" onclick="addi()"></button>
 
-        <div class="filtro">
-
-            <div class="localizacao">
-                <h2>Localização</h2>
-                <div class="bs-localizacao">
-                    <input class="bsl" id="bsl">
-                    <label class="bsl-label" for="bsl">Digite seu país, estado ou cidade</label>
-                    <label for="bsl" class="bsl-svg">
-                        <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 512 512" heigth="px" width="20px" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M456.69 421.39 362.6 327.3a173.81 173.81 0 0 0 34.84-104.58C397.44 126.38 319.06 48 222.72 48S48 126.38 48 222.72s78.38 174.72 174.72 174.72A173.81 173.81 0 0 0 327.3 362.6l94.09 94.09a25 25 0 0 0 35.3-35.3zM97.92 222.72a124.8 124.8 0 1 1 124.8 124.8 124.95 124.95 0 0 1-124.8-124.8z"></path>
-                        </svg>
-                    </label>
-                </div>
-            </div>
-
-            <div class="categorias">
-                <h2>Categorias mais pesquisados:</h2>
-
-                <div class="ctg-topicos">
-                    <label class="ctg-topico">
-                        <input class="checkbox" type="checkbox" name="calheiro" id="calheiro">
-                        <span class="checkmark"></span>
-                        <p>Calheiro</p>
-                    </label>
-
-                    <label class="ctg-topico">
-                        <input class="checkbox" type="checkbox" name="pedreiro" id="pedreiro">
-                        <span class="checkmark"></span>
-                        <p>Pedreiro</p>
-                    </label>
-
-                    <label class="ctg-topico">
-                        <input class="checkbox" type="checkbox" name="pintor" id="pintor">
-                        <span class="checkmark"></span>
-                        <p>Pintor</p>
-                    </label>
-
-                    <label class="ctg-topico">
-                        <input class="checkbox" type="checkbox" name="eletricista" id="eletricista">
-                        <span class="checkmark"></span>
-                        <p>Eletricista</p>
-                    </label>
-
-                    <label class="ctg-topico">
-                        <input class="checkbox" type="checkbox" name="encanador" id="encanador">
-                        <span class="checkmark"></span>
-                        <p>Encanador</p>
-                    </label>
-
-                    <label class="ctg-topico">
-                        <input class="checkbox" type="checkbox" name="gesseiro" id="gesseiro">
-                        <span class="checkmark"></span>
-                        <p>Gesseiro</p>
-                    </label>
-                </div>
-            </div>
-
-            <div class="Avaliacao">
-                <h2>Avaliação</h2>
-                <div class="av-buttons">
-                    <div class="mais_estrelas">
-                        <button class="av-button" id="mais_quatro">4 estrelas ou mais</button>
-                        <button class="av-button" id="mais_tres">3 estrelas ou mais</button>
+        <div class="filtro-container">
+            <div class="filtro">
+                <div class="localizacao">
+                    <h2>Localização</h2>
+                    <div class="bs-localizacao">
+                        <input class="bsl" id="bsl">
+                        <label class="bsl-label" for="bsl">Digite seu país, estado ou cidade</label>
+                        <label for="bsl" class="bsl-svg">
+                            <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 512 512" heigth="px" width="20px" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M456.69 421.39 362.6 327.3a173.81 173.81 0 0 0 34.84-104.58C397.44 126.38 319.06 48 222.72 48S48 126.38 48 222.72s78.38 174.72 174.72 174.72A173.81 173.81 0 0 0 327.3 362.6l94.09 94.09a25 25 0 0 0 35.3-35.3zM97.92 222.72a124.8 124.8 0 1 1 124.8 124.8 124.95 124.95 0 0 1-124.8-124.8z"></path>
+                            </svg>
+                        </label>
                     </div>
+                </div>
     
-                    <div class="menos_estrelas">
-                        <button class="av-button" id="menos_tres">Menos de 3 estrelas</button>
+                <div class="categorias">
+                    <h2>Categorias mais pesquisados:</h2>
+    
+                    <div class="ctg-topicos">
+                        <label class="ctg-topico">
+                            <input class="checkbox" type="checkbox" name="calheiro" id="calheiro">
+                            <span class="checkmark"></span>
+                            <p>Calheiro</p>
+                        </label>
+    
+                        <label class="ctg-topico">
+                            <input class="checkbox" type="checkbox" name="pedreiro" id="pedreiro">
+                            <span class="checkmark"></span>
+                            <p>Pedreiro</p>
+                        </label>
+    
+                        <label class="ctg-topico">
+                            <input class="checkbox" type="checkbox" name="pintor" id="pintor">
+                            <span class="checkmark"></span>
+                            <p>Pintor</p>
+                        </label>
+    
+                        <label class="ctg-topico">
+                            <input class="checkbox" type="checkbox" name="eletricista" id="eletricista">
+                            <span class="checkmark"></span>
+                            <p>Eletricista</p>
+                        </label>
+    
+                        <label class="ctg-topico">
+                            <input class="checkbox" type="checkbox" name="encanador" id="encanador">
+                            <span class="checkmark"></span>
+                            <p>Encanador</p>
+                        </label>
+    
+                        <label class="ctg-topico">
+                            <input class="checkbox" type="checkbox" name="gesseiro" id="gesseiro">
+                            <span class="checkmark"></span>
+                            <p>Gesseiro</p>
+                        </label>
+                    </div>
+                </div>
+    
+                <div class="Avaliacao">
+                    <h2>Avaliação</h2>
+                    <div class="av-buttons">
+                        <div class="mais_estrelas">
+                            <button class="av-button" id="mais_quatro">4 estrelas ou mais</button>
+                            <button class="av-button" id="mais_tres">3 estrelas ou mais</button>
+                        </div>
+        
+                        <div class="menos_estrelas">
+                            <button class="av-button" id="menos_tres">Menos de 3 estrelas</button>
+                        </div>
                     </div>
                 </div>
             </div>

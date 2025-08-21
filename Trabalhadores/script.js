@@ -3,21 +3,54 @@ function criarcard(){
     const ramo = localStorage.getItem('ramo');
 
     let div = document.createElement('div');
-    div.innerHTML = '<div class="card"></div>';
-    let divcard = div.querySelector('.card');
-    divcard.innerHTML = '<div class="imagens"></div> <div class="informacoes"></div>';
-    let divinfor = divcard.querySelector('.informacoes');
-    divinfor.innerHTML = '<div class="foto"></div> <h2 class="name"></h2> <h2 class="profission"></h2> <button class="button">Acessar Perfil</button>';
 
-    divinfor.querySelector('.name').innerText = nome;
-    divinfor.querySelector('.profission').innerText = ramo;
+    const div_card = document.createElement('div');
+    div_card.classList.add('card');
+    div.appendChild(div_card);
 
-    document.querySelector('.homecards').appendChild(divcard);
+    const div_imagem = document.createElement('div');
+    div_imagem.classList.add('imagem');
+    div_card.appendChild(div_imagem);
+
+    const div_infor = document.createElement('div');
+    div_infor.classList.add('informacoes');
+    div_card.appendChild(div_infor);
+
+    const div_foto = document.createElement('div');
+    div_foto.classList.add('foto');
+    div_infor.appendChild(div_foto);
+
+    const div_name = document.createElement('div');
+    div_name.classList.add('name')
+    div_infor.appendChild(div_name);
+
+    const div_profissao = document.createElement('div');
+    div_profissao.classList.add('profissao');
+    div_infor.appendChild(div_profissao);
+
+    const button = document.createElement('button');
+    button.classList.add('button');
+    button.innerText = 'Acessar Perfil';
+    div_infor.appendChild(button);
+
+    div_infor.querySelector('.name').innerText = nome;
+    div_infor.querySelector('.profissao').innerText = ramo;
+
+    document.querySelector('.homecards').appendChild(div);
 }
 
 window.addEventListener('DOMContentLoaded', criarcard);
 
-const a = document.querySelector('.title');
-const b = a.querySelector('h1');
+const a = document.querySelector('.a');
 
-h1.innerText = 'Trabalhadores em todo o Brasil';
+function addi(){
+    const b = document.querySelector('.filtro');
+
+    const new_button = document.createElement('button');
+    new_button.innerText = 'Novo Filtro';
+
+
+    b.appendChild(new_button);
+
+
+}
