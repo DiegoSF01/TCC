@@ -103,7 +103,7 @@ nav a:hover{
     right: 34%;
     font-weight: 600;
     font-size: 10px;
-    color: rgb(88, 88, 191);
+    color: #5858bf;
 }
 
 .bs-svg{
@@ -294,12 +294,17 @@ path{
 }
 
 .av-button{
+    color: #3d3d3d;
     border: 1px solid #e4e4e4;
     height: 45px;
     background-color: #f8f8f8;
     border-radius: 20px;
     font-size: 14px;
-    width: 100px;
+    width: 110px;
+}
+
+.av-button:hover{
+    background-color: #eeeeee;
 }
 
 #mais_quatro{
