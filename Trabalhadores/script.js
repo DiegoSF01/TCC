@@ -39,7 +39,7 @@ function criarcard(){
     document.querySelector('.homecards').appendChild(div);
 }
 
-window.addEventListener('DOMContentLoaded', criarcard);
+window.addEventListener('DOMContentLoaded', criarcard());
 
 const a = document.querySelector('.a');
 
