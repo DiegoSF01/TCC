@@ -27,10 +27,10 @@ header{
     display: flex;
     align-items: center;
     justify-content: center;
+    gap: 5%;
 }
 
 .lg-div{
-    width: 7%;
     height: 80px;
     display: flex;
     align-items: center;
@@ -44,7 +44,6 @@ header{
 
 nav{
     height: 80px;
-    width: 23%;
 }
 
 nav ul{
@@ -56,7 +55,7 @@ ul li{
     list-style: none;
 }
 
-nav a{
+.nav-a{
     padding: 10px;
     font-weight: 700;
     color: white;
@@ -65,11 +64,12 @@ nav a{
     height: 100%;
     display: flex;
     align-items: center;
+    border-bottom: 2px solid transparent;
 }
 
-nav a:hover{
-    color: #e6e6e6;
-    border-bottom: 2px  solid;
+.nav-a:hover{
+    color: #e4e4e4;
+    border-color: #e4e4e4;
 }
 
 .buscador-div{
@@ -97,7 +97,7 @@ nav a:hover{
 
 .bs-label{
     position: absolute;
-    right: 30.5%;
+    right: 29.5%;
     font-size: 14px;
     pointer-events: none;
     transition: all 0.3s ease;
@@ -106,7 +106,7 @@ nav a:hover{
 
 .buscador:focus ~.bs-label{
     top: 20px;
-    right: 34%;
+    right: 33%;
     font-weight: 600;
     font-size: 10px;
     color: #5858bf;
@@ -130,8 +130,8 @@ path{
     width: 100%;
     height: 100%;
     display: flex;
-    justify-content: end;
-    margin-right: 15%;
+    justify-content: center;
+    gap: 40px;
 }
 
 .title{
@@ -152,12 +152,13 @@ path{
     height: 900px;
     border-radius: 8px;
     left: 11%;
+    top: 10px;
     border: 1px solid #edecf2;
     display: flex;
     flex-direction: column;
     overflow-y: scroll;
     overflow-x: hidden;
-    position: fixed;
+    position: sticky;
 }
 
 .filtro{
