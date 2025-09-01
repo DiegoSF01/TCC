@@ -41,16 +41,14 @@ function criarcard(){
 
 window.addEventListener('DOMContentLoaded', criarcard());
 
-const a = document.querySelector('.a');
+const buscador = document.getElementById('buscador');
 
-function addi(){
-    const b = document.querySelector('.filtro');
+buscador.addEventListener('blur', () => {
+    buscador.value = '';
+});
 
-    const new_button = document.createElement('button');
-    new_button.innerText = 'Novo Filtro';
+const bsl = document.getElementById('bsl');
 
-
-    b.appendChild(new_button);
-
-
-}
+bsl.addEventListener('blur', () => {
+    bsl.value = '';
+});
