@@ -44,7 +44,6 @@ header{
 }
 
 .buscador-div{
-    width: 320px;
     height: 80px;
     display: flex;
     justify-content: center;
@@ -54,7 +53,7 @@ header{
 .buscador{
     border: 1px solid #6a6977;
     border-radius: 6px;
-    width: 100%;
+    width: 320px;
     height: 60%;
     padding-left: 2%;
     padding-top: 3%;
@@ -68,7 +67,7 @@ header{
 
 .bs-label{
     position: absolute;
-    left: 46em;
+    left: 32%;
     font-size: 14px;
     pointer-events: none;
     transition: all 0.3s ease;
@@ -131,31 +130,52 @@ ul li{
     transition: color 0.2s;
 }
 
-.as-perfil-button{
+.perfil{
     display: flex;
+    text-decoration: none;
     align-items: center;
     background-color: transparent;
     border: none;
     color: #fff;
     font-size: 12px;
     font-weight: 600;
-    gap: 25%;
+    gap: 15%;
 }
 
-.as-perfil-button:hover{
+.perfil:hover{
     color: #d6d6d6;
 }
 
-.as-perfil-button:hover .prf-svg path{
+.perfil:hover .prf-svg path{
     color: #d6d6d6;
 }
 
-.as-perfil-button, .as-perfil-button .prf-svg path {
+.perfil, .perfil .prf-svg path {
     transition: color 0.2s;
-  }
+}
 
 .prf-svg path{
     color: #fff;
+}
+
+.favoritos span{
+    color: #fff;
+    font-size: 24px;
+    margin-left: 20%;
+}
+
+.favoritos:hover span{
+    color: #d6d6d6;
+}
+
+.chat span{
+    color: #fff;
+    font-size: 20px;
+    margin-left: 20%;
+}
+
+.chat:hover span{
+    color: #d6d6d6;
 }
 
 .container{
