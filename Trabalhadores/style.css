@@ -28,6 +28,10 @@ header{
     justify-content: center;
 }
 
+.lg-div img{
+    height: 45px;
+}
+
 .nav-container{
     width: 55%;
     height: 100%;
@@ -563,15 +567,32 @@ ul li{
 }
 
 footer{
-    height: 300px;
+    height: 200px;
     width: 100%;
     background-color: #2e2d37;
     margin-top: 2%;
     display: flex;
     justify-content: center;
+    flex-direction: row;
 }
 
-.container-store-app h2{
+.nav-footer{
+    display: flex;
+    justify-content: space-between;
+    gap: 5%;
+}
+
+.link-footer-a{
+    color: #fff;
+    text-decoration: none;
+}
+
+.container-store-app{
+    display: flex;
+    flex-direction: column;
+}
+
+.container-store-app strong{
     font-size: 16px;
     font-weight: 700;
     color: #fff;
@@ -580,5 +601,6 @@ footer{
 
 .store-banner{
     display: flex;
-    gap: 3%;
+    gap: 4%;
+    margin-top: 8%;
 }
