@@ -1,27 +1,11 @@
 <?php
 // Arquivo de entrada do sistema TCC_site
-// Define cabeçalho, carrega classes e inicia o Core
-
 
 require_once 'Core/Core.php';
-require_once 'Controller/HomeController.php';
 
-
-
-
-
-
+// Define cabeçalho JSON
 header('Content-Type: application/json; charset=utf-8');
 
-spl_autoload_register(function($class) {
-    $baseDir = __DIR__ . '/';
-    $file = $baseDir . str_replace('\\', '/', $class) . '.php';
-    if (file_exists($file)) {
-        require_once $file;
-    }
-});
-
-    $core = new Core;
-    $core-> start ($_GET);
-   
-?>
+// Inicializa o Core apontando para a URL da API
+$core = new Core('http://localhost:8000/api'); // URL da sua API
+$core->start();
