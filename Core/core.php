@@ -5,7 +5,7 @@ class Core
 
     public function __construct($apiBaseUrl)
     {
-        // URL base da API  
+        // URL base da API  http://172.26.0.1:8000/api
         $this->apiBaseUrl = rtrim($apiBaseUrl, '/');
     }
 
