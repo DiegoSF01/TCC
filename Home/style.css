@@ -300,74 +300,41 @@ ul li {
 }
 
 .timeline{
+  height: 100%;
   width: 100%;
-  height: 100vh;
+  position: relative;
   display: flex;
-  align-items: center;
   flex-direction: column;
-}
-
-.tml-li-pt{
-  height: 100%;
-}
-
-.timeline-item{
-  height: 100%;
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-}
-
-.timeline-lineIF{
-  width: 1px;
-  height: 50%;
-  background-color: #d1d1d1;
 }
 
 .timeline-line{
-  width: 1px;
-  height: 100%;
-  background-color: #d1d1d1;
-  margin-bottom: 30%;
-  flex: 1;
-}
-
-.timeline-point{
-  width: 8px;
-  height: 8px;
-  background-color: #2e2d37;
-  border-radius: 50%;
-  margin-bottom: 50%;
-}
-
-.timeline-content{
   position: absolute;
-  display: flex;
-  align-items: center;
-  text-align: right;
-  right: 17%;
-  gap: 2%;
+  left: 50%;
+  width: 4px;
+  height: 100%;
+  background-color: #3a7afe;
 }
 
-.timeline-content.reverse{
-  left: 15%;
-  text-align: left;
-}
-
-.passos-text{
-  width: 550px;
-}
-
-.passos-blocoimg,
-#user path,
-#compartilhar path{
+.timeline-number{
+  position: absolute;
+  left: 50%;
   width: 30px;
   height: 30px;
-  fill: #6a6977;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #3a7afe;
+  color: #fff;
 }
 
-#lupa-pesquisa path,
-#star path,
-#invest path{
-  stroke: #6a6977;
+.timeline-item{
+  border: 1px solid #edecf2;
+  border-radius: 10px;
+  width: 30%;
+  padding: 2%;
+}
+
+.passos-icon{
+  width: 25px;
 }
