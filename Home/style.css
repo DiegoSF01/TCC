@@ -2,6 +2,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Figtree:ital,wght@0,300..900;1,300..900&display=swap');
 
 html {
+  font-size: 16px;
   scrollbar-gutter: auto;
   background-color: #fbfbff;
   scroll-behavior: smooth;
@@ -271,10 +272,11 @@ ul li {
 .como_funciona-section{
   width: 100%;
   height: 100%;
+  margin-bottom: 5%;
   display: flex;
   justify-content: center;
   align-items: center;
-  flex-direction: column;  
+  flex-direction: column; 
 }
 
 .section-text{
@@ -310,31 +312,86 @@ ul li {
 .timeline-line{
   position: absolute;
   left: 50%;
+  transform: translateX(-50%);
   width: 4px;
   height: 100%;
-  background-color: #3a7afe;
+  background-color: #2563eb;
+}
+
+.timeline-item{
+  position: relative;
+  width: 100%;
+}
+
+.timeline-content{
+  padding: 1.5%;
+  border: 1px solid #d6d6d6;
+  width: 25%;
+  border-radius: 10px;
+  margin-right: auto;
+  margin-left: 15%;
+}
+
+.timeline-content.reverse{
+  margin-left: auto;
+  margin-right: 15%;
 }
 
 .timeline-number{
   position: absolute;
+  top: 50%;
   left: 50%;
-  width: 30px;
-  height: 30px;
+  transform: translate(-50%, -50%);
+  width: 2.5rem;
+  height: 2.5rem;
   border-radius: 50%;
+  font-size: 1.125rem;
+  font-weight: 800;
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #3a7afe;
+  background-color: #2563eb;
   color: #fff;
 }
 
-.timeline-item{
-  border: 1px solid #edecf2;
-  border-radius: 10px;
-  width: 30%;
-  padding: 2%;
+.tml_cont-header{
+  display: flex;
+  align-items: center;
+  margin-bottom: 4%;
 }
 
-.passos-icon{
-  width: 25px;
+.timeline-icon{
+  border: 1px solid #d6d6d6;
+  border-radius: 50%;
+  width: 3rem;
+  height: 3rem;
+  margin-right: 4%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
+
+.timeline-icon.primary,
+.timeline-icon.primary path{
+  background-color: #2563eb1a;
+  color: #3a7afe;
+}
+
+.timeline-icon.accent,
+.timeline-icon.accent path{
+  background-color: #f59e0b1a;
+  color: #f59e0b;
+}
+
+.timeline-icon svg{
+  width: 1.5rem;
+}
+
+.tml_cont-title{
+  font-size: 1.25rem;
+}
+
+.tml_cont-subtitle{
+  font-size: 0.9rem;
+}
+
