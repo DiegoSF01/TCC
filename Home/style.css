@@ -205,7 +205,7 @@ ul li {
   justify-content: center;
   align-items: center;
   gap: 10%;
-  margin-bottom: 4%;
+  margin-bottom: 6%;
 }
 
 .hero-infor{
@@ -270,8 +270,8 @@ ul li {
 }
 
 .como_funciona-section{
+  position: relative;
   width: 100%;
-  height: 100%;
   margin-bottom: 5%;
   display: flex;
   justify-content: center;
@@ -305,6 +305,7 @@ ul li {
   position: relative;
   height: 100%;
   width: 100%;
+  margin-bottom: 20vh;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -315,7 +316,7 @@ ul li {
   left: 50%;
   transform: translateX(-50%);
   width: 4px;
-  height: 80%;
+  height: 100%;
   background-color: #2563eb;
 }
 
@@ -397,10 +398,10 @@ ul li {
 }
 
 .cta_timeline-container{
+  position: relative;
   width: 60%;
   border-radius: 10px;
   padding: 2%;
-  margin-top: 5%;
   text-align: center;
   background-color: #2563eb;
 }
@@ -434,3 +435,13 @@ ul li {
   background-color: #fbfbff;
 }
 
+.cta_timeline-container::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translate(-50%, -100%);
+  width: 4px;
+  height: 20vh; /* ajusta automaticamente com base no espaçamento */
+  background-color: #2563eb;
+}
