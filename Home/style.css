@@ -27,6 +27,7 @@ header {
   height: 70px;
   display: flex;
   justify-content: center;
+  align-items: center;
   position: sticky;
   top: 0;
   z-index: 1000;
@@ -39,21 +40,20 @@ header {
 }
 
 .nav-container {
-  width: 55%;
   height: 100%;
+  width: 75%;
   display: flex;
   justify-content: space-between;
+  align-items: center;
+  padding: 0 1.5rem;
 }
 
-.left-nav-container {
+.left-nav-container,
+.right-nav-container{
   height: 100%;
   display: flex;
   justify-content: center;
   gap: 10%;
-}
-
-.rigth-nav-container {
-  height: 100%;
 }
 
 .lg-div {
@@ -121,79 +121,63 @@ header {
 
 nav {
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
   height: 100%;
   gap: 4%;
 }
 
-nav ul {
+.nav-links {
   display: flex;
-  height: 100%;
-  padding-right: 2%;
-  border-right: 1px solid #76a4ff;
-}
-
-ul li {
+  align-items: center;
+  gap: 0.25rem;
+  border-right: 1px solid rgba(255, 255, 255, 0.3);
+  padding-right: 1.25rem;
   list-style: none;
 }
 
-.nav-a {
-  padding: 10px;
-  font-weight: 700;
+.nav-link {
+  padding: 0.625rem 1rem;
+  border-radius: 0.375rem;
+  font-size: 0.9375rem;
+  font-weight: 600;
   color: white;
   text-decoration: none;
-  font-size: 17px;
+  transition: background-color 0.2s;
+}
+
+.nav-link:hover {
+  background-color: #ffffff1a;
+}
+
+.right-itens {
   height: 100%;
   display: flex;
   align-items: center;
+  gap: 0.3rem;
 }
 
-.nav-a:hover {
-  color: #d6d6d6;
-}
-
-.nav-a {
-  transition: color 0.2s;
-}
-
-.perfil {
+.perfil-btn,
+.favorites-btn {
   display: flex;
-  text-decoration: none;
   align-items: center;
-  background-color: transparent;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
   border: none;
+  border-radius: 0.375rem;
+  background-color: transparent;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.perfil-btn:hover,
+.favoritos:hover {
+  background-color: #ffffff1a;
+}
+
+.perfil-name{
   color: #fff;
-  font-size: 12px;
-  font-weight: 600;
-  gap: 15%;
-}
-
-.perfil:hover {
-  color: #d6d6d6;
-}
-
-.perfil:hover .prf-svg path {
-  color: #d6d6d6;
-}
-
-.perfil,
-.perfil .prf-svg path {
-  transition: color 0.2s;
-}
-
-.prf-svg path {
-  color: #fff;
-}
-
-.favoritos span {
-  color: #fff;
-  font-size: 24px;
-  margin-left: 20%;
-}
-
-.favoritos:hover span {
-  color: #d6d6d6;
 }
 
 .hero-section{
