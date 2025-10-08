@@ -1,6 +1,3 @@
-@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;900&family=Open+Sans:wght@400;600&display=swap");
-@import url('https://fonts.googleapis.com/css2?family=Figtree:ital,wght@0,300..900;1,300..900&display=swap');
-
 html {
   font-size: 16px;
   scrollbar-gutter: auto;
@@ -12,7 +9,6 @@ html {
   margin: 0px;
   padding: 0px;
   box-sizing: border-box;
-  font-family: "Open Sans", sans-serif;
   color: #2e2d37;
 }
 
@@ -21,10 +17,12 @@ body {
   display: flex;
   flex-direction: column;
   background-color: #fbfbff;
+  font-family: "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans",
+    "Droid Sans", "Helvetica Neue", sans-serif;
 }
 
 header {
-  background-color: #3a7afe;
+  background-color: #2563eb;
   width: 100%;
   height: 70px;
   display: flex;
@@ -32,7 +30,8 @@ header {
   position: sticky;
   top: 0;
   z-index: 1000;
-  box-shadow: 0 2px 10px rgba(58, 122, 254, 0.1);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
+              0 4px 6px -4px rgba(0, 0, 0, 0.1);
 }
 
 .lg-div img {
@@ -80,7 +79,8 @@ header {
 }
 
 .buscador {
-  border: 1px solid #6a6977;
+  border: 1px solid #ffffff4d;
+  background-color: #ffffff33;
   border-radius: 6px;
   width: 320px;
   height: 65%;
@@ -91,7 +91,7 @@ header {
 }
 
 .buscador:focus {
-  border: 2px solid #5858bf;
+  border: 2px solid #fff;
 }
 
 .bs-label {
@@ -100,14 +100,13 @@ header {
   font-size: 14px;
   pointer-events: none;
   transition: all 0.3s ease;
-  color: #6a6977;
+  color: #ffffff99;
 }
 
 .buscador:focus ~ .bs-label {
   top: 22%;
   font-weight: 600;
   font-size: 10px;
-  color: #5858bf;
 }
 
 .bs-svg {
@@ -117,7 +116,7 @@ header {
 }
 
 .bs-svg path {
-  color: #6a6977;
+  color: #ffffffcc;
 }
 
 nav {
@@ -198,7 +197,7 @@ ul li {
 }
 
 .hero-section{
-  background: linear-gradient(135deg, #3a7afe 0%, #4a90e2 100%);
+  background: linear-gradient(135deg, #2563eb 0%, rgb(37, 100, 235, 0.9) 100%);
   height: 600px;
   width: 100%;
   display: flex;
@@ -218,7 +217,6 @@ ul li {
 .hero-title{
   color: #fff;
   font-size: 55px;
-  font-family: "Montserrat", sans-serif;
   font-weight: 800;
   margin-bottom: 5%;
 }
