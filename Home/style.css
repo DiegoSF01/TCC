@@ -41,11 +41,11 @@ header {
 
 .nav-container {
   height: 100%;
-  width: 75%;
+  width: 100% ;
   display: flex;
-  justify-content: space-between;
+  gap: 25rem;
   align-items: center;
-  padding: 0 1.5rem;
+  padding-left: 15rem;
 }
 
 .left-nav-container,
@@ -159,6 +159,9 @@ nav {
 
 .perfil-btn,
 .favorites-btn {
+  /* position: relative; */
+  /* right: -10%; */
+
   display: flex;
   align-items: center;
   gap: 0.5rem;
