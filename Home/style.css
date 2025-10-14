@@ -1,7 +1,6 @@
 html {
   font-size: 16px;
   scrollbar-gutter: auto;
-  background-color: #fbfbff;
   scroll-behavior: smooth;
 }
 
@@ -245,7 +244,6 @@ header {
 .como_funciona-section{
   position: relative;
   width: 100%;
-  margin-bottom: 10%;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -434,10 +432,13 @@ header {
 .servicos_destaque-section{
   height: 100%;
   width: 100%;
-  padding-bottom: 10%;
+  padding: 10% 0%;
+  background-color: #fff;
   display: flex;
   flex-direction: column;
   align-items: center;
+  overflow: hidden;
+  position: relative;
 }
 
 .sv_des-cards_home{
@@ -515,4 +516,58 @@ header {
 .sv_des-card-button:hover{
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
   background-color: #3a7afe;
+}
+
+.soft-wave-divider {
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  width: 100%;
+  height: 12%;
+  display: block;
+}
+
+
+.motivos_escolhas-section{
+  padding-top: 8%;
+  background-color: #2563eb;
+}
+
+.motivos_escolhas-section .section-title{
+  color: #fbfbff;
+}
+
+.motivos_escolhas-section .section-subtitle{
+  color: #fbfbffc0;
+}
+
+.mt_es-cards_home{
+  display: flex;
+  flex-wrap: wrap;
+  width: 80%;
+}
+
+.mt_es-card{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #fbfbff;
+  width: 20%;
+  padding: 2.5rem;
+}
+
+.mt_es-icon{
+  width: 5rem;
+  height: 5rem;
+  margin-bottom: 15%;
+  background-color: #3a7afe;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.mt_es-icon svg{
+  width: 55%;
+  height: 55%;
 }
