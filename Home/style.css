@@ -434,7 +434,7 @@ header {
 .servicos_destaque-section{
   height: 100%;
   width: 100%;
-  margin-bottom: 10%;
+  padding-bottom: 10%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -509,11 +509,10 @@ header {
   font-size: 1rem;
   font-weight: 700;
   border-radius: 8px;
-  transition: all 0.5s;
+  transition: all 0.3s;
 }
 
 .sv_des-card-button:hover{
-  background-color: transparent;
-  border: 1px solid #2563eb;
-  color: #2563eb;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+  background-color: #3a7afe;
 }
