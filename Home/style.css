@@ -388,6 +388,7 @@ header {
   padding: 2%;
   text-align: center;
   background-color: #2563eb;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
 }
 
 .cta_tml_cont-title{
@@ -433,6 +434,7 @@ header {
 .servicos_destaque-section{
   height: 100%;
   width: 100%;
+  margin-bottom: 10%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -472,11 +474,16 @@ header {
   display: flex;
   justify-content: center;
   align-items: center;
+  transition: all 0.3s;
+}
+
+.sv_des-card:hover .servico-icon{
+  transform: scale(1.05);
 }
 
 .servico-icon svg{
-  height: 2.5rem;
-  width: 2.5rem;
+  height: 55%;
+  width: 55%;
 }
 
 .sv_des-card-text{
@@ -502,4 +509,11 @@ header {
   font-size: 1rem;
   font-weight: 700;
   border-radius: 8px;
+  transition: all 0.5s;
+}
+
+.sv_des-card-button:hover{
+  background-color: transparent;
+  border: 1px solid #2563eb;
+  color: #2563eb;
 }
