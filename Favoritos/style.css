@@ -192,6 +192,10 @@ header.header-passed-hero {
   margin-bottom: 5%;
 }
 
+.hero-text{
+  text-align: center;
+}
+
 .hero-title{
   color: #fff;
   font-size: 3.438rem;
@@ -222,6 +226,7 @@ header.header-passed-hero {
 
 .filtro-left{
   background-color: #fff;
+  display: flex;
   padding: 0.5rem;
   border-radius: 10px;
   gap: 0.5rem;
@@ -231,12 +236,34 @@ header.header-passed-hero {
 .button-tab{
   padding: 0.75rem 1.5rem;
   border-radius: 8px;
-  color: #fff;
-  background-color: #0049ff;
+  font-size: 1rem;
+  font-weight: 500;
+  color: #6a6977;
+  background-color: transparent;
   border: none;
+  display: flex;
+  gap: 0.5rem;
 }
 
+.button-tab:hover{
+  background-color: #f3f4f6;
+}
 
+.button-tab.ativo{
+  background-color: #0049ff;
+  color: #fff;
+}
+
+.tab-count{
+  padding: 0.125rem 0.5rem 0.2rem;
+  border-radius: 50%;
+  background-color: #0000001a;
+}
+
+.button-tab.ativo .tab-count{
+  background-color: #ffffff1a;
+  color: #ffffffb3;
+}
 
 footer{
   background-color: #1e293b;

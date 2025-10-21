@@ -50,7 +50,7 @@
 
     <main class="home-main">
         <section class="hero-section">
-            <div class="text-section">
+            <div class="hero-text">
                 <h1 class="hero-title">Meus Favoritos</h1>
                 <p class="hero-subtitle">Profissionais e empresas que você salvou para contato futuro</p>
             </div>
@@ -59,12 +59,12 @@
         <section class="favoritos-content">
             <div class="filtro">
                 <div class="filtro-left">
-                    <button class="button-tab">Todos</button>
-                    <button class="button-tab">Profissionais</button>
-                    <button class="button-tab">Empresas</button>
+                    <button class="button-tab">Todos <span class="tab-count" id="todos">1</span></button>
+                    <button class="button-tab">Profissionais <span class="tab-count" id="Profissionais">1</span></button>
+                    <button class="button-tab">Empresas <span class="tab-count" id="empresas">0</span></button>
                 </div>
 
-                <div class="filtro-left">
+                <div class="filtro-right">
                     <label for="ord-select">Ordenar por:</label>
                     <select id="ord-select" class="ord-select">
                         <option value="recente">Mais recentes</option>
@@ -212,5 +212,7 @@
             </div>
         </div>
     </footer>
+
+    <script src="script.js"></script>
 </body>
 </html>
