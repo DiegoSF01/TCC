@@ -1,5 +1,5 @@
 function selecionar(botao){
-    document.querySelectorAll('.botao').forEach(b => b.classList.remove('ativo'));
+    document.querySelectorAll('.button-tab').forEach(b => b.classList.remove('ativo'));
 
     botao.classList.add('ativo');
 }

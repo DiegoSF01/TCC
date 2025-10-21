@@ -242,7 +242,10 @@ header.header-passed-hero {
   background-color: transparent;
   border: none;
   display: flex;
+  align-items: center;
   gap: 0.5rem;
+  cursor: pointer;
+  transition: all 0.3s
 }
 
 .button-tab:hover{
