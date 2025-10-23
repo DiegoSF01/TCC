@@ -173,3 +173,273 @@ header.header-passed-hero {
 .perfil-name{
   color: #fff;
 }
+
+.img_fundo-card-perfil{
+  position: relative;
+}
+
+.img-fundo{
+  background-color: #0049ff;
+  width: 100%;
+  height: 16rem;
+  top: 0;
+  left: 0;
+}
+
+.card-perfil{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+  background-color: #fff;
+  box-shadow: 0 0 #0000, 0 0 #0000, 0 15px 30px -5px rgb(0 0 0 / 0.25);
+  border-radius: 10px;
+  width: 100%;
+}
+
+.top-content-card{
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.TCC-left{
+  display: flex;
+  gap: 5%;
+  align-items: center;
+  width: 100%;
+}
+
+.foto-perfil{
+  width: 7.5rem;
+  height: 7.5rem;
+  border-radius: 50%;
+  background-color: #2e2d37;
+}
+
+.informacoes-card_perfil{
+  display: flex;
+  flex-direction: column;
+}
+
+.nome-perfil{
+  font-size: 1.875rem;
+  font-weight: 700;
+}
+
+.profissao{
+  font-size: 1.25rem;
+  color: #6d6c7f;
+}
+
+.mini-informacoes{
+  display: flex;
+  gap: 5%;
+}
+
+.localizacao-TCC{
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.localizacao-TCC svg{
+  height: 1rem;
+  width: 1rem;
+}
+
+.lc-cidade_estado{
+  color: #6d6c7f;
+  font-size: 1rem;
+  display: flex;
+}
+
+.lc-cidade{
+  color: #6d6c7f;
+}
+
+.lc-estado{
+  color: #6d6c7f;
+  margin-left: 10%;
+}
+
+.avaliacao-TCC{
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.avaliacao-TCC p{
+  display: flex;
+  color: #6d6c7f;
+}
+
+.star{
+  width: 1.2rem;
+  height: 1.2rem;
+}
+
+.star svg{
+  width: 1.2rem;
+  height: 1.2rem;
+  fill: #facc15;
+  stroke: none;
+}
+
+.quant-stars{
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.quant-avaliacoes{
+  font-size: 1rem;
+  color: #6d6c7f;
+}
+
+.quant_avaliacoes-text{
+  color: #6d6c7f;
+  margin-left: 5%;
+}
+
+.disponibilidade{
+  background-color: #dcfce7;
+  color: #15803d;
+  padding: 0.5rem 1rem;
+  border-radius: 10px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.empre_profi{
+  background-color: #2563eb1a;
+  color: #0049ff;
+  padding: 0.5rem 1rem;
+  border-radius: 10px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.TCC-right{
+  display: flex;
+  gap: 5%;
+}
+
+.add_remove-favoritos{
+  border: 1px solid #e5e7eb;
+  background-color: #f9fbff;
+  border-radius: 10px;
+  height: 100%;
+}
+
+.add_remove-favoritos svg{
+  height: 1.5rem;
+  width: 1.5rem;
+}
+
+.add_remove-favoritos:hover{
+  background-color: #ef434334;
+}
+
+.add_remove-favoritos:hover svg{
+  stroke: #ef4343;
+  fill: #ef4343;
+}
+
+.compartilhar-perfil{
+  border: 1px solid #e5e7eb;
+  background-color: #f9fbff;
+  border-radius: 10px;
+}
+
+
+footer{
+  background-color: #1e293b;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.footer-content{
+  display: flex;
+  justify-content: center;
+  width: 70%;
+  padding: 3%;
+}
+
+.footer-section{
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.footer-section{
+  margin-right: 8%;
+}
+
+.footer-section.end{
+  margin: 0;
+}
+
+.footer-section ul li{
+  list-style: none;
+  margin-bottom: 10%;
+}
+
+.ft-logo{
+  display: flex;
+  gap: 2%;
+  margin-bottom: 5%;
+}
+
+.ft-logo img{
+  height: 2.5rem;
+}
+
+.footer-title-logo{
+  font-size: 1.5rem;
+  color: #fff;
+  white-space: nowrap;
+}
+
+.footer-subtitle{
+  font-size: 0.875rem;
+  color: #ffffffb3;
+  line-height: 1.6;
+  padding-left: 2%;
+  margin-bottom: 7%;
+}
+
+.social-link svg{
+  height: 3rem;
+  transition: all 0.3s;
+}
+
+.social-link svg:hover{
+  transform: translateY(-0.5rem);
+}
+
+.social-link svg g{
+  fill: #3a7afe;
+}
+
+.footer-title{
+  font-size: 1.125rem;
+  color: #fff;
+  margin-bottom: 1rem;
+  white-space: nowrap;
+}
+
+.footer-link{
+  font-size: 0.875rem;
+  color: #ffffffb3;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.footer-link:hover{
+  color: #3a7afe;
+  text-decoration: underline;
+}
