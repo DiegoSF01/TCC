@@ -6,7 +6,6 @@ function filtro_T(){
     if(botao_todos.classList.contains('ativo') == false){
         document.querySelector('.button-tab.ativo').classList.remove('ativo');
         botao_todos.classList.add('ativo');
-        moverHighlight(botao);
     }
 }
 
@@ -15,7 +14,6 @@ function filtro_P(){
     if(botao_profi.classList.contains('ativo') == false){
         document.querySelector('.button-tab.ativo').classList.remove('ativo');
         botao_profi.classList.add('ativo');
-        moverHighlight(botao);
     }
 }
 
@@ -24,7 +22,6 @@ function filtro_E(){
     if(botao_empre.classList.contains('ativo') == false){
         document.querySelector('.button-tab.ativo').classList.remove('ativo');
         botao_empre.classList.add('ativo');
-        moverHighlight(botao);
     }
 }
 
