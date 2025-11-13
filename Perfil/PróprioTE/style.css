@@ -1,25 +1,25 @@
 :root {
-    --background: hsl(222, 100%, 98.8%);
-    --foreground: hsl(247, 30%, 18%);
+    --background: #f9fbff;
+    --foreground: rgb(35, 32, 60);
 
-    --card: hsl(0, 0%, 100%);
-    --card-foreground: hsl(247, 30%, 18%);
+    --card: #ffffff;
+    --card-foreground: #23203c;
 
     --primary: #0048ff;
-    --primary-foreground: hsl(0, 0%, 100%);
-    --primary-hover: hsl(223, 100%, 62%);
+    --primary-foreground: #ffffff;
+    --primary-hover: #3d74ff;
 
-    --secondary: hsl(210, 40%, 96.1%);
-    --secondary-foreground: hsl(247, 30%, 18%);
+    --secondary: #f1f5f9;
+    --secondary-foreground: #23203c;
 
-    --muted: hsl(214, 32%, 91%);
-    --muted-foreground: hsl(244, 8%, 46%);
+    --muted: #e1e7ef;
+    --muted-foreground: #6d6c7f;
 
-    --accent: hsl(223, 100%, 62%);
-    --accent-foreground: hsl(0, 0%, 100%);
+    --accent: #3d74ff;
+    --accent-foreground: #ffffff;
 
-    --border: hsl(220, 13%, 91%);
-    --input: hsl(214, 32%, 91%);
+    --border: #e5e7eb;
+    --input: #e1e7ef;
 
     --shadow-sm: 0 1px 3px 0 rgb(0 0 0 / 0.1);
     --shadow-md: 0 10px 15px -3px rgb(0 0 0 / 0.1);
@@ -355,13 +355,193 @@ header {
     transition: background-color 0.3s;
 }
 
-.btn-editar-perfil:hover{  
+.btn-editar-perfil:hover {
     background-color: #fff;
     color: #0048ff;
 }
 
-.btn-editar-perfil:hover svg{
+.btn-editar-perfil:hover svg {
     stroke: #0048ff;
+}
+
+.fosco {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    z-index: 999;
+    display: none;
+}
+
+.fosco.ativo {
+    display: block;
+}
+
+.edite-perfil-container {
+    width: 40%;
+    height: 80%;
+    margin: 3rem auto;
+    background-color: var(--card);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-lg);
+    padding: 2rem 3rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    animation: fadeIn 0.3s ease;
+    z-index: 1000;
+    position: absolute;
+    inset: 0;
+    overflow-y: scroll;
+}
+
+.edite-perfil-container h2,
+.edite-perfil-container h3 {
+    color: var(--foreground);
+    font-weight: 700;
+}
+
+.epc-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.cancelar_top {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: 8px;
+    transition: var(--transition-smooth);
+    display: flex;
+}
+
+.cancelar_top svg {
+    height: 30px;
+    width: 30px;
+}
+
+.cancelar_top:hover {
+    background-color: var(--muted);
+}
+
+.info-basicas,
+.Sobre,
+.contato,
+.redes-sociais-edi {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    background-color: var(--secondary);
+    padding: 1.5rem;
+    border-radius: var(--radius);
+}
+
+.info-basicas h3,
+.Sobre h3,
+.contato h3,
+.redes-sociais-edi h3 {
+    color: var(--foreground);
+    margin-bottom: 0.5rem;
+}
+
+.info-basicas label,
+.Sobre label,
+.contato label,
+.redes-sociais-edi label {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--muted-foreground);
+}
+
+.info-basicas input,
+.Sobre input,
+.Sobre textarea,
+.contato input,
+.redes-sociais-edi input {
+    width: 100%;
+    margin-top: 0.25rem;
+    padding: 0.75rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    font-size: 0.9375rem;
+    color: var(--foreground);
+    background-color: var(--card);
+    outline: none;
+    transition: var(--transition-smooth);
+}
+
+.info-basicas input:focus,
+.Sobre input:focus,
+.Sobre textarea:focus,
+.contato input:focus,
+.redes-sociais-edi input:focus {
+    border-color: var(--primary);
+}
+
+.Sobre textarea {
+    min-height: 100px;
+    resize: none;
+}
+
+.line-edi {
+    display: block;
+    width: 100%;
+    height: 1px;
+    background-color: var(--border);
+    margin: 1rem 0;
+    flex-shrink: 0;
+}
+
+.buttons-edi {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+}
+
+.cancelar_bottom,
+.salvar-alteracoes {
+    padding: 0.75rem 1.5rem;
+    border-radius: var(--radius);
+    border: none;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition-smooth);
+}
+
+.cancelar_bottom {
+    background-color: var(--muted);
+    color: var(--foreground);
+}
+
+.cancelar_bottom:hover {
+    background-color: hsl(214, 32%, 85%);
+}
+
+.salvar-alteracoes {
+    background-color: var(--primary);
+    color: white;
+    box-shadow: var(--shadow-blue);
+}
+
+.salvar-alteracoes:hover {
+    background-color: var(--primary-hover);
+    transform: translateY(-2px);
+}
+
+/* Animação suave ao abrir */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 .line {
@@ -644,6 +824,105 @@ header {
     overflow: hidden;
 }
 
+.editar-publicacao {
+    background-color: var(--primary);
+    color: #fff;
+    font-size: 0.875rem;
+    font-weight: 600;
+    border: none;
+    border-radius: var(--radius);
+    padding: 0.4rem 0.9rem;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    margin-right: 0.5rem;
+}
+
+.editar-publicacao:hover {
+    background-color: var(--primary-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0, 72, 255, 0.25);
+}
+
+.modal-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.modal-header h3 {
+    color: var(--foreground);
+    font-size: 1.2rem;
+    font-weight: 700;
+}
+
+.fundo-fosco {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(8px);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 10000;
+}
+
+.fundo-fosco.active {
+    display: flex;
+}
+
+.editar-publicacao-container {
+    background: var(--card);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-lg);
+    padding: 2rem;
+    width: 500px;
+    max-width: 90%;
+    animation: fadeIn 0.3s ease;
+}
+
+.ep-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.ep-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-top: 1.5rem;
+}
+
+.ep-form label {
+    font-weight: 600;
+    color: var(--foreground);
+}
+
+.ep-form input,
+.ep-form textarea {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--secondary);
+    color: var(--foreground);
+    resize: none;
+    outline: none;
+    transition: var(--transition-smooth);
+}
+
+.ep-form input:focus,
+.ep-form textarea:focus {
+    border-color: var(--primary);
+}
+
+
 .avaliacao.sessao {
     display: flex;
     flex-direction: column;
@@ -922,12 +1201,12 @@ header {
 }
 
 .modal-close:hover {
-    background: var(--accent);
+    background: var(--muted);
 }
 
 .modal-close svg {
-    width: 24px;
-    height: 24px;
+    width: 30px;
+    height: 30px;
     stroke: var(--foreground);
 }
 

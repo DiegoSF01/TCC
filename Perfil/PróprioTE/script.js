@@ -1,22 +1,3 @@
-// Estado Global
-let especialidades = ["Alvenaria", "Revestimento", "Fundações"];
-let postagens = [
-    {
-        id: 1,
-        titulo: "Casa Moderna Finalizada",
-        descricao: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Beatae accusamus fuga ut aut in asperiores ex eligendi.",
-        imagem: ""
-    },
-    {
-        id: 2,
-        titulo: "Projeto Residencial",
-        descricao: "Projeto completo de construção residencial com acabamento de alta qualidade.",
-        imagem: ""
-    }
-];
-let editandoPostagemId = null;
-
-// Navegação entre abas
 const btn_sobre = document.getElementById('btn_navperfil-sobre');
 const btn_postagens = document.getElementById('btn_navperfil-postagens');
 const btn_avaliacao = document.getElementById('btn_navperfil-avaliacao');
@@ -29,6 +10,7 @@ function clicou_sobre() {
     if (!btn_sobre.classList.contains('ativo')) {
         document.querySelector('.button-navper.ativo').classList.remove('ativo');
         btn_sobre.classList.add('ativo');
+
         document.querySelector('.sessao').classList.remove('sessao');
         sessao_sobre.classList.add('sessao');
     }
@@ -38,6 +20,7 @@ function clicou_postagens() {
     if (!btn_postagens.classList.contains('ativo')) {
         document.querySelector('.button-navper.ativo').classList.remove('ativo');
         btn_postagens.classList.add('ativo');
+
         document.querySelector('.sessao').classList.remove('sessao');
         sessao_publicacoes.classList.add('sessao');
     }
@@ -47,6 +30,7 @@ function clicou_avaliacao() {
     if (!btn_avaliacao.classList.contains('ativo')) {
         document.querySelector('.button-navper.ativo').classList.remove('ativo');
         btn_avaliacao.classList.add('ativo');
+
         document.querySelector('.sessao').classList.remove('sessao');
         sessao_avaliacao.classList.add('sessao');
     }
@@ -56,316 +40,193 @@ btn_sobre.addEventListener('click', clicou_sobre);
 btn_postagens.addEventListener('click', clicou_postagens);
 btn_avaliacao.addEventListener('click', clicou_avaliacao);
 
-// Modal Editar Perfil
-function abrirModalEditarPerfil() {
-    document.getElementById('modalEditarPerfil').classList.add('active');
-    renderizarEspecialidades();
-}
 
-function fecharModalEditarPerfil() {
-    document.getElementById('modalEditarPerfil').classList.remove('active');
-}
+// ============================================
+// MODAL DE PUBLICAÇÕES
+// ============================================
+window.addEventListener('load', function () {
+    // Modal principal (visualização)
+    const modalHTML = `
+    <div class="modal-overlay" id="modalPublicacao">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3 id="modalTitle"></h3>
+          <div class="modal-actions">
+            <button class="editar-publicacao" id="editarPublicacao">Editar</button>
+            <button class="modal-close" id="closeModal">
+              <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path fill-rule="evenodd" clip-rule="evenodd"
+                d="M10.9393 12L6.9696 15.9697L8.03026 17.0304L12 13.0607L15.9697 17.0304L17.0304 15.9697L13.0607 12L17.0303 8.03039L15.9696 6.96973L12 10.9393L8.03038 6.96973L6.96972 8.03039L10.9393 12Z"
+                fill="#2e2d37"></path>
+            </svg>
+            </button>
+          </div>
+        </div>
+        <div class="modal-body">
+          <div class="modal-image" id="modalImage"></div>
+          <p class="modal-description" id="modalDescription"></p>
+        </div>
+      </div>
+    </div>
+  `;
+    document.body.insertAdjacentHTML('beforeend', modalHTML);
 
-// Gerenciar Especialidades
-function adicionarEspecialidade() {
-    const input = document.getElementById('novaEspecialidade');
-    const novaEsp = input.value.trim();
-    
-    if (novaEsp && !especialidades.includes(novaEsp)) {
-        especialidades.push(novaEsp);
-        renderizarEspecialidades();
-        input.value = '';
-        mostrarNotificacao('Especialidade adicionada!');
+    // Modal de edição
+    const modalEditarHTML = `
+    <div class="fundo-fosco" id="editarPublicacaoModal">
+      <div class="editar-publicacao-container">
+        <div class="ep-top">
+          <h2>Editar publicação</h2>
+          <button class="cancelar_top" id="fecharEditarPub">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path fill-rule="evenodd" clip-rule="evenodd"
+                d="M10.9393 12L6.9696 15.9697L8.03026 17.0304L12 13.0607L15.9697 17.0304L17.0304 15.9697L13.0607 12L17.0303 8.03039L15.9696 6.96973L12 10.9393L8.03038 6.96973L6.96972 8.03039L10.9393 12Z"
+                fill="#2e2d37"></path>
+            </svg>
+          </button>
+        </div>
+
+        <div class="ep-form">
+          <label>Título</label>
+          <input type="text" id="editarTitulo">
+
+          <label>Descrição</label>
+          <textarea id="editarDescricao"></textarea>
+
+          <label>Imagem (URL)</label>
+          <input type="text" id="editarImagem">
+
+          <div class="line-edi"></div>
+
+          <div class="buttons-edi">
+            <button class="cancelar_bottom" id="cancelarEditarPub">Cancelar</button>
+            <button class="salvar-alteracoes" id="salvarEditarPub">Salvar alterações</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
+    document.body.insertAdjacentHTML('beforeend', modalEditarHTML);
+
+    // Selecionar elementos principais
+    const modal = document.getElementById('modalPublicacao');
+    const modalTitle = document.getElementById('modalTitle');
+    const modalImage = document.getElementById('modalImage');
+    const modalDescription = document.getElementById('modalDescription');
+    const closeModal = document.getElementById('closeModal');
+
+    const editarBtn = document.getElementById('editarPublicacao');
+    const editarModal = document.getElementById('editarPublicacaoModal');
+    const fecharEditarPub = document.getElementById('fecharEditarPub');
+    const cancelarEditarPub = document.getElementById('cancelarEditarPub');
+    const salvarEditarPub = document.getElementById('salvarEditarPub');
+
+    let cardAtivo = null; // referência do card aberto
+
+    // Abrir modal de publicação
+    function abrirModal(card) {
+        cardAtivo = card;
+        const titulo = card.querySelector('h4').textContent;
+        const descricao = card.querySelector('p').textContent;
+        const imgElement = card.querySelector('.img-card_publicacoes');
+        const imagemBg = window.getComputedStyle(imgElement).backgroundImage;
+
+        modalTitle.textContent = titulo;
+        modalDescription.textContent = descricao;
+        modalImage.style.backgroundImage = imagemBg;
+        modalImage.style.backgroundSize = 'cover';
+        modalImage.style.backgroundPosition = 'center';
+
+        modal.classList.add('active');
+        document.body.style.overflow = 'hidden';
     }
-}
 
-function removerEspecialidade(index) {
-    especialidades.splice(index, 1);
-    renderizarEspecialidades();
-    mostrarNotificacao('Especialidade removida!');
-}
+    // Fechar modal principal
+    function fecharModal() {
+        modal.classList.remove('active');
+        document.body.style.overflow = 'auto';
+    }
 
-function renderizarEspecialidades() {
-    const container = document.getElementById('especialidadesLista');
-    container.innerHTML = '';
-    
-    especialidades.forEach((esp, index) => {
-        const badge = document.createElement('div');
-        badge.className = 'badge';
-        badge.innerHTML = `
-            ${esp}
-            <button class="badge-remove" onclick="removerEspecialidade(${index})">×</button>
-        `;
-        container.appendChild(badge);
-    });
-    
-    // Atualizar também na página
-    const containerPagina = document.getElementById('especialidades-container');
-    containerPagina.innerHTML = '';
-    especialidades.forEach(esp => {
-        const span = document.createElement('div');
-        span.className = 'span-esp_op';
-        span.innerHTML = `<span class="especialidade-op">${esp}</span>`;
-        containerPagina.appendChild(span);
-    });
-}
+    // Abrir editor
+    function abrirEditorPublicacao() {
+        document.getElementById('editarTitulo').value = modalTitle.textContent;
+        document.getElementById('editarDescricao').value = modalDescription.textContent;
+        const bg = modalImage.style.backgroundImage.replace(/url\(["']?|["']?\)/g, '');
+        document.getElementById('editarImagem').value = bg;
 
-// Permitir adicionar especialidade com Enter
-document.addEventListener('DOMContentLoaded', function() {
-    const inputEsp = document.getElementById('novaEspecialidade');
-    if (inputEsp) {
-        inputEsp.addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                e.preventDefault();
-                adicionarEspecialidade();
+        editarModal.classList.add('active');
+    }
+
+    // Fechar editor
+    function fecharEditorPublicacao() {
+        editarModal.classList.remove('active');
+    }
+
+    // Salvar alterações
+    function salvarAlteracoesPublicacao() {
+        const novoTitulo = document.getElementById('editarTitulo').value.trim();
+        const novaDescricao = document.getElementById('editarDescricao').value.trim();
+        const novaImagem = document.getElementById('editarImagem').value.trim();
+
+        if (cardAtivo) {
+            if (novoTitulo) cardAtivo.querySelector('h4').textContent = novoTitulo;
+            if (novaDescricao) cardAtivo.querySelector('p').textContent = novaDescricao;
+            if (novaImagem) {
+                const imgElement = cardAtivo.querySelector('.img-card_publicacoes');
+                imgElement.style.backgroundImage = `url('${novaImagem}')`;
             }
+        }
+
+        // Atualiza o modal principal também
+        modalTitle.textContent = novoTitulo;
+        modalDescription.textContent = novaDescricao;
+        modalImage.style.backgroundImage = `url('${novaImagem}')`;
+
+        fecharEditorPublicacao();
+    }
+
+    // Eventos
+    closeModal.addEventListener('click', fecharModal);
+    editarBtn.addEventListener('click', abrirEditorPublicacao);
+    fecharEditarPub.addEventListener('click', fecharEditorPublicacao);
+    cancelarEditarPub.addEventListener('click', fecharEditorPublicacao);
+    salvarEditarPub.addEventListener('click', salvarAlteracoesPublicacao);
+
+    // Fechar modal ao clicar fora
+    modal.addEventListener('click', e => {
+        if (e.target === modal) fecharModal();
+    });
+    editarModal.addEventListener('click', e => {
+        if (e.target === editarModal) fecharEditorPublicacao();
+    });
+
+    // Fechar modal com ESC
+    document.addEventListener('keydown', e => {
+        if (e.key === 'Escape') {
+            if (editarModal.classList.contains('active')) fecharEditorPublicacao();
+            else if (modal.classList.contains('active')) fecharModal();
+        }
+    });
+
+    // Clicar nos cards abre o modal
+    const cardsPublicacoes = document.querySelectorAll('.card-publicacoes');
+    cardsPublicacoes.forEach(card => {
+        card.addEventListener('click', function () {
+            abrirModal(this);
         });
-    }
-});
-
-// Salvar Perfil
-document.getElementById('formEditarPerfil').addEventListener('submit', function(e) {
-    e.preventDefault();
-    
-    const formData = new FormData(e.target);
-    const dados = Object.fromEntries(formData);
-    
-    // Atualizar informações na página
-    document.querySelector('.nome-perfil').textContent = dados.name;
-    document.querySelector('.profissao').textContent = dados.profession;
-    document.querySelector('.local-perfil').textContent = `${dados.city}, ${dados.state}`;
-    document.querySelector('.tl-numero').textContent = dados.phone;
-    document.querySelector('.email-text').textContent = dados.email;
-    document.querySelector('.projetos_concluidos-text').textContent = dados.projects;
-    document.querySelector('.tempo_experiencia-text').textContent = dados.experience;
-    document.querySelector('.sobre_profissional p').textContent = dados.about;
-    
-    // Atualizar redes sociais
-    document.querySelector('.name_perfil-ins').textContent = dados.instagram;
-    document.querySelector('.name_perfil-fac').textContent = dados.facebook;
-    document.querySelector('.name_perfil-x').textContent = dados.twitter;
-    
-    mostrarNotificacao('Perfil atualizado com sucesso!');
-    fecharModalEditarPerfil();
-});
-
-// Modal Gerenciar Postagens
-function abrirModalPostagens() {
-    document.getElementById('modalPostagens').classList.add('active');
-    renderizarListaPostagens();
-}
-
-function fecharModalPostagens() {
-    document.getElementById('modalPostagens').classList.remove('active');
-    cancelarFormPostagem();
-}
-
-function mostrarFormPostagem() {
-    document.getElementById('formPostagem').style.display = 'block';
-    document.getElementById('tituloFormPostagem').textContent = 'Nova Postagem';
-    document.getElementById('tituloPostagem').value = '';
-    document.getElementById('descricaoPostagem').value = '';
-    document.getElementById('imagemPostagem').value = '';
-    editandoPostagemId = null;
-}
-
-function cancelarFormPostagem() {
-    document.getElementById('formPostagem').style.display = 'none';
-    document.getElementById('tituloPostagem').value = '';
-    document.getElementById('descricaoPostagem').value = '';
-    document.getElementById('imagemPostagem').value = '';
-    editandoPostagemId = null;
-}
-
-function salvarPostagem() {
-    const titulo = document.getElementById('tituloPostagem').value.trim();
-    const descricao = document.getElementById('descricaoPostagem').value.trim();
-    const imagem = document.getElementById('imagemPostagem').value.trim();
-    
-    if (!titulo || !descricao) {
-        mostrarNotificacao('Preencha todos os campos obrigatórios!', 'erro');
-        return;
-    }
-    
-    if (editandoPostagemId) {
-        // Editar postagem existente
-        const index = postagens.findIndex(p => p.id === editandoPostagemId);
-        if (index !== -1) {
-            postagens[index] = {
-                ...postagens[index],
-                titulo,
-                descricao,
-                imagem
-            };
-            mostrarNotificacao('Postagem atualizada com sucesso!');
-        }
-    } else {
-        // Criar nova postagem
-        const novaPostagem = {
-            id: Date.now(),
-            titulo,
-            descricao,
-            imagem: imagem || ''
-        };
-        postagens.push(novaPostagem);
-        mostrarNotificacao('Postagem criada com sucesso!');
-    }
-    
-    renderizarListaPostagens();
-    renderizarPostagensNaPagina();
-    cancelarFormPostagem();
-}
-
-function editarPostagem(id) {
-    const postagem = postagens.find(p => p.id === id);
-    if (postagem) {
-        document.getElementById('formPostagem').style.display = 'block';
-        document.getElementById('tituloFormPostagem').textContent = 'Editar Postagem';
-        document.getElementById('tituloPostagem').value = postagem.titulo;
-        document.getElementById('descricaoPostagem').value = postagem.descricao;
-        document.getElementById('imagemPostagem').value = postagem.imagem || '';
-        editandoPostagemId = id;
-    }
-}
-
-function deletarPostagem(id) {
-    if (confirm('Tem certeza que deseja excluir esta postagem?')) {
-        postagens = postagens.filter(p => p.id !== id);
-        renderizarListaPostagens();
-        renderizarPostagensNaPagina();
-        mostrarNotificacao('Postagem excluída com sucesso!');
-    }
-}
-
-function renderizarListaPostagens() {
-    const lista = document.getElementById('listaPostagens');
-    lista.innerHTML = '';
-    
-    if (postagens.length === 0) {
-        lista.innerHTML = '<p style="text-align: center; color: var(--muted-foreground);">Nenhuma postagem ainda. Crie sua primeira!</p>';
-        return;
-    }
-    
-    postagens.forEach(postagem => {
-        const item = document.createElement('div');
-        item.className = 'postagem-item';
-        item.innerHTML = `
-            <div class="postagem-img" style="${postagem.imagem ? `background-image: url(${postagem.imagem}); background-size: cover; background-position: center;` : ''}"></div>
-            <div class="postagem-info">
-                <h4>${postagem.titulo}</h4>
-                <p>${postagem.descricao}</p>
-            </div>
-            <div class="postagem-actions">
-                <button class="btn-icon" onclick="editarPostagem(${postagem.id})">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
-                        <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
-                    </svg>
-                </button>
-                <button class="btn-icon delete" onclick="deletarPostagem(${postagem.id})">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <polyline points="3 6 5 6 21 6"></polyline>
-                        <path d="m19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
-                    </svg>
-                </button>
-            </div>
-        `;
-        lista.appendChild(item);
     });
-}
-
-function renderizarPostagensNaPagina() {
-    const container = document.getElementById('postagens-container');
-    container.innerHTML = '';
-    
-    postagens.forEach(postagem => {
-        const card = document.createElement('div');
-        card.className = 'card-publicacoes';
-        card.innerHTML = `
-            <div class="img-card_publicacoes" style="${postagem.imagem ? `background-image: url(${postagem.imagem}); background-size: cover; background-position: center;` : ''}"></div>
-            <div class="mini-informacoes-card_publicacoes">
-                <h4>${postagem.titulo}</h4>
-                <p>${postagem.descricao}</p>
-            </div>
-        `;
-        container.appendChild(card);
-    });
-}
-
-// Sistema de Notificação
-function mostrarNotificacao(mensagem, tipo = 'sucesso') {
-    // Remover notificação anterior se existir
-    const notifAnterior = document.querySelector('.notificacao');
-    if (notifAnterior) {
-        notifAnterior.remove();
-    }
-    
-    const notif = document.createElement('div');
-    notif.className = 'notificacao';
-    notif.style.cssText = `
-        position: fixed;
-        top: 2rem;
-        right: 2rem;
-        padding: 1rem 1.5rem;
-        background-color: ${tipo === 'erro' ? '#dc2626' : '#16a34a'};
-        color: white;
-        border-radius: 0.5rem;
-        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
-        z-index: 10000;
-        animation: slideIn 0.3s ease-out;
-    `;
-    notif.textContent = mensagem;
-    
-    document.body.appendChild(notif);
-    
-    setTimeout(() => {
-        notif.style.animation = 'slideOut 0.3s ease-out';
-        setTimeout(() => notif.remove(), 300);
-    }, 3000);
-}
-
-// Adicionar animações
-const style = document.createElement('style');
-style.textContent = `
-    @keyframes slideIn {
-        from {
-            transform: translateX(100%);
-            opacity: 0;
-        }
-        to {
-            transform: translateX(0);
-            opacity: 1;
-        }
-    }
-    
-    @keyframes slideOut {
-        from {
-            transform: translateX(0);
-            opacity: 1;
-        }
-        to {
-            transform: translateX(100%);
-            opacity: 0;
-        }
-    }
-`;
-document.head.appendChild(style);
-
-// Fechar modais ao clicar fora
-document.getElementById('modalEditarPerfil').addEventListener('click', function(e) {
-    if (e.target === this) {
-        fecharModalEditarPerfil();
-    }
 });
 
-document.getElementById('modalPostagens').addEventListener('click', function(e) {
-    if (e.target === this) {
-        fecharModalPostagens();
-    }
-});
 
-// Inicialização
-document.addEventListener('DOMContentLoaded', function() {
-    renderizarEspecialidades();
-    renderizarPostagensNaPagina();
-});
+const btn_editarper = document.querySelector('.btn-editar-perfil');
+const fosco = document.querySelector('.fosco');
+
+function abrirEditarPerfil() {
+    fosco.classList.add('ativo');
+}
+
+const btn_fechar = document.querySelector('.cancelar_top');
+
+function fecharEditarPerfil() {
+    fosco.classList.remove('ativo');
+}
