@@ -48,7 +48,7 @@ window.addEventListener('load', function () {
   // Modal principal (visualização)
   const modalHTML = `
     <div class="modal-overlay" id="modalPublicacao">
-      <div class="modal-content">
+      <div class="modal-content1">
         <div class="modal-header">
           <h3 id="modalTitle"></h3>
           <div class="modal-actions">
