@@ -137,3 +137,12 @@ window.addEventListener('load', function() {
     }
   });
 });
+
+const ratingValue = document.getElementById("rating-value");
+const radios = document.querySelectorAll("input[name='rate']");
+
+radios.forEach(r => {
+    r.addEventListener("change", () => {
+        ratingValue.textContent = `Nota: ${r.value} de 5`;
+    });
+});
