@@ -1,78 +1,107 @@
-:root {
+/* ========================================
+   VARIÁVEIS CSS (Custom Properties)
+   Cores, sombras e valores reutilizáveis
+   ======================================== */
+   :root {
+    /* Cores de fundo */
     --background: #f9fbff;
     --foreground: rgb(35, 32, 60);
 
+    /* Cores de cards */
     --card: #ffffff;
     --card-foreground: #23203c;
 
+    /* Cores primárias (botões principais, links) */
     --primary: #0048ff;
     --primary-foreground: #ffffff;
     --primary-hover: #3d74ff;
 
+    /* Cores secundárias (backgrounds alternativos) */
     --secondary: #f1f5f9;
     --secondary-foreground: #23203c;
 
+    /* Cores neutras (textos secundários, backgrounds suaves) */
     --muted: #e1e7ef;
     --muted-foreground: #6d6c7f;
 
+    /* Cores de destaque */
     --accent: #3d74ff;
     --accent-foreground: #ffffff;
 
+    /* Cores de bordas e inputs */
     --border: #e5e7eb;
     --input: #e1e7ef;
+    --input-border: #e3e3e8;
 
+    /* Sombras em níveis */
     --shadow-sm: 0 1px 3px 0 rgb(0 0 0 / 0.1);
     --shadow-md: 0 10px 15px -3px rgb(0 0 0 / 0.1);
     --shadow-lg: 0 15px 30px -5px rgb(0 0 0 / 0.25);
 
+    /* Raio de borda padrão */
     --radius: 0.625rem;
 
+    /* Transição suave padrão */
     --transition-smooth: all 0.3s ease;
 }
 
+/* ========================================
+   RESET E CONFIGURAÇÕES GLOBAIS
+   ======================================== */
 html {
-    font-size: 16px;
-    scrollbar-gutter: auto;
-    scroll-behavior: smooth;
+    font-size: 16px; /* Define o tamanho base da fonte */
+    scrollbar-gutter: auto; /* Espaço para barra de rolagem */
+    scroll-behavior: smooth; /* Rolagem suave em âncoras */
 }
 
+/* Reset de margens, paddings e box-sizing para todos os elementos */
 * {
     margin: 0px;
     padding: 0px;
-    box-sizing: border-box;
+    box-sizing: border-box; /* Inclui padding e border no tamanho total */
     color: #2e2d37;
     font-family: "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans",
         "Droid Sans", "Helvetica Neue", sans-serif;
 }
 
+/* ========================================
+   BODY - Container principal
+   ======================================== */
 body {
-    min-height: 100vh;
+    min-height: 100vh; /* Altura mínima de 100% da viewport */
     display: flex;
-    flex-direction: column;
+    flex-direction: column; /* Layout vertical */
     background-color: #fbfbff;
 }
 
+/* ========================================
+   HEADER - Barra de navegação superior
+   ======================================== */
 header {
     background-color: #0049ff;
     width: 100%;
-    height: 4.375rem;
+    height: 4.375rem; /* 70px */
     display: flex;
     justify-content: center;
     align-items: center;
-    position: sticky;
+    position: sticky; /* Fixa no topo ao rolar */
     box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
         0 4px 6px -4px rgba(0, 0, 0, 0.1);
 }
 
+/* Container principal da navegação */
 .nav-container {
     height: 100%;
     width: 100%;
     display: flex;
-    gap: 25rem;
+    gap: 25rem; /* Espaçamento entre seções */
     align-items: center;
     padding-left: 15rem;
 }
 
+/* ========================================
+   NAVEGAÇÃO ESQUERDA - Logo e busca
+   ======================================== */
 .left-nav-container {
     height: 100%;
     display: flex;
@@ -80,6 +109,7 @@ header {
     gap: 8%;
 }
 
+/* Container do logo */
 .lg-div {
     height: 100%;
     display: flex;
@@ -87,20 +117,24 @@ header {
 }
 
 .lg-div img {
-    height: 2.813rem;
+    height: 2.813rem; /* 45px */
 }
 
+/* ========================================
+   BUSCADOR - Campo de pesquisa
+   ======================================== */
 .buscador-div {
     height: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
-    position: relative;
+    position: relative; /* Para posicionar label e ícone */
 }
 
+/* Campo de input da busca */
 .buscador {
-    border: 1px solid #ffffff4d;
-    background-color: #ffffff33;
+    border: 1px solid #ffffff4d; /* Borda semi-transparente */
+    background-color: #ffffff33; /* Fundo semi-transparente */
     color: #fff;
     border-radius: 6px;
     width: 20rem;
@@ -108,28 +142,32 @@ header {
     padding-left: 2%;
     padding-top: 3%;
     font-size: 0.875rem;
-    outline: none;
+    outline: none; /* Remove outline padrão */
 }
 
+/* Estado focado do buscador */
 .buscador:focus {
     border: 2px solid #fff;
 }
 
+/* Label flutuante do buscador */
 .bs-label {
     position: absolute;
     left: 3%;
     font-size: 0.875rem;
-    pointer-events: none;
+    pointer-events: none; /* Não interfere com cliques */
     transition: all 0.3s ease;
     color: #ffffff99;
 }
 
+/* Animação do label ao focar no input */
 .buscador:focus~.bs-label {
     top: 22%;
     font-weight: 600;
-    font-size: 0.625rem;
+    font-size: 0.625rem; /* Diminui o tamanho */
 }
 
+/* Ícone de busca */
 .bs-svg {
     position: relative;
     right: 10%;
@@ -140,6 +178,9 @@ header {
     color: #ffffffcc;
 }
 
+/* ========================================
+   NAVEGAÇÃO DIREITA - Links e perfil
+   ======================================== */
 .right-nav-container {
     display: flex;
     justify-content: flex-start;
@@ -148,15 +189,17 @@ header {
     gap: 1rem;
 }
 
+/* Lista de links de navegação */
 .nav-links {
     display: flex;
     align-items: center;
     gap: 0.25rem;
-    border-right: 1px solid rgba(255, 255, 255, 0.3);
+    border-right: 1px solid rgba(255, 255, 255, 0.3); /* Separador */
     padding-right: 1rem;
     list-style: none;
 }
 
+/* Estilo de cada link */
 .nav-link {
     height: 100%;
     padding: 0.781rem 1rem;
@@ -169,9 +212,12 @@ header {
 }
 
 .nav-link:hover {
-    background-color: #ffffff1a;
+    background-color: #ffffff1a; /* Fundo semi-transparente ao hover */
 }
 
+/* ========================================
+   BOTÕES DE PERFIL E FAVORITOS
+   ======================================== */
 .right-itens {
     height: 100%;
     display: flex;
@@ -202,6 +248,9 @@ header {
     color: #fff;
 }
 
+/* ========================================
+   PERFIL PROFISSIONAL - Container principal
+   ======================================== */
 .perfil_profisional-main {
     width: 100%;
     margin: 0 auto;
@@ -210,34 +259,43 @@ header {
     align-items: center;
 }
 
+/* ========================================
+   BANNER DE FUNDO E CARD DE PERFIL
+   ======================================== */
 .img_fundo-card-perfil {
     position: relative;
     margin-bottom: 2rem;
     width: 100%;
 }
 
+/* Banner superior com gradiente */
 .img-fundo {
     height: 16rem;
     background: linear-gradient(135deg, var(--primary), var(--accent));
 }
 
+/* Card principal do perfil (sobrepõe o banner) */
 .card-perfil {
     width: 70%;
-    margin: -5rem auto 0;
+    margin: -5rem auto 0; /* Margem negativa para sobrepor */
     background-color: var(--card);
     border-radius: var(--radius);
     box-shadow: var(--shadow-lg);
     padding: 2rem;
 }
 
+/* ========================================
+   TOPO DO CARD - Informações principais
+   ======================================== */
 .top-content-card {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
     gap: 2rem;
-    flex-wrap: wrap;
+    flex-wrap: wrap; /* Responsivo */
 }
 
+/* Lado esquerdo - Foto e informações */
 .TCC-left {
     display: flex;
     gap: 1.5rem;
@@ -245,6 +303,7 @@ header {
     align-items: flex-end;
 }
 
+/* Foto de perfil circular */
 .foto-perfil {
     width: 8rem;
     height: 8rem;
@@ -254,26 +313,32 @@ header {
     background-size: cover;
     background-position: center;
     box-shadow: var(--shadow-md);
-    flex-shrink: 0;
+    flex-shrink: 0; /* Não encolhe */
 }
 
+/* Container de informações do perfil */
 .informacoes-card_perfil {
     flex: 1;
 }
 
+/* Nome do profissional */
 .nome-perfil {
-    font-size: 1.875rem;
+    font-size: 1.875rem; /* 30px */
     font-weight: 700;
     color: var(--foreground);
     margin-bottom: 0.5rem;
 }
 
+/* Profissão/cargo */
 .profissao {
-    font-size: 1.25rem;
+    font-size: 1.25rem; /* 20px */
     color: var(--muted-foreground);
     margin-bottom: 1rem;
 }
 
+/* ========================================
+   MINI INFORMAÇÕES - Localização, avaliação, etc
+   ======================================== */
 .mini-informacoes {
     display: flex;
     flex-wrap: wrap;
@@ -282,6 +347,7 @@ header {
     font-size: 0.875rem;
 }
 
+/* Localização e avaliação */
 .localizacao-TCC,
 .avaliacao-TCC {
     display: flex;
@@ -300,6 +366,7 @@ header {
     gap: 0.25rem;
 }
 
+/* Sistema de estrelas de avaliação */
 .star {
     display: flex;
     align-items: center;
@@ -308,7 +375,7 @@ header {
 .star svg {
     width: 1rem;
     height: 1rem;
-    fill: #facc15;
+    fill: #facc15; /* Amarelo para estrelas */
     stroke: #facc15;
 }
 
@@ -318,6 +385,9 @@ header {
     margin-left: 0.25rem;
 }
 
+/* ========================================
+   BADGES - Disponibilidade e tipo
+   ======================================== */
 .disponibilidade,
 .empre_profi {
     padding: 0.25rem 0.75rem;
@@ -326,21 +396,27 @@ header {
     font-weight: 600;
 }
 
+/* Badge verde para disponível */
 .disponibilidade {
     background-color: #dcfce7;
     color: #16a34a;
 }
 
+/* Badge azul para tipo de profissional */
 .empre_profi {
     background-color: #0048ff18;
     color: var(--secondary-foreground);
 }
 
+/* ========================================
+   LADO DIREITO - Botões de ação
+   ======================================== */
 .TCC-right {
     display: flex;
     gap: 0.5rem;
 }
 
+/* Botão de editar perfil */
 .btn-editar-perfil {
     display: flex;
     align-items: center;
@@ -358,6 +434,7 @@ header {
     stroke: #2e2d37;
 }
 
+/* Efeito hover do botão editar */
 .btn-editar-perfil:hover {
     border-color: #0048ff;
     color: #0048ff;
@@ -367,10 +444,13 @@ header {
     stroke: #0048ff;
 }
 
+/* ========================================
+   MODAL - Overlay e estrutura base
+   ======================================== */
 .modal-overlay {
     position: fixed;
-    inset: 0;
-    background-color: rgba(0, 0, 0, 0.5);
+    inset: 0; /* top: 0, right: 0, bottom: 0, left: 0 */
+    background-color: rgba(0, 0, 0, 0.5); /* Fundo escuro semi-transparente */
     display: flex;
     align-items: center;
     justify-content: center;
@@ -379,51 +459,10 @@ header {
     height: 100%;
 }
 
-.register-container {
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 2rem 1rem;
-}
-
-.register-wrapper {
-    width: 100%;
-    max-width: 48rem;
-}
-
-/* Header */
-.register-header {
-    text-align: center;
-    margin-bottom: 2rem;
-}
-
-.logo-circle {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 4rem;
-    height: 4rem;
-    border-radius: 1rem;
-    background: var(--gradient-primary);
-    box-shadow: var(--shadow-medium);
-    margin-bottom: 1rem;
-}
-
-.main-title {
-    font-size: 1.875rem;
-    font-weight: 700;
-    color: var(--foreground);
-    margin-bottom: 0.5rem;
-}
-
-.main-subtitle {
-    font-size: 1rem;
-    color: var(--muted-foreground);
-}
-
-/* Card */
+/* Card do formulário de registro */
 .register-card {
+    width: 100%;
+    max-width: 48rem; /* 768px */
     background-color: var(--card);
     border: 1px solid var(--border);
     border-radius: 0.75rem;
@@ -431,14 +470,17 @@ header {
     overflow: hidden;
 }
 
-/* Tipo de Cadastro Selector */
+/* ========================================
+   SELETOR DE TIPO DE CADASTRO
+   ======================================== */
 .tipo-cadastro-selector {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(3, 1fr); /* 3 colunas iguais */
     border-bottom: 1px solid var(--border);
     background-color: hsl(240, 20%, 98%);
 }
 
+/* Botões de tipo de cadastro */
 .tipo-btn {
     display: flex;
     flex-direction: column;
@@ -448,7 +490,7 @@ header {
     padding: 1.25rem 1rem;
     background: transparent;
     border: none;
-    border-bottom: 3px solid transparent;
+    border-bottom: 3px solid transparent; /* Indicador de seleção */
     cursor: pointer;
     transition: var(--transition-smooth);
     font-size: 0.875rem;
@@ -465,9 +507,10 @@ header {
     background-color: hsl(240, 20%, 96%);
 }
 
+/* Estado ativo do botão */
 .tipo-btn.active {
     color: var(--primary);
-    border-bottom-color: var(--primary);
+    border-bottom-color: var(--primary); /* Linha azul embaixo */
     background-color: var(--card);
 }
 
@@ -475,33 +518,42 @@ header {
     stroke: var(--primary);
 }
 
+/* ========================================
+   CONTEÚDO DO CARD - Formulários
+   ======================================== */
 .card-content {
     padding: 2rem;
+    max-height: 90vh;
+    overflow-y: scroll; /* Scroll quando necessário */
 }
 
-/* Forms */
+/* ========================================
+   FORMULÁRIOS - Estrutura e animação
+   ======================================== */
 .register-form {
-    display: none;
+    display: none; /* Oculto por padrão */
     animation: fadeIn 0.3s ease-in-out;
 }
 
 .register-form.active {
-    display: block;
+    display: block; /* Mostra quando ativo */
 }
 
+/* Animação de fade in */
 @keyframes fadeIn {
     from {
         opacity: 0;
         transform: translateY(10px);
     }
-
     to {
         opacity: 1;
         transform: translateY(0);
     }
 }
 
-/* Image Uploads Section */
+/* ========================================
+   UPLOAD DE IMAGENS - Banner e Perfil
+   ======================================== */
 .image-uploads-section {
     position: relative;
     margin-bottom: 2rem;
@@ -512,6 +564,7 @@ header {
     margin-bottom: 1rem;
 }
 
+/* Upload de foto de perfil (sobrepõe o banner) */
 .profile-upload {
     position: absolute;
     bottom: -3rem;
@@ -524,11 +577,12 @@ header {
     cursor: pointer;
 }
 
+/* Área de upload do banner */
 .banner-label .upload-placeholder {
     width: 100%;
     height: 12rem;
     background: linear-gradient(135deg, hsl(240, 20%, 97%) 0%, hsl(240, 20%, 95%) 100%);
-    border: 2px dashed var(--border);
+    border: 2px dashed var(--border); /* Borda tracejada */
     border-radius: 0.75rem;
     display: flex;
     flex-direction: column;
@@ -540,6 +594,7 @@ header {
     position: relative;
 }
 
+/* Efeito hover na área de upload */
 .banner-label .upload-placeholder:hover {
     border-color: var(--primary);
     background: linear-gradient(135deg, hsl(221, 100%, 98%) 0%, hsl(221, 100%, 96%) 100%);
@@ -555,6 +610,7 @@ header {
     font-weight: 500;
 }
 
+/* Quando há imagem carregada */
 .banner-label .upload-placeholder.has-image {
     border: none;
 }
@@ -568,12 +624,15 @@ header {
     left: 0;
 }
 
+/* ========================================
+   UPLOAD DE FOTO DE PERFIL - Circular
+   ======================================== */
 .profile-label .upload-placeholder {
     width: 7rem;
     height: 7rem;
     background: var(--card);
     border: 3px solid var(--card);
-    border-radius: 50%;
+    border-radius: 50%; /* Circular */
     display: flex;
     align-items: center;
     justify-content: center;
@@ -585,7 +644,7 @@ header {
 }
 
 .profile-label .upload-placeholder:hover {
-    transform: scale(1.05);
+    transform: scale(1.05); /* Aumenta levemente ao hover */
 }
 
 .profile-label .upload-placeholder svg {
@@ -605,11 +664,14 @@ header {
     left: 0;
 }
 
+/* Input file oculto (substitui por labels customizados) */
 .file-input {
     display: none;
 }
 
-/* Form Fields */
+/* ========================================
+   CAMPOS DE FORMULÁRIO
+   ======================================== */
 .form-fields {
     margin-top: 4rem;
     display: flex;
@@ -623,32 +685,35 @@ header {
     gap: 0.5rem;
 }
 
+/* Label dos campos */
 .form-label {
     font-size: 0.875rem;
     font-weight: 500;
-    color: var(--foreground);
+    color: #292932;
 }
 
+/* Input text padrão */
 .form-input {
     width: 100%;
     height: 2.75rem;
     padding: 0.5rem 0.75rem;
     font-size: 0.875rem;
-    color: var(--foreground);
-    background-color: var(--card);
-    border: 1px solid var(--input-border);
+    color: #292932;
+    background-color: #fff;
+    border: 1px solid #e3e3e8;
     border-radius: 0.375rem;
     outline: none;
-    transition: var(--transition-smooth);
+    transition: all 0.3s;
 }
 
 .form-input::placeholder {
     color: var(--muted-foreground);
 }
 
+/* Estado focado do input */
 .form-input:focus {
     border-color: var(--input-focus);
-    box-shadow: 0 0 0 3px hsla(221, 100%, 50%, 0.1);
+    box-shadow: 0 0 0 3px hsla(221, 100%, 50%, 0.1); /* Glow azul */
 }
 
 .btn-text,
@@ -656,52 +721,9 @@ header {
     display: inline-block;
 }
 
-/* Card Footer */
-.card-footer {
-    padding: 1.5rem 2rem;
-    border-top: 1px solid var(--border);
-    background-color: hsl(240, 20%, 98%);
-}
-
-.back-to-login {
-    text-align: center;
-    font-size: 0.875rem;
-}
-
-.back-text {
-    color: var(--muted-foreground);
-}
-
-.back-link {
-    color: var(--primary);
-    font-weight: 600;
-    text-decoration: none;
-    transition: color 0.2s;
-}
-
-.back-link:hover {
-    color: var(--primary-hover);
-}
-
-/* Terms */
-.terms-text {
-    text-align: center;
-    font-size: 0.75rem;
-    color: var(--muted-foreground);
-    margin-top: 1.5rem;
-}
-
-.terms-link {
-    color: var(--primary);
-    text-decoration: underline;
-    transition: color 0.2s;
-}
-
-.terms-link:hover {
-    color: var(--primary-hover);
-}
-
-/* Toast Notification */
+/* ========================================
+   NOTIFICAÇÃO TOAST
+   ======================================== */
 .toast {
     position: fixed;
     bottom: 2rem;
@@ -712,27 +734,33 @@ header {
     border-radius: 0.5rem;
     box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.3);
     opacity: 0;
-    transform: translateY(20px);
+    transform: translateY(20px); /* Começa abaixo */
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     pointer-events: none;
     z-index: 1000;
     max-width: 20rem;
 }
 
+/* Toast visível */
 .toast.show {
     opacity: 1;
     transform: translateY(0);
     pointer-events: auto;
 }
 
+/* Toast de sucesso (verde) */
 .toast.success {
     background-color: hsl(142, 76%, 36%);
 }
 
+/* Toast de erro (vermelho) */
 .toast.error {
     background-color: hsl(0, 84%, 60%);
 }
 
+/* ========================================
+   ESPECIALIDADES - Input e tags
+   ======================================== */
 .especialidades-input-group {
     display: flex;
     gap: 0.5rem;
@@ -743,6 +771,7 @@ header {
     flex: 1;
 }
 
+/* Botão de adicionar especialidade */
 .add-btn {
     width: 2.75rem;
     height: 2.75rem;
@@ -750,27 +779,31 @@ header {
     align-items: center;
     justify-content: center;
     background-color: var(--muted);
-    color: #2e2d37;
     border: none;
     border-radius: 0.375rem;
     cursor: pointer;
-    transition: all 0.2s;
+    transition: all 0.1s;
     flex-shrink: 0;
+}
+
+.add-btn:hover svg{
+    stroke: #fff;
 }
 
 .add-btn:hover {
     opacity: 0.9;
     transform: scale(1.02);
-    color: #fff;
     background-color: #0049ff;
 }
 
+/* Lista de especialidades adicionadas */
 .especialidades-list {
     display: flex;
     flex-wrap: wrap;
     gap: 0.5rem;
 }
 
+/* Tag individual de especialidade */
 .especialidade-tag {
     display: inline-flex;
     align-items: center;
@@ -783,6 +816,7 @@ header {
     font-weight: 500;
 }
 
+/* Botão de remover tag */
 .remove-tag-btn {
     width: 1.25rem;
     height: 1.25rem;
@@ -803,11 +837,15 @@ header {
     background-color: #ef4343b9;
 }
 
+/* ========================================
+   SELECT PESQUISÁVEL
+   ======================================== */
 .searchable-select {
     position: relative;
     width: 100%;
 }
 
+/* Lista de opções do select */
 .options-list {
     position: absolute;
     top: 100%;
@@ -832,10 +870,14 @@ header {
     background: #efefef;
 }
 
+/* Classe utilitária para ocultar elementos */
 .hidden {
     display: none;
 }
 
+/* ========================================
+   REMOVE SPIN BUTTONS DE INPUTS NUMBER
+   ======================================== */
 input[type=number]::-webkit-inner-spin-button, 
 input[type=number]::-webkit-outer-spin-button {
     -webkit-appearance: none;
@@ -846,6 +888,9 @@ input[type=number] {
     appearance: none;
 }
 
+/* ========================================
+   TEXTAREA - Área de texto
+   ======================================== */
 .form-textarea {
     width: 100%;
     padding: 0.75rem;
@@ -855,7 +900,7 @@ input[type=number] {
     border: 1px solid var(--input-border);
     border-radius: 0.375rem;
     outline: none;
-    resize: vertical; /* permite o usuário aumentar a caixa */
+    resize: vertical; /* Permite redimensionar verticalmente */
     transition: var(--transition-smooth);
     min-height: 120px;
     resize: none;
@@ -870,6 +915,11 @@ input[type=number] {
     box-shadow: 0 0 0 3px hsla(221, 100%, 50%, 0.1);
 }
 
+/* ========================================
+   BOTÕES - Primário e Secundário
+   ======================================== */
+
+/* Botão primário (ações principais) */
 .btn-primary {
     background: var(--primary);
     color: white;
@@ -884,13 +934,14 @@ input[type=number] {
 
 .btn-primary:hover {
     background: var(--primary-hover);
-    transform: translateY(-2px);
+    transform: translateY(-2px); /* Eleva o botão */
 }
 
 .btn-primary:active {
-    transform: scale(0.98);
+    transform: scale(0.98); /* Efeito de clique */
 }
 
+/* Botão secundário (ações alternativas) */
 .btn-secondary {
     background-color: var(--muted);
     color: var(--foreground);
@@ -901,12 +952,15 @@ input[type=number] {
 }
 
 .btn-secondary:hover {
-    background-color: #ef4343;
+    background-color: #ef4343; /* Vermelho ao hover */
     color: #fff;
     box-shadow: var(--shadow-sm);
     transform: translateY(-2px);
 }
 
+/* ========================================
+   AÇÕES DO FORMULÁRIO - Botões de ação
+   ======================================== */
 .form-actions {
     display: flex;
     justify-content: flex-end;
@@ -916,7 +970,9 @@ input[type=number] {
     margin-top: 32px;
 }
 
-/* Banner Section */
+/* ========================================
+   SEÇÃO DO BANNER - Edição de perfil
+   ======================================== */
 .banner-section {
     position: relative;
     height: 200px;
@@ -932,6 +988,7 @@ input[type=number] {
     background-position: center;
 }
 
+/* Overlay escuro ao hover */
 .banner-overlay {
     position: absolute;
     inset: 0;
@@ -943,6 +1000,7 @@ input[type=number] {
     background-color: rgba(0, 0, 0, 0.2);
 }
 
+/* Botão de câmera para trocar banner */
 #camera-banner {
     position: absolute;
     bottom: 16px;
@@ -964,6 +1022,9 @@ input[type=number] {
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
+/* ========================================
+   BOTÃO FECHAR - Modal
+   ======================================== */
 .close-btn {
     position: absolute;
     top: 16px;
@@ -987,7 +1048,9 @@ input[type=number] {
     color: #1a202c;
 }
 
-/* Avatar */
+/* ========================================
+   AVATAR - Foto de perfil circular
+   ======================================== */
 .avatar-container {
     position: absolute;
     top: 6.25rem;
@@ -1015,6 +1078,7 @@ input[type=number] {
     position: relative;
 }
 
+/* Botão de câmera no avatar */
 #camera-avatar {
     position: absolute;
     bottom: 0px;
@@ -1038,7 +1102,9 @@ input[type=number] {
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
-/* Modal Content */
+/* ========================================
+   CONTEÚDO DO MODAL - Área de scroll
+   ======================================== */
 .modal-content {
     overflow-y: auto;
     flex: 1;
@@ -1058,40 +1124,18 @@ input[type=number] {
     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
 }
 
-/* Form Sections */
+/* ========================================
+   SEÇÕES DO FORMULÁRIO
+   ======================================== */
 .form-section {
     margin-bottom: 32px;
 }
 
-.section-header {
-    margin-bottom: 24px;
-}
-
-.section-header h3 {
-    font-size: 13px;
-    font-weight: 600;
-    letter-spacing: 0.1em;
-    color: #1a202c;
-    margin-bottom: 8px;
-}
-
-.divider {
-    height: 1px;
-    background-color: #e2e8f0;
-}
-
-/* Form Groups */
 .form-group {
     margin-bottom: 20px;
 }
 
-.form-row {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 24px;
-    margin-bottom: 20px;
-}
-
+/* Labels do modal */
 .modal-overlay label {
     display: block;
     font-size: 0.75;
@@ -1102,49 +1146,9 @@ input[type=number] {
     text-transform: uppercase;
 }
 
-/* Input Styles */
-.input-underline {
-    width: 100%;
-    padding: 8px 0;
-    border: none;
-    border-bottom: 1px solid #cbd5e1;
-    background-color: transparent;
-    font-size: 16px;
-    color: #1a202c;
-    transition: border-color 0.3s ease;
-    outline: none;
-}
-
-.input-underline:focus {
-    border-bottom-color: #64748b;
-}
-
-.input-underline::placeholder {
-    color: #cbd5e1;
-}
-
-.input-field {
-    width: 100%;
-    padding: 10px 12px;
-    border: 1px solid #cbd5e1;
-    border-radius: 8px;
-    background-color: #f8f9fa;
-    font-size: 16px;
-    color: #1a202c;
-    transition: all 0.3s ease;
-    outline: none;
-}
-
-.input-field:focus {
-    border-color: #94a3b8;
-    background-color: white;
-}
-
-.input-field::placeholder {
-    color: #94a3b8;
-}
-
-/* Textarea */
+/* ========================================
+   TEXTAREA FIELD - Área de texto estilizada
+   ======================================== */
 .textarea-field {
     width: 100%;
     padding: 12px;
@@ -1169,7 +1173,9 @@ input[type=number] {
     color: #94a3b8;
 }
 
-/* Specialty Input */
+/* ========================================
+   INPUT DE ESPECIALIDADES
+   ======================================== */
 .specialty-input-group {
     display: flex;
     gap: 8px;
@@ -1180,26 +1186,7 @@ input[type=number] {
     flex: 1;
 }
 
-.add-btn {
-    width: 40px;
-    height: 40px;
-    border: none;
-    background-color: transparent;
-    border-radius: 8px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    color: #64748b;
-    transition: all 0.2s ease;
-}
-
-.add-btn:hover {
-    background-color: #f1f5f9;
-    color: #1a202c;
-}
-
-/* Specialties Container */
+/* Container de especialidades */
 .specialties-container {
     display: flex;
     flex-wrap: wrap;
@@ -1207,6 +1194,7 @@ input[type=number] {
     min-height: 32px;
 }
 
+/* Tag de especialidade */
 .specialty-tag {
     display: inline-flex;
     align-items: center;
@@ -1233,94 +1221,11 @@ input[type=number] {
     color: #64748b;
 }
 
-/* Form Actions */
-.form-actions {
-    display: flex;
-    justify-content: flex-end;
-    gap: 12px;
-    padding-top: 24px;
-    border-top: 1px solid #e2e8f0;
-    margin-top: 32px;
-}
+/* ========================================
+   BOTÕES DO MODAL
+   ======================================== */
 
-/* Buttons */
-
-.btn-primary {
-    background: var(--primary);
-    color: white;
-    border: none;
-    padding: 0.7rem 1.4rem;
-    border-radius: var(--radius);
-    cursor: pointer;
-    font-weight: 600;
-    transition: 0.25s ease;
-    box-shadow: var(--shadow-sm);
-}
-
-.btn-primary:hover {
-    background: var(--primary-hover);
-    transform: translateY(-2px);
-}
-
-.btn-primary:active {
-    transform: scale(0.98);
-}
-
-.btn-secondary {
-    background-color: var(--muted);
-    color: var(--foreground);
-    border-radius: var(--radius);
-    border: none;
-    padding: 1rem;
-    transition: all 0.3s;
-}
-
-.btn-secondary:hover {
-    background-color: #ef4343;
-    color: #fff;
-    box-shadow: var(--shadow-sm);
-    transform: translateY(-2px);
-}
-
-/* Hidden Input */
-.hidden-input {
-    display: none;
-}
-
-/* Icons */
-.icon {
-    width: 20px;
-    height: 20px;
-    stroke-linecap: round;
-    stroke-linejoin: round;
-}
-
-/* Responsive */
-@media (max-width: 640px) {
-    .modal-container {
-        max-height: 100vh;
-        border-radius: 0;
-    }
-
-    .modal-content {
-        padding: 24px;
-        padding-top: 48px;
-    }
-
-    .form-row {
-        grid-template-columns: 1fr;
-        gap: 16px;
-    }
-
-    .form-actions {
-        flex-direction: column;
-    }
-
-    .btn {
-        width: 100%;
-    }
-}
-
+/* Botão cancelar no topo */
 .cancelar_top {
     padding: 0.5rem;
     border: none;
@@ -1339,12 +1244,14 @@ input[type=number] {
     height: 1.5rem;
 }
 
+/* Container de botões de edição */
 .buttons-edi {
     display: flex;
     gap: 1.5rem;
     justify-content: end;
 }
 
+/* Botão excluir */
 .Excluir {
     background-color: var(--muted);
     color: var(--foreground);
@@ -1361,6 +1268,7 @@ input[type=number] {
     transform: translateY(-2px);
 }
 
+/* Botão salvar alterações */
 .salvar-alteracoes {
     background: var(--primary);
     color: white;
@@ -1378,24 +1286,47 @@ input[type=number] {
     transform: translateY(-2px);
 }
 
+/* Input oculto */
+.hidden-input {
+    display: none;
+}
+
+/* ========================================
+   ÍCONES
+   ======================================== */
+.icon {
+    width: 20px;
+    height: 20px;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+/* ========================================
+   LINHA DIVISÓRIA
+   ======================================== */
 .line {
     height: 1px;
     background-color: var(--border);
     margin: 1.5rem 0;
 }
 
+/* ========================================
+   PARTE INFERIOR DO CARD - Estatísticas
+   ======================================== */
 .bottom-content-card {
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
 }
 
+/* Topo das estatísticas (grid responsivo) */
 .BCC-top {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     gap: 1.5rem;
 }
 
+/* Cards de estatísticas */
 .projetos_concluidos,
 .tempo_experiencia,
 .avaliacao-BCC {
@@ -1404,6 +1335,7 @@ input[type=number] {
     gap: 0.75rem;
 }
 
+/* Ícones das estatísticas */
 .PC-icon,
 .TE-icon,
 .ABCC-icon {
@@ -1413,7 +1345,7 @@ input[type=number] {
     align-items: center;
     justify-content: center;
     border-radius: var(--radius);
-    background-color: hsl(223, 100%, 50%, 0.1);
+    background-color: hsl(223, 100%, 50%, 0.1); /* Azul claro */
 }
 
 .PC-icon svg,
@@ -1424,6 +1356,7 @@ input[type=number] {
     stroke: var(--primary);
 }
 
+/* Ícone de avaliação (amarelo) */
 .ABCC-icon {
     background-color: #fef3c7;
 }
@@ -1433,6 +1366,7 @@ input[type=number] {
     stroke: #d97706;
 }
 
+/* Textos das estatísticas */
 .projetos_concluidos-text,
 .tempo_experiencia-text,
 .avaliacao-BCC-text {
@@ -1452,6 +1386,9 @@ input[type=number] {
     line-height: 1;
 }
 
+/* ========================================
+   BOTÕES DE CONTATO - Telefone e Email
+   ======================================== */
 .BCC-bottom {
     display: flex;
     flex-wrap: wrap;
@@ -1485,11 +1422,15 @@ input[type=number] {
     stroke: var(--primary);
 }
 
+/* ========================================
+   MAIS INFORMAÇÕES - Abas de navegação
+   ======================================== */
 .mais-informacoes {
     margin-top: 2rem;
     width: 70%;
 }
 
+/* Navegação entre seções */
 .nav-perfil {
     display: flex;
     gap: 0.5rem;
@@ -1516,12 +1457,18 @@ input[type=number] {
     color: var(--foreground);
 }
 
+/* Botão ativo */
 .nav-perfil .button-navper.ativo {
     background-color: var(--card);
     color: var(--foreground);
     box-shadow: var(--shadow-sm);
 }
 
+/* ========================================
+   SEÇÕES DO PERFIL - Sobre, Publicações, Avaliações
+   ======================================== */
+
+/* Oculta seções por padrão */
 .sobre {
     display: none;
 }
@@ -1534,12 +1481,16 @@ input[type=number] {
     display: none;
 }
 
+/* Mostra seção ativa */
 .sobre.sessao {
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
 }
 
+/* ========================================
+   CARDS DE INFORMAÇÃO - Sobre, Especialidades, Contato
+   ======================================== */
 .sobre_profissional,
 .especialidades,
 .informacoes-contato_redes {
@@ -1564,6 +1515,7 @@ input[type=number] {
     line-height: 1.7;
 }
 
+/* Tags de especialidades */
 .span-esp_op {
     padding: 0.5rem 1rem;
     background-color: var(--secondary);
@@ -1577,6 +1529,9 @@ input[type=number] {
     font-weight: 500;
 }
 
+/* ========================================
+   INFORMAÇÕES DE CONTATO E REDES SOCIAIS
+   ======================================== */
 .telefone,
 .email,
 .instagram,
@@ -1605,12 +1560,16 @@ input[type=number] {
     fill: var(--foreground);
 }
 
+/* ========================================
+   SEÇÃO DE PUBLICAÇÕES
+   ======================================== */
 .publicacoes.sessao {
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
 }
 
+/* Botão adicionar publicação */
 .btn-add-post {
     background-color: transparent;
     border: 2px dashed var(--border);
@@ -1625,7 +1584,7 @@ input[type=number] {
 }
 
 .btn-add-post svg {
-    transform: rotateZ(45deg);
+    transform: rotateZ(45deg); /* Rotação inicial */
     transition: all 0.3s;
     height: 15px;
     width: 15px;
@@ -1638,18 +1597,17 @@ input[type=number] {
 }
 
 .btn-add-post:hover svg {
-    transform: rotateZ(135deg);
+    transform: rotateZ(135deg); /* Rotação ao hover */
 }
 
-/* =============================== */
-/* MODAL DE CRIAR PUBLICAÇÃO      */
-/* =============================== */
-
+/* ========================================
+   MODAL DE CRIAR PUBLICAÇÃO
+   ======================================== */
 .modal-add-publicacao-overlay {
     position: fixed;
     inset: 0;
     background: rgba(0, 0, 0, 0.45);
-    backdrop-filter: blur(6px);
+    backdrop-filter: blur(6px); /* Efeito de desfoque */
     display: none;
     justify-content: center;
     align-items: center;
@@ -1670,10 +1628,9 @@ input[type=number] {
     animation: fadeIn 0.25s ease;
 }
 
-/* =============================== */
-/* HEADER                          */
-/* =============================== */
-
+/* ========================================
+   HEADER DO MODAL DE PUBLICAÇÃO
+   ======================================== */
 .map-header {
     display: flex;
     justify-content: space-between;
@@ -1703,10 +1660,9 @@ input[type=number] {
     background-color: var(--muted);
 }
 
-/* =============================== */
-/* CORPO DO MODAL                  */
-/* =============================== */
-
+/* ========================================
+   CORPO DO MODAL DE PUBLICAÇÃO
+   ======================================== */
 .map-body {
     margin-top: 1.2rem;
     display: flex;
@@ -1744,10 +1700,9 @@ input[type=number] {
     resize: none;
 }
 
-/* =============================== */
-/* PREVIEW DAS MÍDIAS              */
-/* =============================== */
-
+/* ========================================
+   PREVIEW DAS MÍDIAS (Imagens/Vídeos)
+   ======================================== */
 .preview-container {
     display: flex;
     flex-wrap: wrap;
@@ -1773,6 +1728,7 @@ input[type=number] {
     object-fit: cover;
 }
 
+/* Botão de remover mídia */
 .preview-remove {
     position: absolute;
     top: 10px;
@@ -1801,10 +1757,9 @@ input[type=number] {
     background: rgba(255, 0, 0, 0.85);
 }
 
-/* =============================== */
-/* RODAPÉ DO MODAL                 */
-/* =============================== */
-
+/* ========================================
+   RODAPÉ DO MODAL DE PUBLICAÇÃO
+   ======================================== */
 .map-footer {
     margin-top: 1.5rem;
     display: flex;
@@ -1829,28 +1784,16 @@ input[type=number] {
     transform: translateY(-2px);
 }
 
-/* =============================== */
-/* ANIMAÇÃO DO MODAL               */
-/* =============================== */
-
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(10px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
+/* ========================================
+   INPUT DE UPLOAD DE MÍDIA
+   ======================================== */
 
 /* Oculta o input real */
 #pubMidias {
     display: none;
 }
 
-/* Botão estilizado */
+/* Botão estilizado para upload */
 .btn-upload-midia {
     display: inline-flex;
     align-items: center;
@@ -1873,7 +1816,6 @@ input[type=number] {
     stroke: #2e2d37;
 }
 
-/* Hover */
 .btn-upload-midia:hover {
     background: var(--primary);
     color: white;
@@ -1886,12 +1828,16 @@ input[type=number] {
     stroke: white;
 }
 
+/* ========================================
+   GRID DE CARDS DE PUBLICAÇÕES
+   ======================================== */
 .home-cards-post {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
     gap: 1.5rem;
 }
 
+/* Card individual de publicação */
 .card-publicacoes {
     background-color: var(--card);
     border-radius: var(--radius);
@@ -1902,10 +1848,11 @@ input[type=number] {
 }
 
 .card-publicacoes:hover {
-    transform: translateY(-4px);
+    transform: translateY(-4px); /* Eleva o card */
     box-shadow: var(--shadow-lg);
 }
 
+/* Imagem do card */
 .img-card_publicacoes {
     width: 100%;
     aspect-ratio: 16 / 9;
@@ -1916,9 +1863,10 @@ input[type=number] {
 }
 
 .card-publicacoes:hover .img-card_publicacoes {
-    transform: scale(1.05);
+    transform: scale(1.05); /* Zoom na imagem */
 }
 
+/* Informações do card */
 .mini-informacoes-card_publicacoes {
     padding: 1rem;
 }
@@ -1939,6 +1887,11 @@ input[type=number] {
     overflow: hidden;
 }
 
+/* ========================================
+   MODAL DE EDITAR PUBLICAÇÃO
+   ======================================== */
+
+/* Botão editar publicação */
 .editar-publicacao {
     background-color: var(--primary);
     color: #fff;
@@ -1956,6 +1909,10 @@ input[type=number] {
     background-color: var(--primary-hover);
     transform: translateY(-2px);
     box-shadow: var(--shadow-sm);
+}
+
+#editarMidias{
+    display: none;
 }
 
 .modal-actions {
@@ -1976,6 +1933,7 @@ input[type=number] {
     font-weight: 700;
 }
 
+/* Fundo fosco do modal */
 .fundo-fosco {
     position: fixed;
     inset: 0;
@@ -1991,6 +1949,7 @@ input[type=number] {
     display: flex;
 }
 
+/* Container do modal de edição */
 .editar-publicacao-container {
     background: var(--card);
     border-radius: var(--radius);
@@ -2007,6 +1966,7 @@ input[type=number] {
     align-items: center;
 }
 
+/* Formulário de edição */
 .ep-form {
     display: flex;
     flex-direction: column;
@@ -2037,16 +1997,16 @@ input[type=number] {
     border-color: var(--primary);
 }
 
-#editarDescricao {
-    padding: 2rem 1rem 2rem 1rem;
-}
-
+/* ========================================
+   SEÇÃO DE AVALIAÇÕES
+   ======================================== */
 .avaliacao.sessao {
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
 }
 
+/* Topo da seção de avaliações */
 .top-sess_avali {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
@@ -2073,6 +2033,7 @@ input[type=number] {
     margin-bottom: 1rem;
 }
 
+/* Nota geral grande */
 .top-sess_avali-left .quant-stars {
     display: block;
     font-size: 3.75rem;
@@ -2081,6 +2042,7 @@ input[type=number] {
     margin: 0.5rem 0;
 }
 
+/* Estrelas de avaliação */
 .top-sess_avali-left .stars {
     display: flex;
     justify-content: center;
@@ -2093,6 +2055,7 @@ input[type=number] {
     height: 1.5rem;
 }
 
+/* Estrelas preenchidas (amarelo) */
 .top-sess_avali-left .stars .pri,
 .top-sess_avali-left .stars .seg,
 .top-sess_avali-left .stars .ter,
@@ -2101,6 +2064,7 @@ input[type=number] {
     stroke: #facc15;
 }
 
+/* Estrela vazia (cinza) */
 .top-sess_avali-left .stars .qui {
     fill: none;
     stroke: #d1d5db;
@@ -2111,6 +2075,9 @@ input[type=number] {
     font-size: 0.9375rem;
 }
 
+/* ========================================
+   DISTRIBUIÇÃO DAS AVALIAÇÕES
+   ======================================== */
 .distri_avali-content {
     display: flex;
     flex-direction: column;
@@ -2140,46 +2107,54 @@ input[type=number] {
     stroke: #facc15;
 }
 
+/* ========================================
+   DISTRIBUIÇÃO DAS AVALIAÇÕES (continuação)
+   ======================================== */
+
+/* Barra de progresso */
 .progresso-avali {
     flex: 1;
     height: 0.75rem;
     background-color: var(--muted);
-    border-radius: 9999px;
+    border-radius: 9999px; /* Bordas completamente arredondadas */
     overflow: hidden;
     position: relative;
 }
 
+/* Preenchimento da barra de progresso */
 .progresso-avali::after {
     content: '';
     position: absolute;
     left: 0;
     top: 0;
     height: 100%;
-    background-color: #facc15;
+    background-color: #facc15; /* Amarelo */
     border-radius: 9999px;
     transition: width 0.3s ease;
 }
 
+/* Larguras específicas para cada nível de avaliação */
 .progresso-avali.quinto::after {
-    width: 78%;
+    width: 78%; /* 5 estrelas */
 }
 
 .progresso-avali.quarto::after {
-    width: 18%;
+    width: 18%; /* 4 estrelas */
 }
 
 .progresso-avali.terceiro::after {
-    width: 3%;
+    width: 3%; /* 3 estrelas */
 }
 
 .progresso-avali.segundo::after {
-    width: 1%;
+    width: 1%; /* 2 estrelas */
 }
 
 .progresso-avali.primeiro::after {
-    width: 0%;
+    width: 0%; /* 1 estrela */
 }
 
+/* Porcentagem ao lado da barra */
 .progresso-avali-porcentagem {
     width: 3rem;
     text-align: right;
@@ -2187,14 +2162,19 @@ input[type=number] {
     color: var(--muted-foreground);
 }
 
+/* ========================================
+   MODAL DE VISUALIZAÇÃO DE PUBLICAÇÃO
+   ======================================== */
+
+/* Overlay do modal */
 .modal-overlay {
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-    background: rgba(0, 0, 0, 0.7);
-    backdrop-filter: blur(4px);
+    background: rgba(0, 0, 0, 0.7); /* Fundo escuro semi-transparente */
+    backdrop-filter: blur(4px); /* Desfoque do fundo */
     display: none;
     align-items: center;
     justify-content: center;
@@ -2207,11 +2187,11 @@ input[type=number] {
     display: flex;
 }
 
+/* Animações do modal */
 @keyframes fadeIn {
     from {
         opacity: 0;
     }
-
     to {
         opacity: 1;
     }
@@ -2222,25 +2202,26 @@ input[type=number] {
         transform: translateY(20px);
         opacity: 0;
     }
-
     to {
         transform: translateY(0);
         opacity: 1;
     }
 }
 
+/* Container do conteúdo do modal */
 .modal-content {
     background: var(--card);
     border-radius: var(--radius);
     max-width: 700px;
     width: 100%;
     max-height: 90vh;
-    overflow-y: auto;
+    overflow-y: auto; /* Scroll quando necessário */
     position: relative;
     animation: slideUp 0.3s ease;
     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
 }
 
+/* Header do modal (sticky) */
 .modal-header {
     position: sticky;
     top: 0;
@@ -2260,6 +2241,7 @@ input[type=number] {
     margin: 0;
 }
 
+/* Botão de fechar modal */
 .modal-close {
     background: transparent;
     border: none;
@@ -2282,33 +2264,40 @@ input[type=number] {
     stroke: var(--foreground);
 }
 
+/* Corpo do modal */
 .modal-body {
     padding: 1.5rem;
 }
 
+/* Imagem principal do modal */
 .modal-image {
     width: 100%;
     height: 400px;
     background: var(--muted);
     border-radius: var(--radius);
     margin-bottom: 1.5rem;
-    object-fit: cover;
+    object-fit: cover; /* Mantém proporção da imagem */
 }
 
+/* Descrição da publicação */
 .modal-description {
     color: var(--foreground);
     line-height: 1.6;
     font-size: 1rem;
 }
 
+/* ========================================
+   FOOTER - Rodapé do site
+   ======================================== */
 footer {
-    background-color: #1e293b;
+    background-color: #1e293b; /* Cinza escuro */
     display: flex;
     flex-direction: column;
     align-items: center;
     margin-top: 5%;
 }
 
+/* Container principal do footer */
 .footer-content {
     display: flex;
     justify-content: center;
@@ -2316,6 +2305,7 @@ footer {
     padding: 3%;
 }
 
+/* Seção individual do footer */
 .footer-section {
     display: flex;
     flex-direction: column;
@@ -2323,11 +2313,11 @@ footer {
 }
 
 .footer-section {
-    margin-right: 8%;
+    margin-right: 8%; /* Espaçamento entre seções */
 }
 
 .footer-section.end {
-    margin: 0;
+    margin: 0; /* Última seção sem margem */
 }
 
 .footer-section ul li {
@@ -2335,6 +2325,7 @@ footer {
     margin-bottom: 10%;
 }
 
+/* Logo do footer */
 .ft-logo {
     display: flex;
     gap: 2%;
@@ -2351,28 +2342,30 @@ footer {
     white-space: nowrap;
 }
 
+/* Subtítulo do footer */
 .footer-subtitle {
     font-size: 0.875rem;
-    color: #ffffffb3;
+    color: #ffffffb3; /* Branco semi-transparente */
     line-height: 1.6;
     padding-left: 2%;
     margin-bottom: 7%;
 }
 
+/* Links de redes sociais */
 .social-link svg {
     height: 3rem;
     transition: all 0.3s;
-
 }
 
 .social-link svg:hover {
-    transform: translateY(-0.5rem);
+    transform: translateY(-0.5rem); /* Eleva o ícone ao hover */
 }
 
 .social-link svg g {
-    fill: #3a7afe;
+    fill: #3a7afe; /* Azul */
 }
 
+/* Títulos das seções do footer */
 .footer-title {
     font-size: 1.125rem;
     color: #fff;
@@ -2380,6 +2373,7 @@ footer {
     white-space: nowrap;
 }
 
+/* Links do footer */
 .footer-link {
     font-size: 0.875rem;
     color: #ffffffb3;
@@ -2388,19 +2382,21 @@ footer {
 }
 
 .footer-link:hover {
-    color: #3a7afe;
+    color: #3a7afe; /* Azul ao hover */
     text-decoration: underline;
 }
 
+/* ========================================
+   FOOTER BOTTOM - Parte inferior do rodapé
+   ======================================== */
 .footer-bottom {
     border-top: 1px solid rgba(255, 255, 255, 0.1);
-    background-color: #0f172a;
+    background-color: #0f172a; /* Azul escuro */
     width: 100%;
 }
 
 .footer-bottom-content {
-    max-width: 1280px;
-    /* ou 80rem */
+    max-width: 1280px; /* 80rem */
     margin: 0 auto;
     padding: 1.5rem 2rem;
     display: flex;
@@ -2410,17 +2406,20 @@ footer {
     gap: 1rem;
 }
 
+/* Responsivo - alinha horizontalmente em telas maiores */
 @media (min-width: 768px) {
     .footer-bottom-content {
         flex-direction: row;
     }
 }
 
+/* Copyright */
 .copyright {
     color: rgba(255, 255, 255, 0.6);
     font-size: 0.875rem;
 }
 
+/* Links do footer bottom */
 .footer-bottom-links {
     display: flex;
     gap: 1.5rem;
@@ -2434,5 +2433,38 @@ footer {
 }
 
 .footer-bottom-link:hover {
-    color: #2563eb;
+    color: #2563eb; /* Azul ao hover */
+}
+
+/* ========================================
+   RESPONSIVIDADE - Media Queries
+   ======================================== */
+
+/* Telas pequenas (até 640px) */
+@media (max-width: 640px) {
+    /* Modal ocupa tela inteira */
+    .modal-container {
+        max-height: 100vh;
+        border-radius: 0;
+    }
+
+    .modal-content {
+        padding: 24px;
+        padding-top: 48px;
+    }
+
+    /* Form row vira coluna única */
+    .form-row {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+
+    /* Botões em coluna */
+    .form-actions {
+        flex-direction: column;
+    }
+
+    .btn {
+        width: 100%;
+    }
 }

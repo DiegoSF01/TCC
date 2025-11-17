@@ -41,8 +41,9 @@ btn_postagens.addEventListener('click', clicou_postagens);
 btn_avaliacao.addEventListener('click', clicou_avaliacao);
 
 
+
 // ============================================
-// MODAL DE PUBLICAÇÕES
+// MODAL DE PUBLICAÇÕES - INTERFACE ATUALIZADA
 // ============================================
 window.addEventListener('load', function () {
   // Modal principal (visualização)
@@ -62,7 +63,20 @@ window.addEventListener('load', function () {
           </div>
         </div>
         <div class="modal-body">
-          <div class="modal-image" id="modalImage"></div>
+          <div class="modal-image-container">
+            <button class="modal-nav-btn modal-prev" id="modalPrev">
+              <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="15 18 9 12 15 6"></polyline>
+              </svg>
+            </button>
+            <div class="modal-image" id="modalImage"></div>
+            <button class="modal-nav-btn modal-next" id="modalNext">
+              <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="9 18 15 12 9 6"></polyline>
+              </svg>
+            </button>
+            <div class="modal-image-counter" id="modalCounter">1 / 1</div>
+          </div>
           <p class="modal-description" id="modalDescription"></p>
         </div>
       </div>
@@ -70,37 +84,55 @@ window.addEventListener('load', function () {
   `;
   document.body.insertAdjacentHTML('beforeend', modalHTML);
 
-  // Modal de edição
+  // Modal de edição - NOVA INTERFACE
   const modalEditarHTML = `
-    <div class="fundo-fosco" id="editarPublicacaoModal">
-      <div class="editar-publicacao-container">
-        <div class="ep-top">
-          <h2>Editar publicação</h2>
-          <button class="cancelar_top" id="fecharEditarPub">
-            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path fill-rule="evenodd" clip-rule="evenodd"
-                d="M10.9393 12L6.9696 15.9697L8.03026 17.0304L12 13.0607L15.9697 17.0304L17.0304 15.9697L13.0607 12L17.0303 8.03039L15.9696 6.96973L12 10.9393L8.03038 6.96973L6.96972 8.03039L10.9393 12Z"
-                fill="#2e2d37"></path>
+    <div class="modal-add-publicacao-overlay" id="editarPublicacaoModal">
+      <div class="modal-add-publicacao">
+        <div class="map-header">
+          <h2>Editar Publicação</h2>
+          <button id="fecharEditarPub" class="map-close">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M18 6 6 18"></path>
+              <path d="m6 6 12 12"></path>
             </svg>
           </button>
         </div>
 
-        <div class="ep-form">
+        <div class="map-body">
           <label>Título</label>
-          <input type="text" id="editarTitulo">
+          <input type="text" id="editarTitulo" placeholder="Ex: Casa Moderna Finalizada">
 
           <label>Descrição</label>
-          <textarea id="editarDescricao"></textarea>
+          <textarea id="editarDescricao" placeholder="Descreva o projeto..."></textarea>
 
-          <label>Imagem (URL)</label>
-          <input type="text" id="editarImagem">
+          <label>Mídias (Fotos e Vídeos)</label>
 
-          <div class="line-edi"></div>
+          <label for="editarMidias" class="btn-upload-midia">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+              <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+              <g id="SVGRepo_iconCarrier">
+                <circle cx="16" cy="8" r="2" stroke="#1C274C" stroke-width="1.5"></circle>
+                <path
+                  d="M2 12.5001L3.75159 10.9675C4.66286 10.1702 6.03628 10.2159 6.89249 11.0721L11.1822 15.3618C11.8694 16.0491 12.9512 16.1428 13.7464 15.5839L14.0446 15.3744C15.1888 14.5702 16.7369 14.6634 17.7765 15.599L21 18.5001"
+                  stroke="#1C274C" stroke-width="1.5" stroke-linecap="round"></path>
+                <path
+                  d="M22 12C22 16.714 22 19.0711 20.5355 20.5355C19.0711 22 16.714 22 12 22C7.28595 22 4.92893 22 3.46447 20.5355C2 19.0711 2 16.714 2 12C2 7.28595 2 4.92893 3.46447 3.46447C4.92893 2 7.28595 2 12 2C16.714 2 19.0711 2 20.5355 3.46447C21.5093 4.43821 21.8356 5.80655 21.9449 8"
+                  stroke="#1C274C" stroke-width="1.5" stroke-linecap="round"></path>
+              </g>
+            </svg>
+            Alterar foto/vídeo
+          </label>
 
-          <div class="buttons-edi">
-            <button class="Excluir" id="ExcluirEditarPub">Excluir</button>
-            <button class="salvar-alteracoes" id="salvarEditarPub">Salvar alterações</button>
-          </div>
+          <input type="file" id="editarMidias" accept="image/*,video/*" multiple>
+
+          <div id="editarPreviewContainer" class="preview-container"></div>
+        </div>
+
+        <div class="map-footer">
+          <button class="btn-secondary excluir-btn" id="ExcluirEditarPub">Excluir</button>
+          <button class="adicionar" id="salvarEditarPub">Salvar alterações</button>
         </div>
       </div>
     </div>
@@ -113,31 +145,89 @@ window.addEventListener('load', function () {
   const modalImage = document.getElementById('modalImage');
   const modalDescription = document.getElementById('modalDescription');
   const closeModal = document.getElementById('closeModal');
+  const modalPrev = document.getElementById('modalPrev');
+  const modalNext = document.getElementById('modalNext');
+  const modalCounter = document.getElementById('modalCounter');
 
   const editarBtn = document.getElementById('editarPublicacao');
   const editarModal = document.getElementById('editarPublicacaoModal');
   const fecharEditarPub = document.getElementById('fecharEditarPub');
   const excluirEditarPub = document.getElementById('ExcluirEditarPub');
   const salvarEditarPub = document.getElementById('salvarEditarPub');
+  const editarMidiasInput = document.getElementById('editarMidias');
+  const editarPreviewContainer = document.getElementById('editarPreviewContainer');
 
-  let cardAtivo = null; // referência do card aberto
+  let cardAtivo = null;
+  let arquivosEditarSelecionados = [];
+  let imagensAtivas = [];
+  let indiceImagemAtual = 0;
 
   // Abrir modal de publicação
   function abrirModal(card) {
     cardAtivo = card;
     const titulo = card.querySelector('h4').textContent;
     const descricao = card.querySelector('p').textContent;
+    
+    // Coletar todas as imagens do card (por enquanto só uma, mas preparado para múltiplas)
     const imgElement = card.querySelector('.img-card_publicacoes');
     const imagemBg = window.getComputedStyle(imgElement).backgroundImage;
-
+    const imagemUrl = imagemBg.replace(/url\(["']?|["']?\)/g, '');
+    
+    // Armazenar array de imagens (futuramente você pode adicionar mais)
+    imagensAtivas = [imagemUrl];
+    indiceImagemAtual = 0;
+  
     modalTitle.textContent = titulo;
     modalDescription.textContent = descricao;
-    modalImage.style.backgroundImage = imagemBg;
-    modalImage.style.backgroundSize = 'cover';
-    modalImage.style.backgroundPosition = 'center';
-
+    
+    atualizarImagemModal();
+    atualizarBotoesNavegacao();
+  
     modal.classList.add('active');
     document.body.style.overflow = 'hidden';
+  }
+
+  // Atualizar imagem exibida no modal
+  function atualizarImagemModal() {
+    const imagemAtual = imagensAtivas[indiceImagemAtual];
+    modalImage.style.backgroundImage = `url('${imagemAtual}')`;
+    modalImage.style.backgroundSize = 'cover';
+    modalImage.style.backgroundPosition = 'center';
+    modalCounter.textContent = `${indiceImagemAtual + 1} / ${imagensAtivas.length}`;
+  }
+
+  // Atualizar visibilidade dos botões de navegação
+  function atualizarBotoesNavegacao() {
+    if (imagensAtivas.length <= 1) {
+      modalPrev.style.display = 'none';
+      modalNext.style.display = 'none';
+      modalCounter.style.display = 'none';
+    } else {
+      modalPrev.style.display = 'flex';
+      modalNext.style.display = 'flex';
+      modalCounter.style.display = 'block';
+
+      // Desabilitar botões nos extremos
+      modalPrev.disabled = indiceImagemAtual === 0;
+      modalNext.disabled = indiceImagemAtual === imagensAtivas.length - 1;
+    }
+  }
+
+  // Navegação de imagens
+  function mostrarImagemAnterior() {
+    if (indiceImagemAtual > 0) {
+      indiceImagemAtual--;
+      atualizarImagemModal();
+      atualizarBotoesNavegacao();
+    }
+  }
+
+  function mostrarProximaImagem() {
+    if (indiceImagemAtual < imagensAtivas.length - 1) {
+      indiceImagemAtual++;
+      atualizarImagemModal();
+      atualizarBotoesNavegacao();
+    }
   }
 
   // Fechar modal principal
@@ -150,8 +240,32 @@ window.addEventListener('load', function () {
   function abrirEditorPublicacao() {
     document.getElementById('editarTitulo').value = modalTitle.textContent;
     document.getElementById('editarDescricao').value = modalDescription.textContent;
+
+    // Limpar preview anterior
+    editarPreviewContainer.innerHTML = '';
+    arquivosEditarSelecionados = [];
+
+    // Adicionar imagem atual ao preview
     const bg = modalImage.style.backgroundImage.replace(/url\(["']?|["']?\)/g, '');
-    document.getElementById('editarImagem').value = bg;
+    if (bg && bg !== 'none') {
+      const previewItem = document.createElement("div");
+      previewItem.classList.add("preview-item");
+      previewItem.innerHTML = `
+        <img src="${bg}" alt="Preview">
+        <button type="button" class="preview-remove">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 6 6 18"></path>
+            <path d="m6 6 12 12"></path>
+          </svg>
+        </button>
+      `;
+      editarPreviewContainer.appendChild(previewItem);
+
+      previewItem.querySelector('.preview-remove').addEventListener('click', () => {
+        previewItem.remove();
+      });
+    }
 
     editarModal.classList.add('active');
   }
@@ -159,48 +273,107 @@ window.addEventListener('load', function () {
   // Fechar editor
   function fecharEditorPublicacao() {
     editarModal.classList.remove('active');
+    editarPreviewContainer.innerHTML = '';
+    arquivosEditarSelecionados = [];
+    editarMidiasInput.value = '';
   }
 
-  // ===============================
-  // EXCLUIR PUBLICAÇÃO
-  // ===============================
+  // Excluir publicação
   function excluirEditorPublicacao() {
     if (!cardAtivo) return;
 
-    // Remove o card da página
-    cardAtivo.remove();
-    cardAtivo = null;
-
-    // Fecha os dois modais
-    fecharEditorPublicacao();
-    fecharModal();
-
-    // Libera scroll da página
-    document.body.style.overflow = 'auto';
+    if (confirm('Tem certeza que deseja excluir esta publicação?')) {
+      cardAtivo.remove();
+      cardAtivo = null;
+      fecharEditorPublicacao();
+      fecharModal();
+      document.body.style.overflow = 'auto';
+    }
   }
-
 
   // Salvar alterações
   function salvarAlteracoesPublicacao() {
     const novoTitulo = document.getElementById('editarTitulo').value.trim();
     const novaDescricao = document.getElementById('editarDescricao').value.trim();
-    const novaImagem = document.getElementById('editarImagem').value.trim();
+
+    if (!novoTitulo) {
+      alert('Por favor, adicione um título');
+      return;
+    }
 
     if (cardAtivo) {
       if (novoTitulo) cardAtivo.querySelector('h4').textContent = novoTitulo;
       if (novaDescricao) cardAtivo.querySelector('p').textContent = novaDescricao;
-      if (novaImagem) {
+
+      // Atualizar imagem se houver preview
+      const firstPreview = editarPreviewContainer.querySelector('img');
+      if (firstPreview) {
         const imgElement = cardAtivo.querySelector('.img-card_publicacoes');
-        imgElement.style.backgroundImage = `url('${novaImagem}')`;
+        imgElement.style.backgroundImage = `url('${firstPreview.src}')`;
+
+        // Atualizar modal principal
+        modalImage.style.backgroundImage = `url('${firstPreview.src}')`;
       }
     }
 
-    // Atualiza o modal principal também
     modalTitle.textContent = novoTitulo;
     modalDescription.textContent = novaDescricao;
-    modalImage.style.backgroundImage = `url('${novaImagem}')`;
 
     fecharEditorPublicacao();
+  }
+
+  // Preview de mídias no editor
+  editarMidiasInput.addEventListener("change", () => {
+    const arquivos = Array.from(editarMidiasInput.files);
+
+    arquivos.forEach(arquivo => {
+      arquivosEditarSelecionados.push(arquivo);
+      criarPreviewEditar(arquivo);
+    });
+
+    editarMidiasInput.value = "";
+  });
+
+  function criarPreviewEditar(arquivo) {
+    const reader = new FileReader();
+
+    reader.onload = (e) => {
+      const previewItem = document.createElement("div");
+      previewItem.classList.add("preview-item");
+
+      let midia;
+
+      if (arquivo.type.startsWith("image/")) {
+        midia = document.createElement("img");
+      } else if (arquivo.type.startsWith("video/")) {
+        midia = document.createElement("video");
+        midia.controls = true;
+      }
+
+      midia.src = e.target.result;
+
+      const btnRemover = document.createElement("button");
+      btnRemover.classList.add("preview-remove");
+      btnRemover.type = "button";
+      btnRemover.innerHTML = `
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M18 6 6 18"></path>
+          <path d="m6 6 12 12"></path>
+        </svg>
+      `;
+
+      btnRemover.addEventListener("click", () => {
+        previewItem.remove();
+        arquivosEditarSelecionados = arquivosEditarSelecionados.filter(a => a !== arquivo);
+      });
+
+      previewItem.appendChild(midia);
+      previewItem.appendChild(btnRemover);
+      editarPreviewContainer.appendChild(previewItem);
+    };
+
+    reader.readAsDataURL(arquivo);
   }
 
   // Eventos
@@ -209,6 +382,18 @@ window.addEventListener('load', function () {
   fecharEditarPub.addEventListener('click', fecharEditorPublicacao);
   excluirEditarPub.addEventListener('click', excluirEditorPublicacao);
   salvarEditarPub.addEventListener('click', salvarAlteracoesPublicacao);
+
+  // Eventos de navegação de imagens
+  modalPrev.addEventListener('click', mostrarImagemAnterior);
+  modalNext.addEventListener('click', mostrarProximaImagem);
+
+  // Navegação com teclado (setas)
+  document.addEventListener('keydown', (e) => {
+    if (modal.classList.contains('active') && !editarModal.classList.contains('active')) {
+      if (e.key === 'ArrowLeft') mostrarImagemAnterior();
+      if (e.key === 'ArrowRight') mostrarProximaImagem();
+    }
+  });
 
   // Fechar modal ao clicar fora
   modal.addEventListener('click', e => {
@@ -329,6 +514,44 @@ class ProfileEditor {
     this.instagramInput = document.getElementById('instagram');
     this.facebookInput = document.getElementById('facebook');
     this.twitterInput = document.getElementById('twitter');
+
+    const phoneInput = document.getElementById("phone");
+
+    phoneInput.addEventListener("input", function (e) {
+      let value = e.target.value.replace(/\D/g, ""); // Remove tudo que não for número
+
+      // Limita a 11 dígitos
+      if (value.length > 11) value = value.slice(0, 11);
+
+      // Aplica a máscara progressivamente
+      if (value.length > 0) {
+        value = "(" + value;
+      }
+      if (value.length > 3) {
+        value = value.slice(0, 3) + ") " + value.slice(3);
+      }
+      if (value.length > 10) {
+        value = value.slice(0, 10) + "-" + value.slice(10);
+      }
+
+      e.target.value = value;
+    });
+
+    const cepInput = document.getElementById("cep");
+
+    cepInput.addEventListener("input", function (e) {
+      let value = e.target.value.replace(/\D/g, ""); // Remove tudo que não for número
+
+      // Limita a 8 dígitos
+      if (value.length > 8) value = value.slice(0, 8);
+
+      // Aplica a máscara dinamicamente
+      if (value.length > 5) {
+        value = value.slice(0, 5) + "-" + value.slice(5);
+      }
+
+      e.target.value = value;
+    });
 
     // File inputs
     this.profilePhotoInput = document.getElementById('profilePhotoInput');
@@ -459,7 +682,7 @@ const btn_editarper = document.querySelector('.btn-editar-perfil');
 
 // Abrir modal de edição de perfil
 btn_editarper.addEventListener('click', () => {
-    profileEditor.openModal();
+  profileEditor.openModal();
 });
 
 
@@ -474,17 +697,164 @@ const modalPerfil = document.getElementById('modalPerfil');
 const cancelBtn = document.getElementById('cancelBtn');
 
 editarPerfilBtn.addEventListener('click', () => {
-    modalPerfil.classList.add('active');
+  modalPerfil.classList.add('active');
 });
 
 // Botão cancelar fecha o modal
 cancelBtn.addEventListener('click', () => {
-    modalPerfil.classList.remove('active');
+  modalPerfil.classList.remove('active');
 });
 
 // Fechar clicando fora do modal
 modalPerfil.addEventListener('click', (e) => {
-    if (e.target === modalPerfil) {
-        modalPerfil.classList.remove('active');
+  if (e.target === modalPerfil) {
+    modalPerfil.classList.remove('active');
+  }
+});
+
+function maskCEP(value) {
+  return value
+    .replace(/\D/g, '')
+    .replace(/^(\d{5})(\d)/, '$1-$2')
+    .substring(0, 9);
+}
+
+const addEspecialidadeBtn = document.getElementById('addEspecialidadeBtn');
+const especialidadesList = document.getElementById('especialidadesList');
+// o input onde usuário digita a especialidade
+const especialidadeInput = document.getElementById('especialidadeInput');
+// campo hidden para enviar no form (opcional — coloque este input hidden no HTML se quiser enviar)
+const especialidadesHidden = document.getElementById('especialidadesHidden');
+
+let especialidades = [];
+
+// atualiza campo hidden (se existir)
+function updateHiddenField() {
+  if (especialidadesHidden) {
+    especialidadesHidden.value = JSON.stringify(especialidades);
+  }
+}
+
+// Função de adicionar especialidade (mantive sua lógica)
+function addEspecialidade() {
+  if (!especialidadeInput) return;
+  const value = especialidadeInput.value.trim();
+
+  if (value === '') {
+    showToast('Digite uma especialidade', 'error');
+    return;
+  }
+
+  if (especialidades.includes(value)) {
+    showToast('Especialidade já adicionada', 'error');
+    return;
+  }
+
+  especialidades.push(value);
+  renderEspecialidades();
+  updateHiddenField();
+  especialidadeInput.value = '';
+  // opcional: focar no input novamente
+  especialidadeInput.focus();
+}
+
+// Remover especialidade
+function removeEspecialidade(index) {
+  especialidades.splice(index, 1);
+  renderEspecialidades();
+  updateHiddenField();
+}
+
+
+function renderEspecialidades() {
+  if (!especialidadesList) return;
+  especialidadesList.innerHTML = '';
+
+  especialidades.forEach((especialidade, index) => {
+    const tag = document.createElement('div');
+    tag.className = 'especialidade-tag';
+    tag.innerHTML = `
+        <span>${especialidade}</span>
+        <button type="button" class="remove-tag-btn" data-index="${index}">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      `;
+    especialidadesList.appendChild(tag);
+  });
+
+  const buttons = especialidadesList.querySelectorAll('.remove-tag-btn');
+  buttons.forEach(btn => {
+    btn.removeEventListener('click', handleRemoveClick);
+    btn.addEventListener('click', handleRemoveClick);
+  });
+}
+
+function handleRemoveClick(e) {
+  const idx = Number(e.currentTarget.getAttribute('data-index'));
+  if (!isNaN(idx)) removeEspecialidade(idx);
+}
+
+window.removeEspecialidade = removeEspecialidade;
+
+if (addEspecialidadeBtn) {
+  addEspecialidadeBtn.addEventListener('click', addEspecialidade);
+}
+
+if (especialidadeInput) {
+  especialidadeInput.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      addEspecialidade();
     }
+  });
+}
+
+function loadMockData() {
+  especialidades = ['Design', 'Branding', 'UI/UX'];
+  renderEspecialidades();
+  updateHiddenField();
+}
+
+loadMockData();
+
+const empresaInput = document.getElementById("empresaAreaInput");
+const empresaHidden = document.getElementById("empresaArea");
+const empresaOptions = document.getElementById("empresaAreaOptions");
+
+// Mostrar lista ao focar
+empresaInput.addEventListener("focus", () => {
+  empresaOptions.classList.remove("hidden");
+});
+
+// Filtrar ao digitar
+empresaInput.addEventListener("input", () => {
+  const filter = empresaInput.value.toLowerCase();
+
+  Array.from(empresaOptions.children).forEach(li => {
+    const text = li.textContent.toLowerCase();
+    li.style.display = text.includes(filter) ? "block" : "none";
+  });
+});
+
+// Selecionar item
+empresaOptions.addEventListener("click", (e) => {
+  if (e.target.tagName === "LI") {
+    const value = e.target.dataset.value;
+    const label = e.target.textContent;
+
+    empresaInput.value = label;   // Mostra texto
+    empresaHidden.value = value;  // Envia valor real
+
+    empresaOptions.classList.add("hidden");
+  }
+});
+
+// Fechar ao clicar fora
+document.addEventListener("click", (e) => {
+  if (!e.target.closest(".searchable-select")) {
+    empresaOptions.classList.add("hidden");
+  }
 });
