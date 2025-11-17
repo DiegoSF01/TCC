@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cadastro - Plataforma de Trabalhadores e Empresas</title>
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
     <header>
         <div class="nav-container">
@@ -52,7 +54,7 @@
             </nav>
         </div>
     </header>
-    
+
     <div class="register-container">
         <div class="register-wrapper">
             <!-- Logo e Título -->
@@ -72,11 +74,11 @@
             <div class="register-card">
                 <div class="card-content">
                     <!-- Formulário de Empresa -->
-                    <form id="empresaForm" class="register-form active">
+                    <form id="Form" class="register-form active">
                         <div class="image-uploads-section">
                             <div class="banner-upload">
-                                <label for="empresaBanner" class="upload-label banner-label">
-                                    <div class="upload-placeholder" id="empresaBannerPreview">
+                                <label for="Banner" class="upload-label banner-label">
+                                    <div class="upload-placeholder" id="BannerPreview">
                                         <svg width="32" height="32" viewBox="0 0 24 24" fill="none"
                                             stroke="currentColor" stroke-width="2">
                                             <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
@@ -86,12 +88,12 @@
                                         <span>Adicionar Foto de Banner</span>
                                     </div>
                                 </label>
-                                <input type="file" id="empresaBanner" accept="image/*" class="file-input">
+                                <input type="file" id="Banner" accept="image/*" class="file-input">
                             </div>
 
                             <div class="profile-upload">
-                                <label for="empresaPerfil" class="upload-label profile-label">
-                                    <div class="upload-placeholder circular" id="empresaPerfilPreview">
+                                <label for="Perfil" class="upload-label profile-label">
+                                    <div class="upload-placeholder circular" id="PerfilPreview">
                                         <svg width="32" height="32" viewBox="0 0 24 24" fill="none"
                                             stroke="currentColor" stroke-width="2">
                                             <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
@@ -99,40 +101,25 @@
                                         </svg>
                                     </div>
                                 </label>
-                                <input type="file" id="empresaPerfil" accept="image/*" class="file-input">
+                                <input type="file" id="Perfil" accept="image/*" class="file-input">
                             </div>
                         </div>
 
                         <div class="form-fields">
                             <div class="form-group">
-                                <label for="empresaNome" class="form-label">Nome de Perfil</label>
-                                <input type="text" id="empresaNome" class="form-input" placeholder="Digite o nome da empresa" required>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="registerTel" class="form-label">Telefone</label>
-                                <input type="tel" id="registerTel" class="form-input" placeholder="(DDD) 00000-0000" required>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="empresaCep" class="form-label">CEP</label>
-                                <input type="text" id="empresaCep" class="form-input" placeholder="00000-000" required>
+                                <label for="Nome" class="form-label">Nome de Perfil</label>
+                                <input type="text" id="Nome" class="form-input" placeholder="Digite o nome da empresa"
+                                    required>
                             </div>
 
                             <div class="form-group">
                                 <div class="searchable-select">
-                                    <label for="empresaAreaInput" class="form-label">Área da Empresa</label>
-                                    
-                                    <input 
-                                        type="text" 
-                                        id="empresaAreaInput" 
-                                        class="form-input" 
-                                        placeholder="Digite para buscar..." 
-                                        autocomplete="off"
-                                        required
-                                    >
-                                
-                                    <ul id="empresaAreaOptions" class="options-list hidden">
+                                    <label for="AreaInput" class="form-label">Área/Setor</label>
+
+                                    <input type="text" id="AreaInput" class="form-input"
+                                        placeholder="Digite para buscar..." autocomplete="off" required>
+
+                                    <ul id="AreaOptions" class="options-list hidden">
                                         <li data-value="construcao">Construção Civil</li>
                                         <li data-value="pintura">Pintura</li>
                                         <li data-value="eletrica">Serviços Elétricos</li>
@@ -143,14 +130,37 @@
                                         <li data-value="tecnologia">Tecnologia / Desenvolvimento</li>
                                         <li data-value="outros">Outros</li>
                                     </ul>
-                                
+
                                     <!-- Campo enviado no form -->
-                                    <input type="hidden" id="empresaArea" name="empresaArea">
+                                    <input type="hidden" id="Area" name="Area">
                                 </div>
                             </div>
 
                             <div class="form-group">
-                                <label for="empresaCep" class="form-label">especialidades</label>
+                                <label for="Cep" class="form-label">CEP</label>
+                                <input type="text" id="Cep" class="form-input" placeholder="00000-000" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="ProjetosConcluidos" class="form-label">Projetos Concluídos</label>
+                                <input type="number" inputmode="numeric" id="ProjetosConcluidos" class="form-input"
+                                    placeholder="000" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="TempoExpe" class="form-label">Tempo de experiência (em anos)</label>
+                                <input type="number" inputmode="numeric" id="TempoExpe" class="form-input"
+                                    placeholder="00" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="sobreProfissional" class="form-label">Sobre o Profissional</label>
+                                <textarea id="sobreProfissional" class="form-textarea"
+                                    placeholder="Fale um pouco sobre você..." rows="5" required></textarea>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="especialidadeInput" class="form-label">especialidades</label>
                                 <div class="especialidades-input-group">
                                     <input type="text" class="form-input" placeholder="Digite uma especialidade..."
                                         id="especialidadeInput">
@@ -166,19 +176,38 @@
                                 <div id="especialidadesList" class="especialidades-list"></div>
                             </div>
 
-                            <button type="submit" class="btn-primary">
-                                <span class="btn-text">Criar Conta como Empresa</span>
-                                <span class="btn-loading" style="display: none;">Cadastrando...</span>
-                            </button>
+                            <div class="form-group">
+                                <label for="Tel" class="form-label">Telefone</label>
+                                <input type="tel" id="Tel" class="form-input" placeholder="(DDD) 00000-0000" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="registerEmail" class="form-label">Email</label>
+                                <input type="email" id="registerEmail" class="form-input" placeholder="seu@email.com"
+                                    required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="instagram" class="form-label">Instagram</label>
+                                <input type="text" id="instagram" class="form-input" placeholder="@seuusuario">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="facebook" class="form-label">Facebook</label>
+                                <input type="text" id="facebook" class="form-input" placeholder="Link ou usuário">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="twitter" class="form-label">X (Twitter)</label>
+                                <input type="text" id="twitter" class="form-input" placeholder="@seuusuario">
+                            </div>
+
+                            <div class="form-actions">
+                                <button type="button" id="cancelBtn" class="btn btn-secondary">Cancelar</button>
+                                <button type="submit" class="btn btn-primary">Salvar alterações</button>
+                            </div>
                         </div>
                     </form>
-                </div>
-
-                <div class="card-footer">
-                    <div class="back-to-login">
-                        <span class="back-text">Já tem uma conta? </span>
-                        <a href="/cadastro/Parte1/index.html" class="back-link">Fazer Login</a>
-                    </div>
                 </div>
             </div>
 
@@ -400,4 +429,5 @@
 
     <script src="script.js"></script>
 </body>
+
 </html>

@@ -673,150 +673,142 @@
         </div>
     </footer>
 
-    <div class="modal-overlay" id="modalOverlay">
-        <div class="modal-container">
-            <!-- Banner de Foto de Fundo -->
-            <div class="banner-section">
-                <div class="banner-image" id="bannerImage"></div>
-                <div class="banner-overlay"></div>
-                
-                <label for="backgroundPhotoInput" class="banner-camera-btn" id="camera-banner">
-                    <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
-                        <circle cx="12" cy="13" r="4"></circle>
-                    </svg>
-                </label>
-                <input id="backgroundPhotoInput" type="file" accept="image/*" class="hidden-input">
-                
-                <button class="close-btn" id="closeBtn">
-                    <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <line x1="18" y1="6" x2="6" y2="18"></line>
-                        <line x1="6" y1="6" x2="18" y2="18"></line>
-                    </svg>
-                </button>
-            </div>
+    <div class="modal-overlay modal-perfil" id="modalPerfil">
+        <div class="register-card">
+            <div class="card-content">
+                <!-- Formulário de Empresa -->
+                <form id="Form" class="register-form active">
+                    <div class="image-uploads-section">
+                        <div class="banner-upload">
+                            <label for="Banner" class="upload-label banner-label">
+                                <div class="upload-placeholder" id="BannerPreview">
+                                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none"
+                                        stroke="currentColor" stroke-width="2">
+                                        <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                                        <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                                        <polyline points="21 15 16 10 5 21"></polyline>
+                                    </svg>
+                                    <span>Adicionar Foto de Banner</span>
+                                </div>
+                            </label>
+                            <input type="file" id="Banner" accept="image/*" class="file-input">
+                        </div>
 
-            <!-- Avatar -->
-            <div class="avatar-container">
-                <div class="avatar" id="avatarImage"></div>
-                <label for="profilePhotoInput" class="avatar-camera-btn" id="camera-avatar">
-                    <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
-                        <circle cx="12" cy="13" r="4"></circle>
-                    </svg>
-                </label>
-                <input id="profilePhotoInput" type="file" accept="image/*" class="hidden-input">
-            </div>
+                        <div class="profile-upload">
+                            <label for="Perfil" class="upload-label profile-label">
+                                <div class="upload-placeholder circular" id="PerfilPreview">
+                                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none"
+                                        stroke="currentColor" stroke-width="2">
+                                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                        <circle cx="12" cy="7" r="4"></circle>
+                                    </svg>
+                                </div>
+                            </label>
+                            <input type="file" id="Perfil" accept="image/*" class="file-input">
+                        </div>
+                    </div>
 
-            <!-- Conteúdo do Modal -->
-            <div class="modal-content">
-                <form id="profileForm">
-                    <!-- Informações Básicas -->
-                    <section class="form-section">
-                        <div class="section-header">
-                            <h3>INFORMAÇÕES BÁSICAS</h3>
-                            <div class="divider"></div>
+                    <div class="form-fields">
+                        <div class="form-group">
+                            <label for="Nome" class="form-label">Nome de Perfil</label>
+                            <input type="text" id="Nome" class="form-input" placeholder="Digite o nome da empresa"
+                                required>
                         </div>
 
                         <div class="form-group">
-                            <label for="name">Nome</label>
-                            <input type="text" id="name" placeholder="Seu nome" class="input-underline">
-                        </div>
+                            <div class="searchable-select">
+                                <label for="AreaInput" class="form-label">Área/Setor</label>
 
-                        <div class="form-group">
-                            <label for="profession">Profissão</label>
-                            <input type="text" id="profession" placeholder="Sua profissão" class="input-underline">
-                        </div>
+                                <input type="text" id="AreaInput" class="form-input"
+                                    placeholder="Digite para buscar..." autocomplete="off" required>
 
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="cep">CEP</label>
-                                <input type="text" id="cep" placeholder="00000-000" class="input-underline">
+                                <ul id="AreaOptions" class="options-list hidden">
+                                    <li data-value="construcao">Construção Civil</li>
+                                    <li data-value="pintura">Pintura</li>
+                                    <li data-value="eletrica">Serviços Elétricos</li>
+                                    <li data-value="hidraulica">Hidráulica</li>
+                                    <li data-value="marcenaria">Marcenaria</li>
+                                    <li data-value="jardinagem">Jardinagem</li>
+                                    <li data-value="limpeza">Limpeza / Conservação</li>
+                                    <li data-value="tecnologia">Tecnologia / Desenvolvimento</li>
+                                    <li data-value="outros">Outros</li>
+                                </ul>
+
+                                <!-- Campo enviado no form -->
+                                <input type="hidden" id="Area" name="Area">
                             </div>
-                            <div class="form-group">
-                                <label for="projects">Projetos Concluídos</label>
-                                <input type="text" id="projects" placeholder="0" class="input-underline">
-                            </div>
                         </div>
 
                         <div class="form-group">
-                            <label for="experience">Tempo de experiência</label>
-                            <textarea id="experience" placeholder="Descreva sua experiência" class="textarea-field"></textarea>
-                        </div>
-                    </section>
-
-                    <!-- Sobre -->
-                    <section class="form-section">
-                        <div class="section-header">
-                            <h3>SOBRE</h3>
-                            <div class="divider"></div>
+                            <label for="Cep" class="form-label">CEP</label>
+                            <input type="text" id="Cep" class="form-input" placeholder="00000-000" required>
                         </div>
 
                         <div class="form-group">
-                            <label for="about">Sobre o profissional</label>
-                            <textarea id="about" placeholder="Fale sobre você..." class="textarea-field"></textarea>
+                            <label for="ProjetosConcluidos" class="form-label">Projetos Concluídos</label>
+                            <input type="number" inputmode="numeric" id="ProjetosConcluidos" class="form-input"
+                                placeholder="000" required>
                         </div>
 
                         <div class="form-group">
-                            <label for="specialtyInput">Especialidades</label>
-                            <div class="specialty-input-group">
-                                <input type="text" id="specialtyInput" placeholder="Digite uma especialidade..." class="input-field">
-                                <button type="button" id="addSpecialtyBtn" class="add-btn">
-                                    <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <label for="TempoExpe" class="form-label">Tempo de experiência (em anos)</label>
+                            <input type="number" inputmode="numeric" id="TempoExpe" class="form-input"
+                                placeholder="00" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="sobreProfissional" class="form-label">Sobre o Profissional</label>
+                            <textarea id="sobreProfissional" class="form-textarea"
+                                placeholder="Fale um pouco sobre você..." rows="5" required></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="especialidadeInput" class="form-label">especialidades</label>
+                            <div class="especialidades-input-group">
+                                <input type="text" class="form-input" placeholder="Digite uma especialidade..."
+                                    id="especialidadeInput">
+                                <button type="button" class="add-btn" id="addEspecialidadeBtn">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+                                        stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round">
                                         <line x1="12" y1="5" x2="12" y2="19"></line>
                                         <line x1="5" y1="12" x2="19" y2="12"></line>
                                     </svg>
                                 </button>
                             </div>
-                            <div id="specialtiesContainer" class="specialties-container"></div>
-                        </div>
-                    </section>
-
-                    <!-- Contato -->
-                    <section class="form-section">
-                        <div class="section-header">
-                            <h3>CONTATO</h3>
-                            <div class="divider"></div>
+                            <div id="especialidadesList" class="especialidades-list"></div>
                         </div>
 
                         <div class="form-group">
-                            <label for="phone">Telefone</label>
-                            <input type="tel" id="phone" placeholder="(00) 00000-0000" class="input-underline">
+                            <label for="Tel" class="form-label">Telefone</label>
+                            <input type="tel" id="Tel" class="form-input" placeholder="(DDD) 00000-0000" required>
                         </div>
 
                         <div class="form-group">
-                            <label for="email">E-mail</label>
-                            <input type="email" id="email" placeholder="seu.email@exemplo.com" class="input-underline">
-                        </div>
-                    </section>
-
-                    <!-- Redes Sociais -->
-                    <section class="form-section">
-                        <div class="section-header">
-                            <h3>REDES SOCIAIS</h3>
-                            <div class="divider"></div>
+                            <label for="registerEmail" class="form-label">Email</label>
+                            <input type="email" id="registerEmail" class="form-input" placeholder="seu@email.com"
+                                required>
                         </div>
 
                         <div class="form-group">
-                            <label for="instagram">Instagram</label>
-                            <input type="text" id="instagram" placeholder="@seu.usuario" class="input-underline">
+                            <label for="instagram" class="form-label">Instagram</label>
+                            <input type="text" id="instagram" class="form-input" placeholder="@seuusuario">
                         </div>
 
                         <div class="form-group">
-                            <label for="facebook">Facebook</label>
-                            <input type="text" id="facebook" placeholder="facebook.com/seu.usuario" class="input-underline">
+                            <label for="facebook" class="form-label">Facebook</label>
+                            <input type="text" id="facebook" class="form-input" placeholder="Link ou usuário">
                         </div>
 
                         <div class="form-group">
-                            <label for="twitter">X (Twitter)</label>
-                            <input type="text" id="twitter" placeholder="@seu.usuario" class="input-underline">
+                            <label for="twitter" class="form-label">X (Twitter)</label>
+                            <input type="text" id="twitter" class="form-input" placeholder="@seuusuario">
                         </div>
-                    </section>
 
-                    <!-- Botões -->
-                    <div class="form-actions">
-                        <button type="button" id="cancelBtn" class="btn btn-secondary">Cancelar</button>
-                        <button type="submit" class="btn btn-primary">Salvar alterações</button>
+                        <div class="form-actions">
+                            <button type="button" id="cancelBtn" class="btn btn-secondary">Cancelar</button>
+                            <button type="submit" class="btn btn-primary">Salvar alterações</button>
+                        </div>
                     </div>
                 </form>
             </div>

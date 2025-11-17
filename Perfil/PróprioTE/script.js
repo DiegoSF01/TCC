@@ -467,3 +467,24 @@ btn_editarper.addEventListener('click', () => {
 document.addEventListener('DOMContentLoaded', () => {
   window.profileEditor = new ProfileEditor();
 });
+
+// Abrir modal de editar perfil
+const editarPerfilBtn = document.querySelector('.btn-editar-perfil');
+const modalPerfil = document.getElementById('modalPerfil');
+const cancelBtn = document.getElementById('cancelBtn');
+
+editarPerfilBtn.addEventListener('click', () => {
+    modalPerfil.classList.add('active');
+});
+
+// Botão cancelar fecha o modal
+cancelBtn.addEventListener('click', () => {
+    modalPerfil.classList.remove('active');
+});
+
+// Fechar clicando fora do modal
+modalPerfil.addEventListener('click', (e) => {
+    if (e.target === modalPerfil) {
+        modalPerfil.classList.remove('active');
+    }
+});
