@@ -139,7 +139,7 @@
 
                             <div class="form-group">
                                 <label for="registerTel" class="form-label">Telefone</label>
-                                <input type="tel" id="registerTel" class="form-input" placeholder="(DDD) 00000-0000" required>
+                                <input type="tel" id="registerTelEm" class="form-input" placeholder="(DDD) 00000-0000" required>
                             </div>
 
                             <div class="form-group">
@@ -153,19 +153,33 @@
                             </div>
 
                             <div class="form-group">
-                                <label for="empresaArea" class="form-label">Área de Atuação</label>
-                                <select id="empresaArea" class="form-input" required>
-                                    <option value="">Selecione uma área</option>
-                                    <option value="construcao">Construção Civil</option>
-                                    <option value="eletrica">Elétrica</option>
-                                    <option value="hidraulica">Hidráulica</option>
-                                    <option value="marcenaria">Marcenaria</option>
-                                    <option value="pintura">Pintura</option>
-                                    <option value="jardinagem">Jardinagem</option>
-                                    <option value="limpeza">Limpeza</option>
-                                    <option value="tecnologia">Tecnologia</option>
-                                    <option value="outros">Outros</option>
-                                </select>
+                                <div class="searchable-select">
+                                    <label for="empresaAreaInput" class="form-label">Área da Empresa</label>
+                                    
+                                    <input 
+                                        type="text" 
+                                        id="empresaAreaInput" 
+                                        class="form-input" 
+                                        placeholder="Digite para buscar..." 
+                                        autocomplete="off"
+                                        required
+                                    >
+                                
+                                    <ul id="empresaAreaOptions" class="options-list hidden">
+                                        <li data-value="construcao">Construção Civil</li>
+                                        <li data-value="pintura">Pintura</li>
+                                        <li data-value="eletrica">Serviços Elétricos</li>
+                                        <li data-value="hidraulica">Hidráulica</li>
+                                        <li data-value="marcenaria">Marcenaria</li>
+                                        <li data-value="jardinagem">Jardinagem</li>
+                                        <li data-value="limpeza">Limpeza / Conservação</li>
+                                        <li data-value="tecnologia">Tecnologia / Desenvolvimento</li>
+                                        <li data-value="outros">Outros</li>
+                                    </ul>
+                                
+                                    <!-- Campo enviado no form -->
+                                    <input type="hidden" id="empresaArea" name="empresaArea">
+                                </div>
                             </div>
                         </div>
 
@@ -213,7 +227,7 @@
 
                             <div class="form-group">
                                 <label for="registerTel" class="form-label">Telefone</label>
-                                <input type="tel" id="registerTel" class="form-input" placeholder="(DDD) 00000-0000" required>
+                                <input type="tel" id="registerTelPro" class="form-input" placeholder="(DDD) 00000-0000" required>
                             </div>
                             
                             <div class="form-group">
@@ -227,19 +241,33 @@
                             </div>
 
                             <div class="form-group">
-                                <label for="profissionalArea" class="form-label">Área de Atuação</label>
-                                <select id="profissionalArea" class="form-input" required>
-                                    <option value="">Selecione uma área</option>
-                                    <option value="pedreiro">Pedreiro</option>
-                                    <option value="pintor">Pintor</option>
-                                    <option value="eletricista">Eletricista</option>
-                                    <option value="encanador">Encanador</option>
-                                    <option value="marceneiro">Marceneiro</option>
-                                    <option value="jardineiro">Jardineiro</option>
-                                    <option value="faxineiro">Faxineiro</option>
-                                    <option value="desenvolvedor">Desenvolvedor</option>
-                                    <option value="outros">Outros</option>
-                                </select>
+                                <div class="searchable-select">
+                                    <label for="profissionalAreaInput" class="form-label">Área de Atuação</label>
+                                    
+                                    <input 
+                                        type="text" 
+                                        id="profissionalAreaInput" 
+                                        class="form-input" 
+                                        placeholder="Digite para buscar..." 
+                                        autocomplete="off"
+                                        required
+                                    >
+                                
+                                    <ul id="profissionalAreaOptions" class="options-list hidden">
+                                        <li data-value="pedreiro">Pedreiro</li>
+                                        <li data-value="pintor">Pintor</li>
+                                        <li data-value="eletricista">Eletricista</li>
+                                        <li data-value="encanador">Encanador</li>
+                                        <li data-value="marceneiro">Marceneiro</li>
+                                        <li data-value="jardineiro">Jardineiro</li>
+                                        <li data-value="faxineiro">Faxineiro</li>
+                                        <li data-value="desenvolvedor">Desenvolvedor</li>
+                                        <li data-value="outros">Outros</li>
+                                    </ul>
+                                
+                                    <input type="hidden" id="profissionalArea" name="profissionalArea">
+                                </div>
+                                
                             </div>
                         </div>
 

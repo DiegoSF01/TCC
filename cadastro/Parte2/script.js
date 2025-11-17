@@ -243,3 +243,121 @@ contratanteForm.addEventListener('submit', (e) => {
 
 // Inicializar na view de empresa
 switchTipo('empresa');
+
+// ELEMENTOS
+const inputArea = document.getElementById("profissionalAreaInput");
+const hiddenArea = document.getElementById("profissionalArea");
+const optionsList = document.getElementById("profissionalAreaOptions");
+
+// Mostrar lista ao focar
+inputArea.addEventListener("focus", () => {
+    optionsList.classList.remove("hidden");
+});
+
+// Filtrar ao digitar
+inputArea.addEventListener("input", () => {
+    const filter = inputArea.value.toLowerCase();
+
+    Array.from(optionsList.children).forEach(li => {
+        const text = li.textContent.toLowerCase();
+        li.style.display = text.includes(filter) ? "block" : "none";
+    });
+});
+
+// Selecionar opção
+optionsList.addEventListener("click", (e) => {
+    if (e.target.tagName === "LI") {
+        const value = e.target.dataset.value;
+        const label = e.target.textContent;
+
+        inputArea.value = label;      // Mostra o nome para o usuário
+        hiddenArea.value = value;     // Envia o valor para o form
+
+        optionsList.classList.add("hidden");
+    }
+});
+
+// Ocultar ao clicar fora
+document.addEventListener("click", (e) => {
+    if (!e.target.closest(".searchable-select")) {
+        optionsList.classList.add("hidden");
+    }
+});
+
+
+// -------------------- CAMPO COM BUSCA - EMPRESAS --------------------
+
+const empresaInput = document.getElementById("empresaAreaInput");
+const empresaHidden = document.getElementById("empresaArea");
+const empresaOptions = document.getElementById("empresaAreaOptions");
+
+// Mostrar lista ao focar
+empresaInput.addEventListener("focus", () => {
+    empresaOptions.classList.remove("hidden");
+});
+
+// Filtrar ao digitar
+empresaInput.addEventListener("input", () => {
+    const filter = empresaInput.value.toLowerCase();
+
+    Array.from(empresaOptions.children).forEach(li => {
+        const text = li.textContent.toLowerCase();
+        li.style.display = text.includes(filter) ? "block" : "none";
+    });
+});
+
+// Selecionar item
+empresaOptions.addEventListener("click", (e) => {
+    if (e.target.tagName === "LI") {
+        const value = e.target.dataset.value;
+        const label = e.target.textContent;
+
+        empresaInput.value = label;   // Mostra texto
+        empresaHidden.value = value;  // Envia valor real
+
+        empresaOptions.classList.add("hidden");
+    }
+});
+
+// Fechar ao clicar fora
+document.addEventListener("click", (e) => {
+    if (!e.target.closest(".searchable-select")) {
+        empresaOptions.classList.add("hidden");
+    }
+});
+
+document.getElementById("registerTelPro").addEventListener("input", function (e) {
+  let value = e.target.value.replace(/\D/g, ""); // Remove tudo que não é número
+
+  // Limita a 11 dígitos (DDD + 9 dígitos)
+  value = value.substring(0, 11);
+
+  // Aplica máscara: (XX) XXXXX-XXXX
+  if (value.length > 6) {
+      value = value.replace(/^(\d{2})(\d{5})(\d{0,4})/, "($1) $2-$3");
+  } else if (value.length > 2) {
+      value = value.replace(/^(\d{2})(\d{0,5})/, "($1) $2");
+  } else {
+      value = value.replace(/^(\d{0,2})/, "($1");
+  }
+
+  e.target.value = value;
+});
+
+document.getElementById("registerTelEm").addEventListener("input", function (e) {
+  let value = e.target.value.replace(/\D/g, ""); // Remove tudo que não é número
+
+  // Limita a 11 dígitos (DDD + 9 dígitos)
+  value = value.substring(0, 11);
+
+  // Aplica máscara: (XX) XXXXX-XXXX
+  if (value.length > 6) {
+      value = value.replace(/^(\d{2})(\d{5})(\d{0,4})/, "($1) $2-$3");
+  } else if (value.length > 2) {
+      value = value.replace(/^(\d{2})(\d{0,5})/, "($1) $2");
+  } else {
+      value = value.replace(/^(\d{0,2})/, "($1");
+  }
+
+  e.target.value = value;
+});

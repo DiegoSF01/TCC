@@ -1,7 +1,9 @@
+// ======= INÍCIO DO SCRIPT.CORRIGIDO =======
+
 // Estado atual do tipo de cadastro
 let tipoAtual = 'empresa';
 
-// Elementos do DOM
+// Elementos do DOM (exemplos do seu arquivo; mantenha como estão)
 const tipoBtns = document.querySelectorAll('.tipo-btn');
 const empresaForm = document.getElementById('empresaForm');
 const profissionalForm = document.getElementById('profissionalForm');
@@ -12,95 +14,20 @@ function showToast(message, type = 'success') {
     const toast = document.getElementById('toast');
     const toastMessage = document.getElementById('toastMessage');
 
+    if (!toast || !toastMessage) return;
+
     toastMessage.textContent = message;
     toast.className = 'toast show ' + type;
 
     setTimeout(() => {
-        toast.classList.remove('show');
+        toast.className = 'toast';
     }, 3000);
 }
 
-// Função para alternar entre tipos de cadastro
-function switchTipo(tipo) {
-    tipoAtual = tipo;
+// (mantive as suas máscaras e demais funções; coloquei apenas as partes relevantes abaixo)
+// ... (se você tiver outras funções antes, mantenha-as)
 
-    // Remover classe active de todos os botões
-    tipoBtns.forEach(btn => btn.classList.remove('active'));
-
-    // Adicionar classe active ao botão clicado
-    document.querySelector(`[data-tipo="${tipo}"]`).classList.add('active');
-
-    // Esconder todos os formulários
-    empresaForm.classList.remove('active');
-    profissionalForm.classList.remove('active');
-    contratanteForm.classList.remove('active');
-
-    // Mostrar o formulário correto
-    if (tipo === 'empresa') {
-        empresaForm.classList.add('active');
-    } else if (tipo === 'profissional') {
-        profissionalForm.classList.add('active');
-    } else if (tipo === 'contratante') {
-        contratanteForm.classList.add('active');
-    }
-}
-
-// Event listeners para os botões de tipo
-tipoBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
-        const tipo = btn.getAttribute('data-tipo');
-        switchTipo(tipo);
-    });
-});
-
-// Função para preview de imagem
-function handleImagePreview(inputId, previewId) {
-    const input = document.getElementById(inputId);
-    const preview = document.getElementById(previewId);
-
-    input.addEventListener('change', (e) => {
-        const file = e.target.files[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = (event) => {
-                preview.innerHTML = `<img src="${event.target.result}" alt="Preview">`;
-                preview.classList.add('has-image');
-            };
-            reader.readAsDataURL(file);
-        }
-    });
-}
-
-// Configurar previews de imagem para todos os formulários
-// Empresa
-handleImagePreview('empresaBanner', 'empresaBannerPreview');
-handleImagePreview('empresaPerfil', 'empresaPerfilPreview');
-
-// Profissional
-handleImagePreview('profissionalBanner', 'profissionalBannerPreview');
-handleImagePreview('profissionalPerfil', 'profissionalPerfilPreview');
-
-// Contratante
-handleImagePreview('contratanteBanner', 'contratanteBannerPreview');
-handleImagePreview('contratantePerfil', 'contratantePerfilPreview');
-
-// Função auxiliar para loading em botões
-function setButtonLoading(button, isLoading) {
-    const btnText = button.querySelector('.btn-text');
-    const btnLoading = button.querySelector('.btn-loading');
-
-    if (isLoading) {
-        btnText.style.display = 'none';
-        btnLoading.style.display = 'inline-block';
-        button.disabled = true;
-    } else {
-        btnText.style.display = 'inline-block';
-        btnLoading.style.display = 'none';
-        button.disabled = false;
-    }
-}
-
-// Máscaras para inputs
+// --- Exemplo de funções de máscara (mantive suas funções) ---
 function maskCNPJ(value) {
     return value
         .replace(/\D/g, '')
@@ -127,129 +54,25 @@ function maskCEP(value) {
         .substring(0, 9);
 }
 
-// Aplicar máscaras
-document.getElementById('empresaCnpj').addEventListener('input', (e) => {
-    e.target.value = maskCNPJ(e.target.value);
-});
-
-document.getElementById('empresaCep').addEventListener('input', (e) => {
-    e.target.value = maskCEP(e.target.value);
-});
-
-document.getElementById('profissionalCpf').addEventListener('input', (e) => {
-    e.target.value = maskCPF(e.target.value);
-});
-
-document.getElementById('profissionalCep').addEventListener('input', (e) => {
-    e.target.value = maskCEP(e.target.value);
-});
-
-document.getElementById('contratanteCpf').addEventListener('input', (e) => {
-    e.target.value = maskCPF(e.target.value);
-});
-
-document.getElementById('contratanteCep').addEventListener('input', (e) => {
-    e.target.value = maskCEP(e.target.value);
-});
-
-// Handle Empresa Form
-empresaForm.addEventListener('submit', (e) => {
-    e.preventDefault();
-
-    const submitBtn = empresaForm.querySelector('.btn-primary');
-    const formData = {
-        tipo: 'empresa',
-        nome: document.getElementById('empresaNome').value,
-        cnpj: document.getElementById('empresaCnpj').value,
-        cep: document.getElementById('empresaCep').value,
-        area: document.getElementById('empresaArea').value,
-        fotoPerfil: document.getElementById('empresaPerfil').files[0],
-        fotoBanner: document.getElementById('empresaBanner').files[0]
-    };
-
-    setButtonLoading(submitBtn, true);
-
-    // Simulação de requisição - substitua com sua API
-    setTimeout(() => {
-        console.log('Cadastro Empresa:', formData);
-        showToast('Empresa cadastrada com sucesso!', 'success');
-        setButtonLoading(submitBtn, false);
-
-        // Redirecionar ou limpar formulário
-        setTimeout(() => {
-            window.location.href = 'auth.html';
-        }, 1500);
-    }, 1500);
-});
-
-// Handle Profissional Form
-profissionalForm.addEventListener('submit', (e) => {
-    e.preventDefault();
-
-    const submitBtn = profissionalForm.querySelector('.btn-primary');
-    const formData = {
-        tipo: 'profissional',
-        nome: document.getElementById('profissionalNome').value,
-        cpf: document.getElementById('profissionalCpf').value,
-        cep: document.getElementById('profissionalCep').value,
-        area: document.getElementById('profissionalArea').value,
-        fotoPerfil: document.getElementById('profissionalPerfil').files[0],
-        fotoBanner: document.getElementById('profissionalBanner').files[0]
-    };
-
-    setButtonLoading(submitBtn, true);
-
-    // Simulação de requisição - substitua com sua API
-    setTimeout(() => {
-        console.log('Cadastro Profissional:', formData);
-        showToast('Profissional cadastrado com sucesso!', 'success');
-        setButtonLoading(submitBtn, false);
-
-        // Redirecionar ou limpar formulário
-        setTimeout(() => {
-            window.location.href = 'auth.html';
-        }, 1500);
-    }, 1500);
-});
-
-// Handle Contratante Form
-contratanteForm.addEventListener('submit', (e) => {
-    e.preventDefault();
-
-    const submitBtn = contratanteForm.querySelector('.btn-primary');
-    const formData = {
-        tipo: 'contratante',
-        nome: document.getElementById('contratanteNome').value,
-        cpf: document.getElementById('contratanteCpf').value,
-        cep: document.getElementById('contratanteCep').value,
-        fotoPerfil: document.getElementById('contratantePerfil').files[0],
-        fotoBanner: document.getElementById('contratanteBanner').files[0]
-    };
-
-    setButtonLoading(submitBtn, true);
-
-    // Simulação de requisição - substitua com sua API
-    setTimeout(() => {
-        console.log('Cadastro Contratante:', formData);
-        showToast('Contratante cadastrado com sucesso!', 'success');
-        setButtonLoading(submitBtn, false);
-
-        // Redirecionar ou limpar formulário
-        setTimeout(() => {
-            window.location.href = 'auth.html';
-        }, 1500);
-    }, 1500);
-});
-
-// Inicializar na view de empresa
-switchTipo('empresa');
-
 const addEspecialidadeBtn = document.getElementById('addEspecialidadeBtn');
 const especialidadesList = document.getElementById('especialidadesList');
+// o input onde usuário digita a especialidade
+const especialidadeInput = document.getElementById('especialidadeInput');
+// campo hidden para enviar no form (opcional — coloque este input hidden no HTML se quiser enviar)
+const especialidadesHidden = document.getElementById('especialidadesHidden');
 
 let especialidades = [];
 
+// atualiza campo hidden (se existir)
+function updateHiddenField() {
+    if (especialidadesHidden) {
+        especialidadesHidden.value = JSON.stringify(especialidades);
+    }
+}
+
+// Função de adicionar especialidade (mantive sua lógica)
 function addEspecialidade() {
+    if (!especialidadeInput) return;
     const value = especialidadeInput.value.trim();
 
     if (value === '') {
@@ -264,17 +87,22 @@ function addEspecialidade() {
 
     especialidades.push(value);
     renderEspecialidades();
+    updateHiddenField();
     especialidadeInput.value = '';
+    // opcional: focar no input novamente
+    especialidadeInput.focus();
 }
 
 // Remover especialidade
 function removeEspecialidade(index) {
     especialidades.splice(index, 1);
     renderEspecialidades();
+    updateHiddenField();
 }
 
-// Renderizar lista de especialidades
+
 function renderEspecialidades() {
+    if (!especialidadesList) return;
     especialidadesList.innerHTML = '';
 
     especialidades.forEach((especialidade, index) => {
@@ -282,7 +110,7 @@ function renderEspecialidades() {
         tag.className = 'especialidade-tag';
         tag.innerHTML = `
         <span>${especialidade}</span>
-        <button type="button" class="remove-tag-btn" onclick="removeEspecialidade(${index})">
+        <button type="button" class="remove-tag-btn" data-index="${index}">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <line x1="18" y1="6" x2="6" y2="18"></line>
             <line x1="6" y1="6" x2="18" y2="18"></line>
@@ -291,24 +119,77 @@ function renderEspecialidades() {
       `;
         especialidadesList.appendChild(tag);
     });
+
+    const buttons = especialidadesList.querySelectorAll('.remove-tag-btn');
+    buttons.forEach(btn => {
+        btn.removeEventListener('click', handleRemoveClick);
+        btn.addEventListener('click', handleRemoveClick);
+    });
 }
 
-// Event listener para botão de adicionar especialidade
-addEspecialidadeBtn.addEventListener('click', addEspecialidade);
-
-// Event listener para Enter no input de especialidade
-especialidadeInput.addEventListener('keypress', (e) => {
-    if (e.key === 'Enter') {
-        e.preventDefault();
-        addEspecialidade();
-    }
-});
+function handleRemoveClick(e) {
+    const idx = Number(e.currentTarget.getAttribute('data-index'));
+    if (!isNaN(idx)) removeEspecialidade(idx);
+}
 
 window.removeEspecialidade = removeEspecialidade;
+
+if (addEspecialidadeBtn) {
+    addEspecialidadeBtn.addEventListener('click', addEspecialidade);
+}
+
+if (especialidadeInput) {
+    especialidadeInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            addEspecialidade();
+        }
+    });
+}
 
 function loadMockData() {
     especialidades = ['Design', 'Branding', 'UI/UX'];
     renderEspecialidades();
+    updateHiddenField();
 }
 
 loadMockData();
+
+const empresaInput = document.getElementById("empresaAreaInput");
+const empresaHidden = document.getElementById("empresaArea");
+const empresaOptions = document.getElementById("empresaAreaOptions");
+
+// Mostrar lista ao focar
+empresaInput.addEventListener("focus", () => {
+    empresaOptions.classList.remove("hidden");
+});
+
+// Filtrar ao digitar
+empresaInput.addEventListener("input", () => {
+    const filter = empresaInput.value.toLowerCase();
+
+    Array.from(empresaOptions.children).forEach(li => {
+        const text = li.textContent.toLowerCase();
+        li.style.display = text.includes(filter) ? "block" : "none";
+    });
+});
+
+// Selecionar item
+empresaOptions.addEventListener("click", (e) => {
+    if (e.target.tagName === "LI") {
+        const value = e.target.dataset.value;
+        const label = e.target.textContent;
+
+        empresaInput.value = label;   // Mostra texto
+        empresaHidden.value = value;  // Envia valor real
+
+        empresaOptions.classList.add("hidden");
+    }
+});
+
+// Fechar ao clicar fora
+document.addEventListener("click", (e) => {
+    if (!e.target.closest(".searchable-select")) {
+        empresaOptions.classList.add("hidden");
+    }
+});

@@ -461,6 +461,40 @@ header.header-passed-hero {
     box-shadow: 0 0 0 3px hsla(221, 100%, 50%, 0.1);
 }
 
+.searchable-select {
+    position: relative;
+    width: 100%;
+}
+
+.options-list {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: #fff;
+    border: 1px solid #ccc;
+    border-top: none;
+    max-height: 180px;
+    overflow-y: auto;
+    z-index: 20;
+    border-radius: 0 0 8px 8px;
+}
+
+.options-list li {
+    padding: 8px 12px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.options-list li:hover {
+    background: #efefef;
+}
+
+.hidden {
+    display: none;
+}
+
+
 /* Buttons */
 .btn-primary {
     width: 100%;
