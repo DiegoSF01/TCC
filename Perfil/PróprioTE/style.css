@@ -516,7 +516,7 @@ header {
 }
 
 .avatar-camera-btn:hover path,
-.avatar-camera-btn:hover circle{
+.avatar-camera-btn:hover circle {
     stroke: #fff;
 }
 
@@ -803,7 +803,7 @@ header {
     }
 }
 
-.cancelar_top{
+.cancelar_top {
     padding: 0.5rem;
     border: none;
     border-radius: var(--radius);
@@ -812,16 +812,16 @@ header {
     transition: all 0.3s;
 }
 
-.cancelar_top:hover{
+.cancelar_top:hover {
     background-color: var(--muted);
 }
 
-.cancelar_top svg{
+.cancelar_top svg {
     width: 1.5rem;
     height: 1.5rem;
 }
 
-.buttons-edi{
+.buttons-edi {
     display: flex;
     gap: 1.5rem;
     justify-content: end;
@@ -843,7 +843,7 @@ header {
     transform: translateY(-2px);
 }
 
-.salvar-alteracoes{
+.salvar-alteracoes {
     background: var(--primary);
     color: white;
     border: none;
@@ -855,7 +855,7 @@ header {
     box-shadow: var(--shadow-sm);
 }
 
-.salvar-alteracoes:hover{
+.salvar-alteracoes:hover {
     background: var(--primary-hover);
     transform: translateY(-2px);
 }
@@ -1272,7 +1272,7 @@ header {
     align-items: center;
 }
 
-.preview-remove svg{
+.preview-remove svg {
     height: 1rem;
     width: 1rem;
     stroke: #fff;
@@ -1844,7 +1844,7 @@ footer {
 .social-link svg {
     height: 3rem;
     transition: all 0.3s;
-    
+
 }
 
 .social-link svg:hover {
@@ -1872,4 +1872,49 @@ footer {
 .footer-link:hover {
     color: #3a7afe;
     text-decoration: underline;
+}
+
+.footer-bottom {
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    background-color: #0f172a;
+    width: 100%;
+}
+
+.footer-bottom-content {
+    max-width: 1280px;
+    /* ou 80rem */
+    margin: 0 auto;
+    padding: 1.5rem 2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+}
+
+@media (min-width: 768px) {
+    .footer-bottom-content {
+        flex-direction: row;
+    }
+}
+
+.copyright {
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.875rem;
+}
+
+.footer-bottom-links {
+    display: flex;
+    gap: 1.5rem;
+}
+
+.footer-bottom-link {
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.875rem;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+.footer-bottom-link:hover {
+    color: #2563eb;
 }

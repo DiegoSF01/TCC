@@ -377,7 +377,7 @@ header {
     text-decoration: none;
 }
 
-.btn-acessar-favoritos svg{
+.btn-acessar-favoritos svg {
     stroke: #2e2d37;
     height: 18px;
     width: 18px;
@@ -1232,4 +1232,49 @@ footer {
 .footer-link:hover {
     color: #3a7afe;
     text-decoration: underline;
+}
+
+.footer-bottom {
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    background-color: #0f172a;
+    width: 100%;
+}
+
+.footer-bottom-content {
+    max-width: 1280px;
+    /* ou 80rem */
+    margin: 0 auto;
+    padding: 1.5rem 2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+}
+
+@media (min-width: 768px) {
+    .footer-bottom-content {
+        flex-direction: row;
+    }
+}
+
+.copyright {
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.875rem;
+}
+
+.footer-bottom-links {
+    display: flex;
+    gap: 1.5rem;
+}
+
+.footer-bottom-link {
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.875rem;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+.footer-bottom-link:hover {
+    color: #2563eb;
 }
