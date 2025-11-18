@@ -1,54 +1,112 @@
-function criarcard(){
-    const nome = localStorage.getItem('nome');
-    const ramo = localStorage.getItem('ramo');
+// Rating buttons toggle
+const ratingBtns = document.querySelectorAll('.rating-btn');
+ratingBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+        ratingBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+    });
+});
 
-    let div = document.createElement('div');
+// Availability buttons toggle
+const availabilityBtns = document.querySelectorAll('.availability-btn');
+availabilityBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+        btn.classList.toggle('active');
+    });
+});
 
-    const div_card = document.createElement('div');
-    div_card.classList.add('card');
-    div.appendChild(div_card);
+// Clear filters
+document.querySelector('.clear-filters-btn').addEventListener('click', () => {
+    document.querySelectorAll('.filter-input').forEach(input => input.value = '');
+    document.querySelectorAll('.rating-btn').forEach((btn, idx) => {
+        btn.classList.remove('active');
+        if (idx === 0) btn.classList.add('active');
+    });
+    document.querySelectorAll('.availability-btn').forEach(btn => btn.classList.remove('active'));
+    document.querySelector('.filter-select').selectedIndex = 0;
+});
 
-    const div_imagem = document.createElement('div');
-    div_imagem.classList.add('imagem');
-    div_card.appendChild(div_imagem);
+// Função de adicionar especialidade (mantive sua lógica)
+function addEspecialidade() {
+    if (!especialidadeInput) return;
+    const value = especialidadeInput.value.trim();
 
-    const div_infor = document.createElement('div');
-    div_infor.classList.add('informacoes');
-    div_card.appendChild(div_infor);
+    if (value === '') {
+        showToast('Digite uma especialidade', 'error');
+        return;
+    }
 
-    const div_foto = document.createElement('div');
-    div_foto.classList.add('foto');
-    div_infor.appendChild(div_foto);
+    if (especialidades.includes(value)) {
+        showToast('Especialidade já adicionada', 'error');
+        return;
+    }
 
-    const div_name = document.createElement('div');
-    div_name.classList.add('name')
-    div_infor.appendChild(div_name);
-
-    const div_profissao = document.createElement('div');
-    div_profissao.classList.add('profissao');
-    div_infor.appendChild(div_profissao);
-
-    const button = document.createElement('button');
-    button.classList.add('button');
-    button.innerText = 'Acessar Perfil';
-    div_infor.appendChild(button);
-
-    div_infor.querySelector('.name').innerText = nome;
-    div_infor.querySelector('.profissao').innerText = ramo;
-
-    document.querySelector('.homecards').appendChild(div);
+    especialidades.push(value);
+    renderEspecialidades();
+    updateHiddenField();
+    especialidadeInput.value = '';
+    // opcional: focar no input novamente
+    especialidadeInput.focus();
 }
 
-window.addEventListener('DOMContentLoaded', criarcard());
+// Remover especialidade
+function removeEspecialidade(index) {
+    especialidades.splice(index, 1);
+    renderEspecialidades();
+    updateHiddenField();
+}
 
-const buscador = document.getElementById('buscador');
 
-buscador.addEventListener('blur', () => {
-    buscador.value = '';
-});
+function renderEspecialidades() {
+    if (!especialidadesList) return;
+    especialidadesList.innerHTML = '';
 
-const bsl = document.getElementById('bsl');
+    especialidades.forEach((especialidade, index) => {
+        const tag = document.createElement('div');
+        tag.className = 'especialidade-tag';
+        tag.innerHTML = `
+        <span>${especialidade}</span>
+        <button type="button" class="remove-tag-btn" data-index="${index}">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      `;
+        especialidadesList.appendChild(tag);
+    });
 
-bsl.addEventListener('blur', () => {
-    bsl.value = '';
-});
+    const buttons = especialidadesList.querySelectorAll('.remove-tag-btn');
+    buttons.forEach(btn => {
+        btn.removeEventListener('click', handleRemoveClick);
+        btn.addEventListener('click', handleRemoveClick);
+    });
+}
+
+function handleRemoveClick(e) {
+    const idx = Number(e.currentTarget.getAttribute('data-index'));
+    if (!isNaN(idx)) removeEspecialidade(idx);
+}
+
+window.removeEspecialidade = removeEspecialidade;
+
+if (addEspecialidadeBtn) {
+    addEspecialidadeBtn.addEventListener('click', addEspecialidade);
+}
+
+if (especialidadeInput) {
+    especialidadeInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            addEspecialidade();
+        }
+    });
+}
+
+function loadMockData() {
+    especialidades = ['Design', 'Branding', 'UI/UX'];
+    renderEspecialidades();
+    updateHiddenField();
+}
+
+loadMockData();
