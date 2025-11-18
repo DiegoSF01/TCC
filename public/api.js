@@ -17,7 +17,7 @@ async function callApi(endpoint, method = 'POST', data = {}) {
             options.body = JSON.stringify(data);
         }
 
-        const response = await fetch(`http:// 172.28.16.1:8000${endpoint}`, options);
+        const response = await fetch(`http:172.21.48.1:8000//${endpoint}`, options);
         return await response.json(); // sempre retorna JSON
     } catch (error) {
         console.error('Erro na API:', error);
