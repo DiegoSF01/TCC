@@ -437,7 +437,7 @@ header {
     align-items: center;
 }
 
-.cancelar_top {
+.cancelar {
     background: transparent;
     border: none;
     cursor: pointer;
@@ -447,130 +447,13 @@ header {
     display: flex;
 }
 
-.cancelar_top svg {
+.cancelar svg {
     height: 30px;
     width: 30px;
 }
 
-.cancelar_top:hover {
+.cancelar:hover {
     background-color: var(--muted);
-}
-
-.info-basicas,
-.Sobre,
-.contato,
-.redes-sociais-edi {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    background-color: var(--secondary);
-    padding: 1.5rem;
-    border-radius: var(--radius);
-}
-
-.info-basicas h3,
-.Sobre h3,
-.contato h3,
-.redes-sociais-edi h3 {
-    color: var(--foreground);
-    margin-bottom: 0.5rem;
-}
-
-.info-basicas label,
-.Sobre label,
-.contato label,
-.redes-sociais-edi label {
-    font-size: 0.875rem;
-    font-weight: 600;
-    color: var(--muted-foreground);
-}
-
-.info-basicas input,
-.Sobre input,
-.Sobre textarea,
-.contato input,
-.redes-sociais-edi input {
-    width: 100%;
-    margin-top: 0.25rem;
-    padding: 0.75rem;
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    font-size: 0.9375rem;
-    color: var(--foreground);
-    background-color: var(--card);
-    outline: none;
-    transition: var(--transition-smooth);
-}
-
-.info-basicas input:focus,
-.Sobre input:focus,
-.Sobre textarea:focus,
-.contato input:focus,
-.redes-sociais-edi input:focus {
-    border-color: var(--primary);
-}
-
-.Sobre textarea {
-    min-height: 100px;
-    resize: none;
-}
-
-.line-edi {
-    display: block;
-    width: 100%;
-    height: 1px;
-    background-color: var(--border);
-    margin: 1rem 0;
-    flex-shrink: 0;
-}
-
-.buttons-edi {
-    display: flex;
-    justify-content: flex-end;
-    gap: 1rem;
-}
-
-.limpar,
-.salvar-alteracoes {
-    padding: 0.75rem 1.5rem;
-    border-radius: var(--radius);
-    border: none;
-    font-weight: 600;
-    cursor: pointer;
-    transition: var(--transition-smooth);
-}
-
-.cancelar_bottom {
-    background-color: var(--muted);
-    color: var(--foreground);
-}
-
-.cancelar_bottom:hover {
-    background-color: hsl(214, 32%, 85%);
-}
-
-.salvar-alteracoes {
-    background-color: var(--primary);
-    color: white;
-    box-shadow: var(--shadow-blue);
-}
-
-.salvar-alteracoes:hover {
-    background-color: var(--primary-hover);
-    transform: translateY(-2px);
-}
-
-/* Animação suave ao abrir */
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(10px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
 }
 
 .line {
@@ -1030,49 +913,563 @@ header {
     color: var(--muted-foreground);
 }
 
+/* ========================================
+   MODAL - Overlay e estrutura base
+   ======================================== */
 .modal-overlay {
     position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.7);
-    backdrop-filter: blur(4px);
+    inset: 0;
+    /* top: 0, right: 0, bottom: 0, left: 0 */
+    background-color: rgba(0, 0, 0, 0.5);
+    /* Fundo escuro semi-transparente */
     display: none;
     align-items: center;
     justify-content: center;
-    z-index: 9999;
-    padding: 1rem;
-    animation: fadeIn 0.3s ease;
+    z-index: 50;
+    padding: 20px;
+    height: 100%;
 }
 
-.modal-overlay.active {
+.modal-overlay.ativo{
     display: flex;
 }
 
+/* Card do formulário de registro */
+.register-card {
+    width: 100%;
+    max-width: 48rem;
+    /* 768px */
+    background-color: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 0.75rem;
+    box-shadow: var(--shadow-medium);
+    overflow: hidden;
+}
+
+/* ========================================
+   SELETOR DE TIPO DE CADASTRO
+   ======================================== */
+.tipo-cadastro-selector {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    /* 3 colunas iguais */
+    border-bottom: 1px solid var(--border);
+    background-color: hsl(240, 20%, 98%);
+}
+
+/* Botões de tipo de cadastro */
+.tipo-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 1.25rem 1rem;
+    background: transparent;
+    border: none;
+    border-bottom: 3px solid transparent;
+    /* Indicador de seleção */
+    cursor: pointer;
+    transition: var(--transition-smooth);
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--muted-foreground);
+}
+
+.tipo-btn svg {
+    stroke: var(--muted-foreground);
+    transition: var(--transition-smooth);
+}
+
+.tipo-btn:hover {
+    background-color: hsl(240, 20%, 96%);
+}
+
+/* Estado ativo do botão */
+.tipo-btn.active {
+    color: var(--primary);
+    border-bottom-color: var(--primary);
+    /* Linha azul embaixo */
+    background-color: var(--card);
+}
+
+.tipo-btn.active svg {
+    stroke: var(--primary);
+}
+
+/* ========================================
+   CONTEÚDO DO CARD - Formulários
+   ======================================== */
+.card-content {
+    padding: 2rem;
+    max-height: 90vh;
+    overflow-y: scroll;
+    /* Scroll quando necessário */
+}
+
+/* ========================================
+   FORMULÁRIOS - Estrutura e animação
+   ======================================== */
+.register-form {
+    display: none;
+    /* Oculto por padrão */
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+.register-form.active {
+    display: block;
+    /* Mostra quando ativo */
+}
+
+/* Animação de fade in */
 @keyframes fadeIn {
     from {
         opacity: 0;
+        transform: translateY(10px);
     }
 
     to {
         opacity: 1;
-    }
-}
-
-@keyframes slideUp {
-    from {
-        transform: translateY(20px);
-        opacity: 0;
-    }
-
-    to {
         transform: translateY(0);
-        opacity: 1;
     }
 }
 
-.modal-content {
+/* ========================================
+   UPLOAD DE IMAGENS - Banner e Perfil
+   ======================================== */
+.image-uploads-section {
+    position: relative;
+    margin-bottom: 2rem;
+}
+
+.banner-upload {
+    width: 100%;
+    margin-bottom: 1rem;
+}
+
+/* Upload de foto de perfil (sobrepõe o banner) */
+.profile-upload {
+    position: absolute;
+    bottom: -3rem;
+    left: 2rem;
+    z-index: 10;
+}
+
+.upload-label {
+    display: block;
+    cursor: pointer;
+}
+
+/* Área de upload do banner */
+.banner-label .upload-placeholder {
+    width: 100%;
+    height: 12rem;
+    background: linear-gradient(135deg, hsl(240, 20%, 97%) 0%, hsl(240, 20%, 95%) 100%);
+    border: 2px dashed var(--border);
+    /* Borda tracejada */
+    border-radius: 0.75rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    transition: var(--transition-smooth);
+    overflow: hidden;
+    position: relative;
+}
+
+/* Efeito hover na área de upload */
+.banner-label .upload-placeholder:hover {
+    border-color: var(--primary);
+    background: linear-gradient(135deg, hsl(221, 100%, 98%) 0%, hsl(221, 100%, 96%) 100%);
+}
+
+.banner-label .upload-placeholder svg {
+    stroke: var(--muted-foreground);
+}
+
+.banner-label .upload-placeholder span {
+    color: var(--muted-foreground);
+    font-size: 0.875rem;
+    font-weight: 500;
+}
+
+/* Quando há imagem carregada */
+.banner-label .upload-placeholder.has-image {
+    border: none;
+}
+
+.banner-label .upload-placeholder img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+/* ========================================
+   UPLOAD DE FOTO DE PERFIL - Circular
+   ======================================== */
+.profile-label .upload-placeholder {
+    width: 7rem;
+    height: 7rem;
+    background: var(--card);
+    border: 3px solid var(--card);
+    border-radius: 50%;
+    /* Circular */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: var(--shadow-medium);
+    transition: var(--transition-smooth);
+    overflow: hidden;
+    position: relative;
+    background: linear-gradient(135deg, hsl(240, 20%, 97%) 0%, hsl(240, 20%, 95%) 100%);
+}
+
+.profile-label .upload-placeholder:hover {
+    transform: scale(1.05);
+    /* Aumenta levemente ao hover */
+}
+
+.profile-label .upload-placeholder svg {
+    stroke: var(--muted-foreground);
+}
+
+.profile-label .upload-placeholder.has-image {
+    border-color: var(--primary);
+}
+
+.profile-label .upload-placeholder img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+/* Input file oculto (substitui por labels customizados) */
+.file-input {
+    display: none;
+}
+
+/* ========================================
+   CAMPOS DE FORMULÁRIO
+   ======================================== */
+.form-fields {
+    margin-top: 4rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+/* Label dos campos */
+.form-label {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #292932;
+}
+
+/* Input text padrão */
+.form-input {
+    width: 100%;
+    height: 2.75rem;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.875rem;
+    color: #292932;
+    background-color: #fff;
+    border: 1px solid #e3e3e8;
+    border-radius: 0.375rem;
+    outline: none;
+    transition: all 0.3s;
+}
+
+.form-input::placeholder {
+    color: var(--muted-foreground);
+}
+
+/* Estado focado do input */
+.form-input:focus {
+    border-color: var(--input-focus);
+    box-shadow: 0 0 0 3px hsla(221, 100%, 50%, 0.1);
+    /* Glow azul */
+}
+
+.btn-text,
+.btn-loading {
+    display: inline-block;
+}
+
+/* ========================================
+   NOTIFICAÇÃO TOAST
+   ======================================== */
+.toast {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    padding: 1rem 1.5rem;
+    background-color: var(--foreground);
+    color: white;
+    border-radius: 0.5rem;
+    box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.3);
+    opacity: 0;
+    transform: translateY(20px);
+    /* Começa abaixo */
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    pointer-events: none;
+    z-index: 1000;
+    max-width: 20rem;
+}
+
+/* Toast visível */
+.toast.show {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+}
+
+/* Toast de sucesso (verde) */
+.toast.success {
+    background-color: hsl(142, 76%, 36%);
+}
+
+/* Toast de erro (vermelho) */
+.toast.error {
+    background-color: hsl(0, 84%, 60%);
+}
+
+/* ========================================
+   ESPECIALIDADES - Input e tags
+   ======================================== */
+.especialidades-input-group {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.especialidades-input-group .form-input {
+    flex: 1;
+}
+
+/* Botão de adicionar especialidade */
+.add-btn {
+    width: 2.75rem;
+    height: 2.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--muted);
+    border: none;
+    border-radius: 0.375rem;
+    cursor: pointer;
+    transition: all 0.1s;
+    flex-shrink: 0;
+}
+
+.add-btn:hover svg {
+    stroke: #fff;
+}
+
+.add-btn:hover {
+    opacity: 0.9;
+    transform: scale(1.02);
+    background-color: #0049ff;
+}
+
+/* Lista de especialidades adicionadas */
+.especialidades-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+/* Tag individual de especialidade */
+.especialidade-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 0.75rem;
+    background-color: var(--muted);
+    color: var(--secondary-foreground);
+    border-radius: 0.375rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+}
+
+/* Botão de remover tag */
+.remove-tag-btn {
+    width: 1.25rem;
+    height: 1.25rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    border: none;
+    border-radius: 50%;
+    color: var(--muted-foreground);
+    cursor: pointer;
+    transition: color 0.2s;
+    padding: 0;
+}
+
+.remove-tag-btn:hover svg {
+    stroke: #fff;
+}
+
+.remove-tag-btn:hover {
+    background-color: #ef4343b9;
+}
+
+/* ========================================
+   SELECT PESQUISÁVEL
+   ======================================== */
+.searchable-select {
+    position: relative;
+    width: 100%;
+}
+
+/* Lista de opções do select */
+.options-list {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: #fff;
+    border: 1px solid #ccc;
+    border-top: none;
+    max-height: 180px;
+    overflow-y: auto;
+    z-index: 20;
+    border-radius: 0 0 8px 8px;
+}
+
+.options-list li {
+    padding: 8px 12px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.options-list li:hover {
+    background: #efefef;
+}
+
+/* Classe utilitária para ocultar elementos */
+.hidden {
+    display: none;
+}
+
+/* ========================================
+   REMOVE SPIN BUTTONS DE INPUTS NUMBER
+   ======================================== */
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+input[type=number] {
+    appearance: none;
+}
+
+/* ========================================
+   TEXTAREA - Área de texto
+   ======================================== */
+.form-textarea {
+    width: 100%;
+    padding: 0.75rem;
+    font-size: 0.875rem;
+    color: var(--foreground);
+    background-color: var(--card);
+    border: 1px solid var(--input-border);
+    border-radius: 0.375rem;
+    outline: none;
+    resize: vertical;
+    /* Permite redimensionar verticalmente */
+    transition: var(--transition-smooth);
+    min-height: 120px;
+    resize: none;
+}
+
+.form-textarea::placeholder {
+    color: var(--muted-foreground);
+}
+
+.form-textarea:focus {
+    border-color: var(--input-focus);
+    box-shadow: 0 0 0 3px hsla(221, 100%, 50%, 0.1);
+}
+
+/* ========================================
+   BOTÕES - Primário e Secundário
+   ======================================== */
+
+/* Botão primário (ações principais) */
+.btn-primary {
+    background: var(--primary);
+    color: white;
+    border: none;
+    padding: 0.7rem 1.4rem;
+    border-radius: var(--radius);
+    cursor: pointer;
+    font-weight: 600;
+    transition: 0.25s ease;
+    box-shadow: var(--shadow-sm);
+}
+
+.btn-primary:hover {
+    background: var(--primary-hover);
+    transform: translateY(-2px);
+    /* Eleva o botão */
+}
+
+.btn-primary:active {
+    transform: scale(0.98);
+    /* Efeito de clique */
+}
+
+/* Botão secundário (ações alternativas) */
+.btn-secondary {
+    background-color: var(--muted);
+    color: var(--foreground);
+    border-radius: var(--radius);
+    border: none;
+    padding: 1rem;
+    transition: all 0.3s;
+}
+
+.btn-secondary:hover {
+    background-color: #ef4343;
+    /* Vermelho ao hover */
+    color: #fff;
+    box-shadow: var(--shadow-sm);
+    transform: translateY(-2px);
+}
+
+/* ========================================
+   AÇÕES DO FORMULÁRIO - Botões de ação
+   ======================================== */
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    padding-top: 24px;
+    border-top: 1px solid #e2e8f0;
+    margin-top: 32px;
+}
+
+/* ========================================
+   CONTEÚDO DO MODAL - Área de scroll
+   ======================================== */
+
+.modal-content1 {
     background: var(--card);
     border-radius: var(--radius);
     max-width: 700px;
@@ -1080,68 +1477,124 @@ header {
     max-height: 90vh;
     overflow-y: auto;
     position: relative;
-    animation: slideUp 0.3s ease;
+    animation: all 0.3s ease;
     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
 }
 
-.modal-header {
-    position: sticky;
-    top: 0;
-    background: var(--card);
-    padding: 1.5rem;
-    border-bottom: 1px solid var(--border);
-    display: flex;
-    justify-content: space-between;
+/* ========================================
+   SEÇÕES DO FORMULÁRIO
+   ======================================== */
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+/* Labels do modal */
+.modal-overlay label {
+    display: block;
+    font-size: 0.75;
+    font-weight: 500;
+    color: #475569;
+    margin-bottom: 8px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+}
+
+/* Tag de especialidade */
+.specialty-tag {
+    display: inline-flex;
     align-items: center;
-    z-index: 10;
+    gap: 8px;
+    padding: 6px 12px;
+    background-color: #e2e8f0;
+    border-radius: 20px;
+    font-size: 14px;
+    color: #475569;
 }
 
-.modal-header h3 {
-    font-size: 1.5rem;
-    font-weight: 600;
-    color: var(--foreground);
-    margin: 0;
-}
-
-.modal-close {
-    background: transparent;
+.specialty-tag button {
+    background: none;
     border: none;
     cursor: pointer;
-    padding: 0.5rem;
+    color: #94a3b8;
     display: flex;
     align-items: center;
     justify-content: center;
-    border-radius: var(--radius);
-    transition: var(--transition-smooth);
+    transition: color 0.2s ease;
 }
 
-.modal-close:hover {
-    background: var(--muted);
+.specialty-tag button:hover {
+    color: #64748b;
 }
 
-.modal-close svg {
-    width: 30px;
-    height: 30px;
-    stroke: var(--foreground);
-}
+/* ========================================
+   BOTÕES DO MODAL
+   ======================================== */
 
-.modal-body {
-    padding: 1.5rem;
-}
-
-.modal-image {
-    width: 100%;
-    height: 400px;
-    background: var(--muted);
-    border-radius: var(--radius);
-    margin-bottom: 1.5rem;
-    object-fit: cover;
-}
-
-.modal-description {
+/* Botão sair da conta */
+.btn-SairConta {
+    background-color: var(--muted);
     color: var(--foreground);
-    line-height: 1.6;
+    border-radius: var(--radius);
+    border: none;
+    padding: 1rem;
+    transition: all 0.3s;
     font-size: 1rem;
+    font-weight: 600;
+}
+
+.btn-SairConta:hover {
+    background-color: #ef4343;
+    color: #fff;
+    box-shadow: var(--shadow-sm);
+    transform: translateY(-2px);
+}
+
+/* Botão excluir conta */
+.btn-excluirconta {
+    background-color: var(--muted);
+    color: var(--foreground);
+    border-radius: var(--radius);
+    border: none;
+    padding: 1rem;
+    transition: all 0.3s;
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.btn-excluirconta:hover {
+    background-color: #ef4343;
+    color: #fff;
+    box-shadow: var(--shadow-sm);
+    transform: translateY(-2px);
+}
+
+/* ========================================
+   TEXTAREA - Área de texto
+   ======================================== */
+.form-textarea {
+    width: 100%;
+    padding: 0.75rem;
+    font-size: 0.875rem;
+    color: var(--foreground);
+    background-color: var(--card);
+    border: 1px solid var(--input-border);
+    border-radius: 0.375rem;
+    outline: none;
+    resize: vertical;
+    /* Permite redimensionar verticalmente */
+    transition: var(--transition-smooth);
+    min-height: 120px;
+    resize: none;
+}
+
+.form-textarea::placeholder {
+    color: var(--muted-foreground);
+}
+
+.form-textarea:focus {
+    border-color: var(--input-focus);
+    box-shadow: 0 0 0 3px hsla(221, 100%, 50%, 0.1);
 }
 
 footer {

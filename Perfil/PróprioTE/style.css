@@ -2,7 +2,7 @@
    VARIÁVEIS CSS (Custom Properties)
    Cores, sombras e valores reutilizáveis
    ======================================== */
-   :root {
+:root {
     /* Cores de fundo */
     --background: #f9fbff;
     --foreground: rgb(35, 32, 60);
@@ -49,16 +49,20 @@
    RESET E CONFIGURAÇÕES GLOBAIS
    ======================================== */
 html {
-    font-size: 16px; /* Define o tamanho base da fonte */
-    scrollbar-gutter: auto; /* Espaço para barra de rolagem */
-    scroll-behavior: smooth; /* Rolagem suave em âncoras */
+    font-size: 16px;
+    /* Define o tamanho base da fonte */
+    scrollbar-gutter: auto;
+    /* Espaço para barra de rolagem */
+    scroll-behavior: smooth;
+    /* Rolagem suave em âncoras */
 }
 
 /* Reset de margens, paddings e box-sizing para todos os elementos */
 * {
     margin: 0px;
     padding: 0px;
-    box-sizing: border-box; /* Inclui padding e border no tamanho total */
+    box-sizing: border-box;
+    /* Inclui padding e border no tamanho total */
     color: #2e2d37;
     font-family: "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans",
         "Droid Sans", "Helvetica Neue", sans-serif;
@@ -68,9 +72,11 @@ html {
    BODY - Container principal
    ======================================== */
 body {
-    min-height: 100vh; /* Altura mínima de 100% da viewport */
+    min-height: 100vh;
+    /* Altura mínima de 100% da viewport */
     display: flex;
-    flex-direction: column; /* Layout vertical */
+    flex-direction: column;
+    /* Layout vertical */
     background-color: #fbfbff;
 }
 
@@ -80,11 +86,13 @@ body {
 header {
     background-color: #0049ff;
     width: 100%;
-    height: 4.375rem; /* 70px */
+    height: 4.375rem;
+    /* 70px */
     display: flex;
     justify-content: center;
     align-items: center;
-    position: sticky; /* Fixa no topo ao rolar */
+    position: sticky;
+    /* Fixa no topo ao rolar */
     box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
         0 4px 6px -4px rgba(0, 0, 0, 0.1);
 }
@@ -94,7 +102,8 @@ header {
     height: 100%;
     width: 100%;
     display: flex;
-    gap: 25rem; /* Espaçamento entre seções */
+    gap: 25rem;
+    /* Espaçamento entre seções */
     align-items: center;
     padding-left: 15rem;
 }
@@ -117,7 +126,8 @@ header {
 }
 
 .lg-div img {
-    height: 2.813rem; /* 45px */
+    height: 2.813rem;
+    /* 45px */
 }
 
 /* ========================================
@@ -128,13 +138,16 @@ header {
     display: flex;
     justify-content: center;
     align-items: center;
-    position: relative; /* Para posicionar label e ícone */
+    position: relative;
+    /* Para posicionar label e ícone */
 }
 
 /* Campo de input da busca */
 .buscador {
-    border: 1px solid #ffffff4d; /* Borda semi-transparente */
-    background-color: #ffffff33; /* Fundo semi-transparente */
+    border: 1px solid #ffffff4d;
+    /* Borda semi-transparente */
+    background-color: #ffffff33;
+    /* Fundo semi-transparente */
     color: #fff;
     border-radius: 6px;
     width: 20rem;
@@ -142,7 +155,8 @@ header {
     padding-left: 2%;
     padding-top: 3%;
     font-size: 0.875rem;
-    outline: none; /* Remove outline padrão */
+    outline: none;
+    /* Remove outline padrão */
 }
 
 /* Estado focado do buscador */
@@ -155,7 +169,8 @@ header {
     position: absolute;
     left: 3%;
     font-size: 0.875rem;
-    pointer-events: none; /* Não interfere com cliques */
+    pointer-events: none;
+    /* Não interfere com cliques */
     transition: all 0.3s ease;
     color: #ffffff99;
 }
@@ -164,7 +179,8 @@ header {
 .buscador:focus~.bs-label {
     top: 22%;
     font-weight: 600;
-    font-size: 0.625rem; /* Diminui o tamanho */
+    font-size: 0.625rem;
+    /* Diminui o tamanho */
 }
 
 /* Ícone de busca */
@@ -194,7 +210,8 @@ header {
     display: flex;
     align-items: center;
     gap: 0.25rem;
-    border-right: 1px solid rgba(255, 255, 255, 0.3); /* Separador */
+    border-right: 1px solid rgba(255, 255, 255, 0.3);
+    /* Separador */
     padding-right: 1rem;
     list-style: none;
 }
@@ -212,7 +229,8 @@ header {
 }
 
 .nav-link:hover {
-    background-color: #ffffff1a; /* Fundo semi-transparente ao hover */
+    background-color: #ffffff1a;
+    /* Fundo semi-transparente ao hover */
 }
 
 /* ========================================
@@ -277,7 +295,8 @@ header {
 /* Card principal do perfil (sobrepõe o banner) */
 .card-perfil {
     width: 70%;
-    margin: -5rem auto 0; /* Margem negativa para sobrepor */
+    margin: -5rem auto 0;
+    /* Margem negativa para sobrepor */
     background-color: var(--card);
     border-radius: var(--radius);
     box-shadow: var(--shadow-lg);
@@ -292,7 +311,8 @@ header {
     justify-content: space-between;
     align-items: flex-start;
     gap: 2rem;
-    flex-wrap: wrap; /* Responsivo */
+    flex-wrap: wrap;
+    /* Responsivo */
 }
 
 /* Lado esquerdo - Foto e informações */
@@ -313,7 +333,8 @@ header {
     background-size: cover;
     background-position: center;
     box-shadow: var(--shadow-md);
-    flex-shrink: 0; /* Não encolhe */
+    flex-shrink: 0;
+    /* Não encolhe */
 }
 
 /* Container de informações do perfil */
@@ -323,7 +344,8 @@ header {
 
 /* Nome do profissional */
 .nome-perfil {
-    font-size: 1.875rem; /* 30px */
+    font-size: 1.875rem;
+    /* 30px */
     font-weight: 700;
     color: var(--foreground);
     margin-bottom: 0.5rem;
@@ -331,7 +353,8 @@ header {
 
 /* Profissão/cargo */
 .profissao {
-    font-size: 1.25rem; /* 20px */
+    font-size: 1.25rem;
+    /* 20px */
     color: var(--muted-foreground);
     margin-bottom: 1rem;
 }
@@ -375,7 +398,8 @@ header {
 .star svg {
     width: 1rem;
     height: 1rem;
-    fill: #facc15; /* Amarelo para estrelas */
+    fill: #facc15;
+    /* Amarelo para estrelas */
     stroke: #facc15;
 }
 
@@ -449,8 +473,10 @@ header {
    ======================================== */
 .modal-overlay {
     position: fixed;
-    inset: 0; /* top: 0, right: 0, bottom: 0, left: 0 */
-    background-color: rgba(0, 0, 0, 0.5); /* Fundo escuro semi-transparente */
+    inset: 0;
+    /* top: 0, right: 0, bottom: 0, left: 0 */
+    background-color: rgba(0, 0, 0, 0.5);
+    /* Fundo escuro semi-transparente */
     display: flex;
     align-items: center;
     justify-content: center;
@@ -462,7 +488,8 @@ header {
 /* Card do formulário de registro */
 .register-card {
     width: 100%;
-    max-width: 48rem; /* 768px */
+    max-width: 48rem;
+    /* 768px */
     background-color: var(--card);
     border: 1px solid var(--border);
     border-radius: 0.75rem;
@@ -475,7 +502,8 @@ header {
    ======================================== */
 .tipo-cadastro-selector {
     display: grid;
-    grid-template-columns: repeat(3, 1fr); /* 3 colunas iguais */
+    grid-template-columns: repeat(3, 1fr);
+    /* 3 colunas iguais */
     border-bottom: 1px solid var(--border);
     background-color: hsl(240, 20%, 98%);
 }
@@ -490,7 +518,8 @@ header {
     padding: 1.25rem 1rem;
     background: transparent;
     border: none;
-    border-bottom: 3px solid transparent; /* Indicador de seleção */
+    border-bottom: 3px solid transparent;
+    /* Indicador de seleção */
     cursor: pointer;
     transition: var(--transition-smooth);
     font-size: 0.875rem;
@@ -510,7 +539,8 @@ header {
 /* Estado ativo do botão */
 .tipo-btn.active {
     color: var(--primary);
-    border-bottom-color: var(--primary); /* Linha azul embaixo */
+    border-bottom-color: var(--primary);
+    /* Linha azul embaixo */
     background-color: var(--card);
 }
 
@@ -524,19 +554,22 @@ header {
 .card-content {
     padding: 2rem;
     max-height: 90vh;
-    overflow-y: scroll; /* Scroll quando necessário */
+    overflow-y: scroll;
+    /* Scroll quando necessário */
 }
 
 /* ========================================
    FORMULÁRIOS - Estrutura e animação
    ======================================== */
 .register-form {
-    display: none; /* Oculto por padrão */
+    display: none;
+    /* Oculto por padrão */
     animation: fadeIn 0.3s ease-in-out;
 }
 
 .register-form.active {
-    display: block; /* Mostra quando ativo */
+    display: block;
+    /* Mostra quando ativo */
 }
 
 /* Animação de fade in */
@@ -545,6 +578,7 @@ header {
         opacity: 0;
         transform: translateY(10px);
     }
+
     to {
         opacity: 1;
         transform: translateY(0);
@@ -582,7 +616,8 @@ header {
     width: 100%;
     height: 12rem;
     background: linear-gradient(135deg, hsl(240, 20%, 97%) 0%, hsl(240, 20%, 95%) 100%);
-    border: 2px dashed var(--border); /* Borda tracejada */
+    border: 2px dashed var(--border);
+    /* Borda tracejada */
     border-radius: 0.75rem;
     display: flex;
     flex-direction: column;
@@ -632,7 +667,8 @@ header {
     height: 7rem;
     background: var(--card);
     border: 3px solid var(--card);
-    border-radius: 50%; /* Circular */
+    border-radius: 50%;
+    /* Circular */
     display: flex;
     align-items: center;
     justify-content: center;
@@ -644,7 +680,8 @@ header {
 }
 
 .profile-label .upload-placeholder:hover {
-    transform: scale(1.05); /* Aumenta levemente ao hover */
+    transform: scale(1.05);
+    /* Aumenta levemente ao hover */
 }
 
 .profile-label .upload-placeholder svg {
@@ -713,7 +750,8 @@ header {
 /* Estado focado do input */
 .form-input:focus {
     border-color: var(--input-focus);
-    box-shadow: 0 0 0 3px hsla(221, 100%, 50%, 0.1); /* Glow azul */
+    box-shadow: 0 0 0 3px hsla(221, 100%, 50%, 0.1);
+    /* Glow azul */
 }
 
 .btn-text,
@@ -734,7 +772,8 @@ header {
     border-radius: 0.5rem;
     box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.3);
     opacity: 0;
-    transform: translateY(20px); /* Começa abaixo */
+    transform: translateY(20px);
+    /* Começa abaixo */
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     pointer-events: none;
     z-index: 1000;
@@ -786,7 +825,7 @@ header {
     flex-shrink: 0;
 }
 
-.add-btn:hover svg{
+.add-btn:hover svg {
     stroke: #fff;
 }
 
@@ -832,8 +871,11 @@ header {
     padding: 0;
 }
 
+.remove-tag-btn:hover svg {
+    stroke: #fff;
+}
+
 .remove-tag-btn:hover {
-    color: #fff;
     background-color: #ef4343b9;
 }
 
@@ -878,7 +920,7 @@ header {
 /* ========================================
    REMOVE SPIN BUTTONS DE INPUTS NUMBER
    ======================================== */
-input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-inner-spin-button,
 input[type=number]::-webkit-outer-spin-button {
     -webkit-appearance: none;
     margin: 0;
@@ -900,7 +942,8 @@ input[type=number] {
     border: 1px solid var(--input-border);
     border-radius: 0.375rem;
     outline: none;
-    resize: vertical; /* Permite redimensionar verticalmente */
+    resize: vertical;
+    /* Permite redimensionar verticalmente */
     transition: var(--transition-smooth);
     min-height: 120px;
     resize: none;
@@ -934,11 +977,13 @@ input[type=number] {
 
 .btn-primary:hover {
     background: var(--primary-hover);
-    transform: translateY(-2px); /* Eleva o botão */
+    transform: translateY(-2px);
+    /* Eleva o botão */
 }
 
 .btn-primary:active {
-    transform: scale(0.98); /* Efeito de clique */
+    transform: scale(0.98);
+    /* Efeito de clique */
 }
 
 /* Botão secundário (ações alternativas) */
@@ -952,7 +997,8 @@ input[type=number] {
 }
 
 .btn-secondary:hover {
-    background-color: #ef4343; /* Vermelho ao hover */
+    background-color: #ef4343;
+    /* Vermelho ao hover */
     color: #fff;
     box-shadow: var(--shadow-sm);
     transform: translateY(-2px);
@@ -971,146 +1017,8 @@ input[type=number] {
 }
 
 /* ========================================
-   SEÇÃO DO BANNER - Edição de perfil
-   ======================================== */
-.banner-section {
-    position: relative;
-    height: 200px;
-    background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
-    overflow: hidden;
-    flex-shrink: 0;
-}
-
-.banner-image {
-    width: 100%;
-    height: 100%;
-    background-size: cover;
-    background-position: center;
-}
-
-/* Overlay escuro ao hover */
-.banner-overlay {
-    position: absolute;
-    inset: 0;
-    background-color: rgba(0, 0, 0, 0);
-    transition: background-color 0.3s ease;
-}
-
-.banner-section:hover .banner-overlay {
-    background-color: rgba(0, 0, 0, 0.2);
-}
-
-/* Botão de câmera para trocar banner */
-#camera-banner {
-    position: absolute;
-    bottom: 16px;
-    right: 16px;
-    width: 40px;
-    height: 40px;
-    background-color: white;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    transition: all 0.2s ease;
-}
-
-#camera-banner:hover {
-    background-color: #f1f5f9;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-}
-
-/* ========================================
-   BOTÃO FECHAR - Modal
-   ======================================== */
-.close-btn {
-    position: absolute;
-    top: 16px;
-    right: 16px;
-    background: none;
-    border: none;
-    cursor: pointer;
-    color: #64748b;
-    padding: 8px;
-    border-radius: 50%;
-    transition: all 0.2s ease;
-    width: 40px;
-    height: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.close-btn:hover {
-    background-color: rgba(255, 255, 255, 0.8);
-    color: #1a202c;
-}
-
-/* ========================================
-   AVATAR - Foto de perfil circular
-   ======================================== */
-.avatar-container {
-    position: absolute;
-    top: 6.25rem;
-    width: fit-content;
-    height: fit-content;
-    display: flex;
-    justify-content: flex-start;
-    padding-left: 32px;
-    z-index: 20;
-    flex-shrink: 0;
-}
-
-.avatar {
-    width: 8rem;
-    height: 8rem;
-    border-radius: 50%;
-    border: 4px solid white;
-    background: linear-gradient(135deg, #cbd5e1 0%, #e2e8f0 100%);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-size: cover;
-    background-position: center;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    position: relative;
-}
-
-/* Botão de câmera no avatar */
-#camera-avatar {
-    position: absolute;
-    bottom: 0px;
-    right: 0px;
-    width: 2rem;
-    height: 2rem;
-    background-color: #fff;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    color: white;
-    transition: all 0.2s ease;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-    z-index: 30;
-}
-
-#camera-avatar:hover {
-    background-color: #475569;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-}
-
-/* ========================================
    CONTEÚDO DO MODAL - Área de scroll
    ======================================== */
-.modal-content {
-    overflow-y: auto;
-    flex: 1;
-    padding: 2rem;
-    padding-top: 56px;
-}
 
 .modal-content1 {
     background: var(--card);
@@ -1127,9 +1035,6 @@ input[type=number] {
 /* ========================================
    SEÇÕES DO FORMULÁRIO
    ======================================== */
-.form-section {
-    margin-bottom: 32px;
-}
 
 .form-group {
     margin-bottom: 20px;
@@ -1144,54 +1049,6 @@ input[type=number] {
     margin-bottom: 8px;
     letter-spacing: 0.05em;
     text-transform: uppercase;
-}
-
-/* ========================================
-   TEXTAREA FIELD - Área de texto estilizada
-   ======================================== */
-.textarea-field {
-    width: 100%;
-    padding: 12px;
-    border: 1px solid #cbd5e1;
-    border-radius: 8px;
-    background-color: #f8f9fa;
-    font-size: 16px;
-    color: #1a202c;
-    resize: none;
-    font-family: inherit;
-    transition: all 0.3s ease;
-    outline: none;
-    min-height: 80px;
-}
-
-.textarea-field:focus {
-    border-color: #94a3b8;
-    background-color: white;
-}
-
-.textarea-field::placeholder {
-    color: #94a3b8;
-}
-
-/* ========================================
-   INPUT DE ESPECIALIDADES
-   ======================================== */
-.specialty-input-group {
-    display: flex;
-    gap: 8px;
-    margin-bottom: 12px;
-}
-
-.specialty-input-group .input-field {
-    flex: 1;
-}
-
-/* Container de especialidades */
-.specialties-container {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    min-height: 32px;
 }
 
 /* Tag de especialidade */
@@ -1225,30 +1082,42 @@ input[type=number] {
    BOTÕES DO MODAL
    ======================================== */
 
-/* Botão cancelar no topo */
-.cancelar_top {
-    padding: 0.5rem;
-    border: none;
-    border-radius: var(--radius);
-    display: flex;
-    background-color: transparent;
-    transition: all 0.3s;
-}
-
-.cancelar_top:hover {
+/* Botão sair da conta */
+.btn-SairConta{
     background-color: var(--muted);
+    color: var(--foreground);
+    border-radius: var(--radius);
+    border: none;
+    padding: 1rem;
+    transition: all 0.3s;
+    font-size: 1rem;
+    font-weight: 600;
 }
 
-.cancelar_top svg {
-    width: 1.5rem;
-    height: 1.5rem;
+.btn-SairConta:hover{
+    background-color: #ef4343;
+    color: #fff;
+    box-shadow: var(--shadow-sm);
+    transform: translateY(-2px);
 }
 
-/* Container de botões de edição */
-.buttons-edi {
-    display: flex;
-    gap: 1.5rem;
-    justify-content: end;
+/* Botão excluir conta */
+.btn-excluirconta{
+    background-color: var(--muted);
+    color: var(--foreground);
+    border-radius: var(--radius);
+    border: none;
+    padding: 1rem;
+    transition: all 0.3s;
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.btn-excluirconta:hover{
+    background-color: #ef4343;
+    color: #fff;
+    box-shadow: var(--shadow-sm);
+    transform: translateY(-2px);
 }
 
 /* Botão excluir */
@@ -1266,29 +1135,6 @@ input[type=number] {
     color: #fff;
     box-shadow: var(--shadow-sm);
     transform: translateY(-2px);
-}
-
-/* Botão salvar alterações */
-.salvar-alteracoes {
-    background: var(--primary);
-    color: white;
-    border: none;
-    padding: 0.7rem 1.4rem;
-    border-radius: var(--radius);
-    cursor: pointer;
-    font-weight: 600;
-    transition: 0.25s ease;
-    box-shadow: var(--shadow-sm);
-}
-
-.salvar-alteracoes:hover {
-    background: var(--primary-hover);
-    transform: translateY(-2px);
-}
-
-/* Input oculto */
-.hidden-input {
-    display: none;
 }
 
 /* ========================================
@@ -1345,7 +1191,8 @@ input[type=number] {
     align-items: center;
     justify-content: center;
     border-radius: var(--radius);
-    background-color: hsl(223, 100%, 50%, 0.1); /* Azul claro */
+    background-color: hsl(223, 100%, 50%, 0.1);
+    /* Azul claro */
 }
 
 .PC-icon svg,
@@ -1584,7 +1431,8 @@ input[type=number] {
 }
 
 .btn-add-post svg {
-    transform: rotateZ(45deg); /* Rotação inicial */
+    transform: rotateZ(45deg);
+    /* Rotação inicial */
     transition: all 0.3s;
     height: 15px;
     width: 15px;
@@ -1597,7 +1445,8 @@ input[type=number] {
 }
 
 .btn-add-post:hover svg {
-    transform: rotateZ(135deg); /* Rotação ao hover */
+    transform: rotateZ(135deg);
+    /* Rotação ao hover */
 }
 
 /* ========================================
@@ -1607,7 +1456,8 @@ input[type=number] {
     position: fixed;
     inset: 0;
     background: rgba(0, 0, 0, 0.45);
-    backdrop-filter: blur(6px); /* Efeito de desfoque */
+    backdrop-filter: blur(6px);
+    /* Efeito de desfoque */
     display: none;
     justify-content: center;
     align-items: center;
@@ -1848,7 +1698,8 @@ input[type=number] {
 }
 
 .card-publicacoes:hover {
-    transform: translateY(-4px); /* Eleva o card */
+    transform: translateY(-4px);
+    /* Eleva o card */
     box-shadow: var(--shadow-lg);
 }
 
@@ -1863,7 +1714,8 @@ input[type=number] {
 }
 
 .card-publicacoes:hover .img-card_publicacoes {
-    transform: scale(1.05); /* Zoom na imagem */
+    transform: scale(1.05);
+    /* Zoom na imagem */
 }
 
 /* Informações do card */
@@ -1911,7 +1763,7 @@ input[type=number] {
     box-shadow: var(--shadow-sm);
 }
 
-#editarMidias{
+#editarMidias {
     display: none;
 }
 
@@ -2116,7 +1968,8 @@ input[type=number] {
     flex: 1;
     height: 0.75rem;
     background-color: var(--muted);
-    border-radius: 9999px; /* Bordas completamente arredondadas */
+    border-radius: 9999px;
+    /* Bordas completamente arredondadas */
     overflow: hidden;
     position: relative;
 }
@@ -2128,30 +1981,36 @@ input[type=number] {
     left: 0;
     top: 0;
     height: 100%;
-    background-color: #facc15; /* Amarelo */
+    background-color: #facc15;
+    /* Amarelo */
     border-radius: 9999px;
     transition: width 0.3s ease;
 }
 
 /* Larguras específicas para cada nível de avaliação */
 .progresso-avali.quinto::after {
-    width: 78%; /* 5 estrelas */
+    width: 78%;
+    /* 5 estrelas */
 }
 
 .progresso-avali.quarto::after {
-    width: 18%; /* 4 estrelas */
+    width: 18%;
+    /* 4 estrelas */
 }
 
 .progresso-avali.terceiro::after {
-    width: 3%; /* 3 estrelas */
+    width: 3%;
+    /* 3 estrelas */
 }
 
 .progresso-avali.segundo::after {
-    width: 1%; /* 2 estrelas */
+    width: 1%;
+    /* 2 estrelas */
 }
 
 .progresso-avali.primeiro::after {
-    width: 0%; /* 1 estrela */
+    width: 0%;
+    /* 1 estrela */
 }
 
 /* Porcentagem ao lado da barra */
@@ -2173,8 +2032,10 @@ input[type=number] {
     left: 0;
     right: 0;
     bottom: 0;
-    background: rgba(0, 0, 0, 0.7); /* Fundo escuro semi-transparente */
-    backdrop-filter: blur(4px); /* Desfoque do fundo */
+    background: rgba(0, 0, 0, 0.7);
+    /* Fundo escuro semi-transparente */
+    backdrop-filter: blur(4px);
+    /* Desfoque do fundo */
     display: none;
     align-items: center;
     justify-content: center;
@@ -2192,6 +2053,7 @@ input[type=number] {
     from {
         opacity: 0;
     }
+
     to {
         opacity: 1;
     }
@@ -2202,6 +2064,7 @@ input[type=number] {
         transform: translateY(20px);
         opacity: 0;
     }
+
     to {
         transform: translateY(0);
         opacity: 1;
@@ -2215,7 +2078,8 @@ input[type=number] {
     max-width: 700px;
     width: 100%;
     max-height: 90vh;
-    overflow-y: auto; /* Scroll quando necessário */
+    overflow-y: auto;
+    /* Scroll quando necessário */
     position: relative;
     animation: slideUp 0.3s ease;
     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
@@ -2276,7 +2140,8 @@ input[type=number] {
     background: var(--muted);
     border-radius: var(--radius);
     margin-bottom: 1.5rem;
-    object-fit: cover; /* Mantém proporção da imagem */
+    object-fit: cover;
+    /* Mantém proporção da imagem */
 }
 
 /* Descrição da publicação */
@@ -2290,7 +2155,8 @@ input[type=number] {
    FOOTER - Rodapé do site
    ======================================== */
 footer {
-    background-color: #1e293b; /* Cinza escuro */
+    background-color: #1e293b;
+    /* Cinza escuro */
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -2313,11 +2179,13 @@ footer {
 }
 
 .footer-section {
-    margin-right: 8%; /* Espaçamento entre seções */
+    margin-right: 8%;
+    /* Espaçamento entre seções */
 }
 
 .footer-section.end {
-    margin: 0; /* Última seção sem margem */
+    margin: 0;
+    /* Última seção sem margem */
 }
 
 .footer-section ul li {
@@ -2345,7 +2213,8 @@ footer {
 /* Subtítulo do footer */
 .footer-subtitle {
     font-size: 0.875rem;
-    color: #ffffffb3; /* Branco semi-transparente */
+    color: #ffffffb3;
+    /* Branco semi-transparente */
     line-height: 1.6;
     padding-left: 2%;
     margin-bottom: 7%;
@@ -2358,11 +2227,13 @@ footer {
 }
 
 .social-link svg:hover {
-    transform: translateY(-0.5rem); /* Eleva o ícone ao hover */
+    transform: translateY(-0.5rem);
+    /* Eleva o ícone ao hover */
 }
 
 .social-link svg g {
-    fill: #3a7afe; /* Azul */
+    fill: #3a7afe;
+    /* Azul */
 }
 
 /* Títulos das seções do footer */
@@ -2382,7 +2253,8 @@ footer {
 }
 
 .footer-link:hover {
-    color: #3a7afe; /* Azul ao hover */
+    color: #3a7afe;
+    /* Azul ao hover */
     text-decoration: underline;
 }
 
@@ -2391,12 +2263,14 @@ footer {
    ======================================== */
 .footer-bottom {
     border-top: 1px solid rgba(255, 255, 255, 0.1);
-    background-color: #0f172a; /* Azul escuro */
+    background-color: #0f172a;
+    /* Azul escuro */
     width: 100%;
 }
 
 .footer-bottom-content {
-    max-width: 1280px; /* 80rem */
+    max-width: 1280px;
+    /* 80rem */
     margin: 0 auto;
     padding: 1.5rem 2rem;
     display: flex;
@@ -2433,7 +2307,8 @@ footer {
 }
 
 .footer-bottom-link:hover {
-    color: #2563eb; /* Azul ao hover */
+    color: #2563eb;
+    /* Azul ao hover */
 }
 
 /* ========================================
@@ -2442,6 +2317,7 @@ footer {
 
 /* Telas pequenas (até 640px) */
 @media (max-width: 640px) {
+
     /* Modal ocupa tela inteira */
     .modal-container {
         max-height: 100vh;
