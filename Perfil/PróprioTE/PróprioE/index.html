@@ -5,11 +5,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
-    <title>Feed</title>
+    <title>Perfil</title>
 </head>
 
 <body>
-    <!-- HEADER -->
     <header>
         <div class="nav-container">
             <div class="left-nav-container">
@@ -32,21 +31,21 @@
             <nav class="right-nav-container">
                 <ul class="nav-links">
                     <li><a href="/Home/index.html" class="nav-link">Home</a></li>
-                    <li><a href="/Feed/index.html" class="nav-link" style="background-color: #ffffff1a;">Feed</a></li>
+                    <li><a href="/Feed/index.html" class="nav-link">Feed</a></li>
                     <li><a href="/Trabalhadores/index.html" class="nav-link">Profissionais</a></li>
                     <li><a href="/Empresa/index.html" class="nav-link">Empresas</a></li>
                     <li><a href="/sobre" class="nav-link">Sobre</a></li>
                 </ul>
 
-                <a href="/Perfil/PróprioTE/PróprioT/index.html" class="perfil-btn" style="text-decoration: none;">
+                <button class="perfil-btn" style="background-color: #ffffff1a;">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2">
                         <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path>
                         <circle cx="12" cy="7" r="4"></circle>
                     </svg>
                     <span class="perfil-name">Diego</span>
-                </a>
+                </button>
 
-                <a href="../Favoritos/index.html" class="favoritos-btn" aria-label="Favoritos">
+                <a href="/Favoritos/index.html" class="favoritos-btn" aria-label="Favoritos">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2">
                         <path
                             d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z">
@@ -57,137 +56,415 @@
         </div>
     </header>
 
-    <main>
-        <section class="hero-section">
-            <div class="hero-text">
-                <h1 class="hero-title">Feed</h1>
-                <p class="hero-subtitle">Descubra projetos e trabalhos incríveis</p>
-            </div>
-        </section>
+    <main class="perfil_profisional-main">
+        <section class="img_fundo-card-perfil">
+            <div class="img-fundo"></div>
 
-        <section class="content">
-            <div class="filter-panel">
-                <!-- Título -->
-                <h1 class="filter-title">Filtros</h1>
+            <div class="card-perfil">
+                <div class="top-content-card">
+                    <div class="TCC-left">
+                        <div class="foto-perfil"></div>
 
-                <!-- Buscar por Palavras-Chave -->
-                <div class="filter-section">
-                    <h2 class="section-title">Buscar por Palavras-Chave</h2>
-                    <div class="input-wrapper">
-                        <input type="text" class="filter-input" placeholder="Título, descrição ou tags..."
-                            id="keywordsInput">
-                        <button class="icon-btn">
-                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                                <circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="2" />
-                                <path d="M12 12L16 16" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
-                            </svg>
-                        </button>
-                    </div>
-                </div>
+                        <div class="informacoes-card_perfil">
+                            <h2 class="nome-perfil">Imobiliaria Jaú</h2>
+                            <p class="profissao">Imobiliaria</p>
+                            <div class="mini-informacoes">
+                                <div class="localizacao-TCC">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                        fill="none" stroke="#6d6c7f" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round" class="lucide lucide-map-pin w-4 h-4">
+                                        <path
+                                            d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0">
+                                        </path>
+                                        <circle cx="12" cy="10" r="3"></circle>
+                                    </svg>
+                                    <p class="lc-cidade_estado"><span class="lc-cidade">Jaú</span>, <span
+                                            class="lc-estado">SP</span></span></p>
+                                </div>
 
-                <!-- Profissão/Setor -->
-                <div class="filter-section">
-                    <h2 class="section-title">Profissão/Setor</h2>
-                    <div class="input-wrapper">
-                        <input type="text" class="filter-input" placeholder="Digite para buscar..." id="profissaoInput">
-                        <button class="icon-btn">
-                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                                <circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="2" />
-                                <path d="M12 12L16 16" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
-                            </svg>
-                        </button>
-                    </div>
-                </div>
+                                <div class="avaliacao-TCC">
+                                    <div class="star">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                            stroke-linecap="round" stroke-linejoin="round" class="star pri">
+                                            <path
+                                                d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z">
+                                            </path>
+                                        </svg>
+                                    </div>
 
-                <!-- Tipo de Mídia -->
-                <div class="filter-section">
-                    <h2 class="section-title">Tipo de Mídia</h2>
-                    <div class="checkbox-group">
-                        <label class="checkbox-label">
-                            <input type="checkbox" class="filter-checkbox" id="fotos" checked>
-                            <span class="checkbox-custom"></span>
-                            <span class="checkbox-text">Fotos</span>
-                        </label>
-                        <label class="checkbox-label">
-                            <input type="checkbox" class="filter-checkbox" id="videos">
-                            <span class="checkbox-custom"></span>
-                            <span class="checkbox-text">Vídeos</span>
-                        </label>
-                    </div>
-                </div>
+                                    <span class="quant-stars">4.0</span>
+                                    <p>(<span class="quant-avaliacoes">123</span> <span
+                                            class="quant_avaliacoes-text">avaliações</span>)</p>
+                                </div>
 
+                                <div class="disponibilidade">
+                                    <span class="disponi-text">Disponível</span>
+                                </div>
 
-
-                <!-- Tipo de Conta -->
-                <div class="filter-section">
-                    <h2 class="section-title">Tipo de Conta</h2>
-                    <div class="checkbox-group">
-                        <label class="checkbox-label">
-                            <input type="checkbox" class="filter-checkbox" id="profissional" checked>
-                            <span class="checkbox-custom"></span>
-                            <span class="checkbox-text">Profissional</span>
-                        </label>
-                        <label class="checkbox-label">
-                            <input type="checkbox" class="filter-checkbox" id="empresa" checked>
-                            <span class="checkbox-custom"></span>
-                            <span class="checkbox-text">Empresa</span>
-                        </label>
-                    </div>
-                </div>
-
-                <!-- Ordenar por -->
-                <div class="filter-section">
-                    <h2 class="section-title">Ordenar por</h2>
-                    <select class="filter-select" id="orderBy">
-                        <option value="recent">Mais Recentes</option>
-                        <option value="oldest">Mais Antigos</option>
-                        <option value="popular">Mais Populares</option>
-                        <option value="rating">Melhor Avaliação</option>
-                    </select>
-                </div>
-
-                <!-- Limpar Filtros -->
-                <button class="clear-filters-btn" id="clearFilters">Limpar Filtros</button>
-            </div>
-
-            <div class="feed-grid">
-                <!-- Feed items would go here -->
-                <div class="feed-card">
-                    <div class="feed-card-header">
-                        <img src="/img/fundo.png" alt="Perfil" class="profile-pic">
-                        <div class="profile-info">
-                            <div class="profile-name-row">
-                                <h3 class="profile-name">João Silva</h3>
-                                <span class="account-type profissional">Profissional</span>
-                            </div>
-                            <p class="profile-sector">Desenvolvimento Web</p>
-
-                            <div class="rating">
-                                <svg class="star" width="14" height="14" viewBox="0 0 24 24" fill="#fbbf24">
-                                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
-                                </svg>
-                                <svg class="star" width="14" height="14" viewBox="0 0 24 24" fill="#fbbf24">
-                                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
-                                </svg>
-                                <svg class="star" width="14" height="14" viewBox="0 0 24 24" fill="#fbbf24">
-                                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
-                                </svg>
-                                <svg class="star" width="14" height="14" viewBox="0 0 24 24" fill="#fbbf24">
-                                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
-                                </svg>
-                                <svg class="star" width="14" height="14" viewBox="0 0 24 24" fill="#e5e7eb">
-                                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
-                                </svg>
-                                <span class="rating-text">4.0</span>
+                                <div class="empre_profi">
+                                    <span class="empre_profi-text">Empresa</span>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <div class="feed-card-image">
-                        <img src="/img/fundo2.png" alt="Projeto">
+
+                    <div class="TCC-right">
+                        <button class="btn-editar-perfil">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2">
+                                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                                <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                            </svg>
+                            Editar Perfil
+                        </button>
                     </div>
-                    <div class="feed-card-content">
-                        <h2 class="feed-title">Website Moderno</h2>
-                        <p class="feed-description">Projeto de website responsivo com design moderno e funcional.</p>
+                </div>
+
+                <div class="line"></div>
+
+                <div class="bottom-content-card">
+                    <div class="BCC-top">
+                        <div class="projetos_concluidos">
+                            <div class="PC-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                    fill="none" stroke="#6d6c7f" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round" class="lucide lucide-briefcase w-4 h-4">
+                                    <path d="M16 20V4a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
+                                    <rect width="20" height="14" x="2" y="6" rx="2"></rect>
+                                </svg>
+                            </div>
+
+                            <div class="PC-text">
+                                <span class="projetos_concluidos-text">360</span>
+                                <p>Projetos Concluídos</p>
+                            </div>
+                        </div>
+
+                        <div class="idade_empresa">
+                            <div class="TE-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round" class="lucide lucide-calendar w-6 h-6 text-accent">
+                                    <path d="M8 2v4"></path>
+                                    <path d="M16 2v4"></path>
+                                    <rect width="18" height="18" x="3" y="4" rx="2"></rect>
+                                    <path d="M3 10h18"></path>
+                                </svg>
+                            </div>
+
+                            <div class="TE-text">
+                                <span class="idade_empresa">3 anos</span>
+                                <p>Idade da empresa</p>
+                            </div>
+                        </div>
+
+                        <div class="avaliacao-BCC">
+                            <div class="ABCC-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round" class="star pri">
+                                    <path
+                                        d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z">
+                                    </path>
+                                </svg>
+                            </div>
+
+                            <div class="ABCC-text">
+                                <span class="avaliacao-BCC-text">4.0/5.0</span>
+                                <p>Avaliação Média</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="BCC-bottom">
+                        <button class="button-telefone">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                fill="none" stroke="#6d6c7f" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" class="lucide lucide-phone w-4 h-4">
+                                <path
+                                    d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z">
+                                </path>
+                            </svg>
+
+                            <span class="tl-numero">(14) 99121-1029</span>
+                        </button>
+
+                        <button class="button-email">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                fill="none" stroke="#6d6c7f" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" class="lucide lucide-mail w-4 h-4">
+                                <rect width="20" height="16" x="2" y="4" rx="2"></rect>
+                                <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
+                            </svg>
+
+                            <span class="email-text">diegosf0104@gmail.com</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="mais-informacoes">
+            <div class="nav-perfil">
+                <button class="button-navper ativo" id="btn_navperfil-sobre">Sobre</button>
+                <button class="button-navper" id="btn_navperfil-postagens">Postagens</button>
+                <button class="button-navper" id="btn_navperfil-avaliacao">Avaliações</button>
+            </div>
+
+            <div class="sobre sessao">
+                <div class="sobre_profissional">
+                    <h3>Sobre a Empresa</h3>
+                    <p>Pedreiro com mais de 15 anos de experiência em construção civil, reformas residenciais e
+                        comerciais. Especializado em alvenaria, revestimentos e acabamentos de alta qualidade. Trabalho
+                        com seriedade, pontualidade e compromisso com a satisfação do cliente.
+                    </p>
+                </div>
+
+                <div class="especialidades">
+                    <h3>especialidades</h3>
+                    <div class="span-esp_op">
+                        <span class="especialidade-op">Alvenaria</span>
+                    </div>
+                    <div class="span-esp_op">
+                        <span class="especialidade-op">Revestimento</span>
+                    </div>
+                    <div class="span-esp_op">
+                        <span class="especialidade-op">Fundações</span>
+                    </div>
+                    <div class="span-esp_op">
+                        <span class="especialidade-op">Reformas</span>
+                    </div>
+                    <div class="span-esp_op">
+                        <span class="especialidade-op">Acabamento</span>
+                    </div>
+                </div>
+
+                <div class="informacoes-contato_redes">
+                    <h3>Formas de Contato e Redes Sociais</h3>
+                    <div class="telefone">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                            stroke="#6d6c7f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                            class="lucide lucide-phone w-4 h-4">
+                            <path
+                                d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z">
+                            </path>
+                        </svg>
+
+                        <span class="telefone-numero">(14) 99121-1029</span>
+                    </div>
+
+                    <div class="email">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                            stroke="#6d6c7f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                            class="lucide lucide-mail w-4 h-4">
+                            <rect width="20" height="16" x="2" y="4" rx="2"></rect>
+                            <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
+                        </svg>
+
+                        <span class="email-text">diegosf0104@gmail.com</span>
+                    </div>
+
+                    <div class="instagram">
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                            <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                            <g id="SVGRepo_iconCarrier">
+                                <path fill-rule="evenodd" clip-rule="evenodd"
+                                    d="M12 18C15.3137 18 18 15.3137 18 12C18 8.68629 15.3137 6 12 6C8.68629 6 6 8.68629 6 12C6 15.3137 8.68629 18 12 18ZM12 16C14.2091 16 16 14.2091 16 12C16 9.79086 14.2091 8 12 8C9.79086 8 8 9.79086 8 12C8 14.2091 9.79086 16 12 16Z"
+                                    fill="#0048ff"></path>
+                                <path
+                                    d="M18 5C17.4477 5 17 5.44772 17 6C17 6.55228 17.4477 7 18 7C18.5523 7 19 6.55228 19 6C19 5.44772 18.5523 5 18 5Z"
+                                    fill="#0048ff"></path>
+                                <path fill-rule="evenodd" clip-rule="evenodd"
+                                    d="M1.65396 4.27606C1 5.55953 1 7.23969 1 10.6V13.4C1 16.7603 1 18.4405 1.65396 19.7239C2.2292 20.8529 3.14708 21.7708 4.27606 22.346C5.55953 23 7.23969 23 10.6 23H13.4C16.7603 23 18.4405 23 19.7239 22.346C20.8529 21.7708 21.7708 20.8529 22.346 19.7239C23 18.4405 23 16.7603 23 13.4V10.6C23 7.23969 23 5.55953 22.346 4.27606C21.7708 3.14708 20.8529 2.2292 19.7239 1.65396C18.4405 1 16.7603 1 13.4 1H10.6C7.23969 1 5.55953 1 4.27606 1.65396C3.14708 2.2292 2.2292 3.14708 1.65396 4.27606ZM13.4 3H10.6C8.88684 3 7.72225 3.00156 6.82208 3.0751C5.94524 3.14674 5.49684 3.27659 5.18404 3.43597C4.43139 3.81947 3.81947 4.43139 3.43597 5.18404C3.27659 5.49684 3.14674 5.94524 3.0751 6.82208C3.00156 7.72225 3 8.88684 3 10.6V13.4C3 15.1132 3.00156 16.2777 3.0751 17.1779C3.14674 18.0548 3.27659 18.5032 3.43597 18.816C3.81947 19.5686 4.43139 20.1805 5.18404 20.564C5.49684 20.7234 5.94524 20.8533 6.82208 20.9249C7.72225 20.9984 8.88684 21 10.6 21H13.4C15.1132 21 16.2777 20.9984 17.1779 20.9249C18.0548 20.8533 18.5032 20.7234 18.816 20.564C19.5686 20.1805 20.1805 19.5686 20.564 18.816C20.7234 18.5032 20.8533 18.0548 20.9249 17.1779C20.9984 16.2777 21 15.1132 21 13.4V10.6C21 8.88684 20.9984 7.72225 20.9249 6.82208C20.8533 5.94524 20.7234 5.49684 20.564 5.18404C20.1805 4.43139 19.5686 3.81947 18.816 3.43597C18.5032 3.27659 18.0548 3.14674 17.1779 3.0751C16.2777 3.00156 15.1132 3 13.4 3Z"
+                                    fill="#0048ff"></path>
+                            </g>
+                        </svg>
+
+                        <span class="name_perfil-ins">diego928</span>
+                    </div>
+
+                    <div class="facebook">
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                            <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                            <g id="SVGRepo_iconCarrier">
+                                <path fill-rule="evenodd" clip-rule="evenodd"
+                                    d="M20 1C21.6569 1 23 2.34315 23 4V20C23 21.6569 21.6569 23 20 23H4C2.34315 23 1 21.6569 1 20V4C1 2.34315 2.34315 1 4 1H20ZM20 3C20.5523 3 21 3.44772 21 4V20C21 20.5523 20.5523 21 20 21H15V13.9999H17.0762C17.5066 13.9999 17.8887 13.7245 18.0249 13.3161L18.4679 11.9871C18.6298 11.5014 18.2683 10.9999 17.7564 10.9999H15V8.99992C15 8.49992 15.5 7.99992 16 7.99992H18C18.5523 7.99992 19 7.5522 19 6.99992V6.31393C19 5.99091 18.7937 5.7013 18.4813 5.61887C17.1705 5.27295 16 5.27295 16 5.27295C13.5 5.27295 12 6.99992 12 8.49992V10.9999H10C9.44772 10.9999 9 11.4476 9 11.9999V12.9999C9 13.5522 9.44771 13.9999 10 13.9999H12V21H4C3.44772 21 3 20.5523 3 20V4C3 3.44772 3.44772 3 4 3H20Z"
+                                    fill="#0048ff"></path>
+                            </g>
+                        </svg>
+
+                        <span class="name_perfil-fac">Diego de Souza</span>
+                    </div>
+
+                    <div class="X">
+                        <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" viewBox="0,0,256,256">
+                            <g fill-rule="nonzero" stroke="#0048ff" stroke-width="4" stroke-linecap="butt"
+                                stroke-linejoin="miter" stroke-miterlimit="10" stroke-dasharray="" stroke-dashoffset="0"
+                                font-family="none" font-weight="none" font-size="none" text-anchor="none"
+                                style="mix-blend-mode: normal" fill="none">
+                                <g transform="scale(5.12,5.12)">
+                                    <path
+                                        d="M11,4c-3.866,0 -7,3.134 -7,7v28c0,3.866 3.134,7 7,7h28c3.866,0 7,-3.134 7,-7v-28c0,-3.866 -3.134,-7 -7,-7zM13.08594,13h7.9375l5.63672,8.00977l6.83984,-8.00977h2.5l-8.21094,9.61328l10.125,14.38672h-7.93555l-6.54102,-9.29297l-7.9375,9.29297h-2.5l9.30859,-10.89648zM16.91406,15l14.10742,20h3.06445l-14.10742,-20z">
+                                    </path>
+                                </g>
+                            </g>
+                        </svg>
+
+                        <span class="name_perfil-x">Diego</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="publicacoes">
+                <button class="btn-add-post">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M18 6 6 18"></path>
+                        <path d="m6 6 12 12"></path>
+                    </svg>
+                    Nova publicação
+                </button>
+
+                <div class="home-cards-post">
+                    <div class="card-publicacoes">
+                        <div class="img-card_publicacoes"></div>
+                        <div class="mini-informacoes-card_publicacoes">
+                            <h4>Casa Moderna Finalizada</h4>
+                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Beatae accusamus fuga ut aut in
+                                asperiores ex eligendi. Natus adipisci, explicabo corrupti distinctio nesciunt facere
+                                dolores? Dolorem eius corporis earum tenetur?</p>
+                        </div>
+                    </div>
+
+                    <div class="card-publicacoes">
+                        <div class="img-card_publicacoes"></div>
+                        <div class="mini-informacoes-card_publicacoes">
+                            <h4>Casa Moderna Finalizada</h4>
+                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Beatae accusamus fuga ut aut in
+                                asperiores ex eligendi. Natus adipisci, explicabo corrupti distinctio nesciunt facere
+                                dolores? Dolorem eius corporis earum tenetur?</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="avaliacao">
+                <div class="top-sess_avali">
+                    <div class="top-sess_avali-left">
+                        <h3>Avaliação Geral</h3>
+                        <span class="quant-stars">4.0</span>
+                        <div class="stars">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" class="star pri">
+                                <path
+                                    d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z">
+                                </path>
+                            </svg>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" class="star seg">
+                                <path
+                                    d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z">
+                                </path>
+                            </svg>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" class="star ter">
+                                <path
+                                    d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z">
+                                </path>
+                            </svg>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" class="star qua">
+                                <path
+                                    d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z">
+                                </path>
+                            </svg>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                class="star qui">
+                                <path
+                                    d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z">
+                                </path>
+                            </svg>
+                        </div>
+                        <p>Baseado em <span class="quant-avaliacoes">4</span> <span
+                                class="quant_avaliacoes-text">avaliações</span></p>
+                    </div>
+
+                    <div class="top-sess_avali-right">
+                        <h3>Distribuição de Avaliações</h3>
+
+                        <div class="distri_avali-content">
+                            <div class="distri_avali-content-line" id="quinto">
+                                <p>5 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round" class="star qua">
+                                        <path
+                                            d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z">
+                                        </path>
+                                    </svg></p>
+                                <div class="progresso-avali quinto"></div>
+
+                                <span class="progresso-avali-porcentagem">78%</span>
+                            </div>
+
+                            <div class="distri_avali-content-line" id="quarto">
+                                <p>4 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round" class="star qua">
+                                        <path
+                                            d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z">
+                                        </path>
+                                    </svg></p>
+                                <div class="progresso-avali quarto"></div>
+
+                                <span class="progresso-avali-porcentagem">18%</span>
+                            </div>
+
+                            <div class="distri_avali-content-line" id="terceiro">
+                                <p>3 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round" class="star qua">
+                                        <path
+                                            d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z">
+                                        </path>
+                                    </svg></p>
+                                <div class="progresso-avali terceiro"></div>
+
+                                <span class="progresso-avali-porcentagem">3%</span>
+                            </div>
+
+                            <div class="distri_avali-content-line" id="segundo">
+                                <p>2 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round" class="star qua">
+                                        <path
+                                            d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z">
+                                        </path>
+                                    </svg></p>
+                                <div class="progresso-avali segundo"></div>
+
+                                <span class="progresso-avali-porcentagem">1%</span>
+                            </div>
+
+                            <div class="distri_avali-content-line" id="primeiro">
+                                <p>1 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round" class="star qua">
+                                        <path
+                                            d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z">
+                                        </path>
+                                    </svg></p>
+                                <div class="progresso-avali primeiro"></div>
+
+                                <span class="progresso-avali-porcentagem">0%</span>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -396,6 +673,208 @@
             </div>
         </div>
     </footer>
+
+    <div class="modal-overlay modal-perfil" id="modalPerfil">
+        <div class="register-card">
+            <div class="card-content">
+                <!-- Formulário de Empresa -->
+                <form id="Form" class="register-form active">
+                    <div class="image-uploads-section">
+                        <div class="banner-upload">
+                            <label for="Banner" class="upload-label banner-label">
+                                <div class="upload-placeholder" id="BannerPreview">
+                                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none"
+                                        stroke="currentColor" stroke-width="2">
+                                        <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                                        <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                                        <polyline points="21 15 16 10 5 21"></polyline>
+                                    </svg>
+                                    <span>Adicionar Foto de Banner</span>
+                                </div>
+                            </label>
+                            <input type="file" id="Banner" accept="image/*" class="file-input">
+                        </div>
+
+                        <div class="profile-upload">
+                            <label for="Perfil" class="upload-label profile-label">
+                                <div class="upload-placeholder circular" id="PerfilPreview">
+                                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none"
+                                        stroke="currentColor" stroke-width="2">
+                                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                        <circle cx="12" cy="7" r="4"></circle>
+                                    </svg>
+                                </div>
+                            </label>
+                            <input type="file" id="Perfil" accept="image/*" class="file-input">
+                        </div>
+                    </div>
+
+                    <div class="form-fields">
+                        <div class="form-group">
+                            <label for="name" class="form-label">Nome de Perfil</label>
+                            <input type="text" id="name" class="form-input" placeholder="Digite o nome da empresa">
+                        </div>
+
+                        <div class="form-group">
+                            <div class="searchable-select">
+                                <label for="profission" class="form-label">Área/Setor</label>
+
+                                <input type="text" id="profission" class="form-input"
+                                    placeholder="Digite para buscar..." autocomplete="off">
+
+                                <ul id="AreaOptions" class="options-list hidden">
+                                    <li data-value="construcao">Construção Civil</li>
+                                    <li data-value="pintura">Pintura</li>
+                                    <li data-value="eletrica">Serviços Elétricos</li>
+                                    <li data-value="hidraulica">Hidráulica</li>
+                                    <li data-value="marcenaria">Marcenaria</li>
+                                    <li data-value="jardinagem">Jardinagem</li>
+                                    <li data-value="limpeza">Limpeza / Conservação</li>
+                                    <li data-value="tecnologia">Tecnologia / Desenvolvimento</li>
+                                    <li data-value="outros">Outros</li>
+                                </ul>
+
+                                <!-- Campo enviado no form -->
+                                <input type="hidden" id="Area" name="Area">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="cep" class="form-label">CEP</label>
+                            <input type="text" id="cep" class="form-input" placeholder="00000-000">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="ProjetosConcluidos" class="form-label">Projetos Concluídos</label>
+                            <input type="number" inputmode="numeric" id="ProjetosConcluidos" class="form-input"
+                                placeholder="000">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="TempoExpe" class="form-label">Idade da empresa (em anos)</label>
+                            <input type="number" inputmode="numeric" id="TempoExpe" class="form-input"
+                                placeholder="00">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="sobreEmpresa" class="form-label">Sobre a empresa</label>
+                            <textarea id="sobreEmpresa" class="form-textarea"
+                                placeholder="Fale um pouco sobre a empresa..." rows="5"></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="especialidadeInput" class="form-label">especialidades</label>
+                            <div class="especialidades-input-group">
+                                <input type="text" class="form-input" placeholder="Digite uma especialidade..."
+                                    id="especialidadeInput">
+                                <button type="button" class="add-btn" id="addEspecialidadeBtn">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+                                        stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round">
+                                        <line x1="12" y1="5" x2="12" y2="19"></line>
+                                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                                    </svg>
+                                </button>
+                            </div>
+                            <div id="especialidadesList" class="especialidades-list"></div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="phone" class="form-label">Telefone</label>
+                            <input type="tel" id="phone" class="form-input" placeholder="(DDD) 00000-0000">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="registerEmail" class="form-label">Email</label>
+                            <input type="email" id="registerEmail" class="form-input" placeholder="seu@email.com">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="instagram" class="form-label">Instagram</label>
+                            <input type="text" id="instagram" class="form-input" placeholder="@seuusuario">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="facebook" class="form-label">Facebook</label>
+                            <input type="text" id="facebook" class="form-input" placeholder="Link ou usuário">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="twitter" class="form-label">X (Twitter)</label>
+                            <input type="text" id="twitter" class="form-input" placeholder="@seuusuario">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="SairConta" class="form-label">Sair da Conta</label>
+                            <button class="btn-SairConta" id="SairConta">Sair</button>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="excluirConta" class="form-label">Excluir Conta</label>
+                            <button class="btn-excluirconta" id="excluirConta">Excluir</button>
+                        </div>
+                        
+                        <div class="form-actions">
+                            <button type="button" id="cancelBtn" class="btn btn-secondary">Cancelar</button>
+                            <button type="submit" class="btn btn-primary">Salvar alterações</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-add-publicacao-overlay" id="modalAddPub">
+        <div class="modal-add-publicacao">
+            <div class="map-header">
+                <h2>Adicionar Nova Publicação</h2>
+                <button id="fecharAddPub" class="map-close">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M18 6 6 18"></path>
+                        <path d="m6 6 12 12"></path>
+                    </svg>
+                </button>
+            </div>
+
+            <div class="map-body">
+                <label>Título</label>
+                <input type="text" id="pubTitulo" placeholder="Ex: Casa Moderna Finalizada">
+
+                <label>Descrição</label>
+                <textarea id="pubDescricao" placeholder="Descreva o projeto..."></textarea>
+
+                <label>Mídias (Fotos e Vídeos)</label>
+
+                <label for="pubMidias" class="btn-upload-midia">
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                        <g id="SVGRepo_iconCarrier">
+                            <circle cx="16" cy="8" r="2" stroke="#1C274C" stroke-width="1.5"></circle>
+                            <path
+                                d="M2 12.5001L3.75159 10.9675C4.66286 10.1702 6.03628 10.2159 6.89249 11.0721L11.1822 15.3618C11.8694 16.0491 12.9512 16.1428 13.7464 15.5839L14.0446 15.3744C15.1888 14.5702 16.7369 14.6634 17.7765 15.599L21 18.5001"
+                                stroke="#1C274C" stroke-width="1.5" stroke-linecap="round"></path>
+                            <path
+                                d="M22 12C22 16.714 22 19.0711 20.5355 20.5355C19.0711 22 16.714 22 12 22C7.28595 22 4.92893 22 3.46447 20.5355C2 19.0711 2 16.714 2 12C2 7.28595 2 4.92893 3.46447 3.46447C4.92893 2 7.28595 2 12 2C16.714 2 19.0711 2 20.5355 3.46447C21.5093 4.43821 21.8356 5.80655 21.9449 8"
+                                stroke="#1C274C" stroke-width="1.5" stroke-linecap="round"></path>
+                        </g>
+                    </svg>
+                    Adicionar foto/vídeo
+                </label>
+
+                <input type="file" id="pubMidias" accept="image/*,video/*" multiple>
+
+
+                <div id="previewContainer" class="preview-container"></div>
+            </div>
+
+            <div class="map-footer">
+                <button class="btn-secondary" id="cancelarAddPub">Cancelar</button>
+                <button class="adicionar" id="confirmarAddPub">Adicionar</button>
+            </div>
+        </div>
+    </div>
 
     <script src="script.js"></script>
 </body>

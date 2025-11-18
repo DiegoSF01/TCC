@@ -1,6 +1,25 @@
 // Estado atual da view
 let currentView = 'login'; // 'login', 'register', 'forgot-password'
 
+const En_btn = document.getElementById('En-btn');
+const Ca_btn = document.getElementById('Ca-btn');
+
+Ca_btn.addEventListener('click', function(){
+  if (currentView === 'login') {
+    switchView('register');
+  } else {
+    switchView('login');
+  }
+});
+
+En_btn.addEventListener('click', function(){
+  if (currentView === 'login') {
+    switchView('register');
+  } else {
+    switchView('login');
+  }
+});
+
 // Elementos do DOM
 const loginForm = document.getElementById('loginForm');
 const registerForm = document.getElementById('registerForm');
@@ -37,6 +56,8 @@ function switchView(view) {
   // Atualizar textos e mostrar form correto
   if (view === 'login') {
     loginForm.classList.add('active');
+    En_btn.style.backgroundColor = '#ffffff1a';
+    Ca_btn.style.backgroundColor = 'transparent';
     cardTitle.textContent = 'Login';
     cardDescription.textContent = 'Digite seus dados para acessar';
     mainSubtitle.textContent = 'Acesse sua conta para continuar';
@@ -44,6 +65,8 @@ function switchView(view) {
     switchFormBtn.textContent = 'Cadastre-se';
   } else if (view === 'register') {
     registerForm.classList.add('active');
+    Ca_btn.style.backgroundColor = '#ffffff1a';
+    En_btn.style.backgroundColor = 'transparent';
     cardTitle.textContent = 'Criar Conta';
     cardDescription.textContent = 'Preencha os dados abaixo para se cadastrar';
     mainSubtitle.textContent = 'Crie sua conta e comece agora';

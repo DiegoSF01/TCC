@@ -42,7 +42,7 @@ header.header-passed-hero {
     height: 100%;
     width: 100%;
     display: flex;
-    gap: 25rem;
+    gap: 20rem;
     align-items: center;
     padding-left: 15rem;
 }
@@ -152,7 +152,7 @@ header.header-passed-hero {
     gap: 0.3rem;
 }
 
-.perfil-btn,
+.En-Ca-btn,
 .favoritos-btn {
     display: flex;
     align-items: center;
@@ -166,12 +166,13 @@ header.header-passed-hero {
     transition: background-color 0.2s;
 }
 
-.perfil-btn:hover,
+.En-Ca-btn:hover,
 .favoritos-btn:hover {
     background-color: #ffffff1a;
 }
 
-.perfil-name {
+.En-Ca {
+    font-weight: 600;
     color: #fff;
 }
 

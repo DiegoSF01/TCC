@@ -41,7 +41,7 @@ header.header-passed-hero {
   height: 100%;
   width: 100% ;
   display: flex;
-  gap: 25rem;
+  gap: 20rem;
   align-items: center;
   padding-left: 15rem;
 }

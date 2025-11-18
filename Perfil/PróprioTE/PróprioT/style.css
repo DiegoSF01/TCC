@@ -1,0 +1,2482 @@
+/* ========================================
+   VARIÁVEIS CSS (Custom Properties)
+   Cores, sombras e valores reutilizáveis
+   ======================================== */
+   :root {
+    /* Cores de fundo */
+    --background: #f9fbff;
+    --foreground: rgb(35, 32, 60);
+
+    /* Cores de cards */
+    --card: #ffffff;
+    --card-foreground: #23203c;
+
+    /* Cores primárias (botões principais, links) */
+    --primary: #0048ff;
+    --primary-foreground: #ffffff;
+    --primary-hover: #3d74ff;
+
+    /* Cores secundárias (backgrounds alternativos) */
+    --secondary: #f1f5f9;
+    --secondary-foreground: #23203c;
+
+    /* Cores neutras (textos secundários, backgrounds suaves) */
+    --muted: #e1e7ef;
+    --muted-foreground: #6d6c7f;
+
+    /* Cores de destaque */
+    --accent: #3d74ff;
+    --accent-foreground: #ffffff;
+
+    /* Cores de bordas e inputs */
+    --border: #e5e7eb;
+    --input: #e1e7ef;
+    --input-border: #e3e3e8;
+
+    /* Sombras em níveis */
+    --shadow-sm: 0 1px 3px 0 rgb(0 0 0 / 0.1);
+    --shadow-md: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+    --shadow-lg: 0 15px 30px -5px rgb(0 0 0 / 0.25);
+
+    /* Raio de borda padrão */
+    --radius: 0.625rem;
+
+    /* Transição suave padrão */
+    --transition-smooth: all 0.3s ease;
+}
+
+/* ========================================
+   RESET E CONFIGURAÇÕES GLOBAIS
+   ======================================== */
+html {
+    font-size: 16px; /* Define o tamanho base da fonte */
+    scrollbar-gutter: auto; /* Espaço para barra de rolagem */
+    scroll-behavior: smooth; /* Rolagem suave em âncoras */
+}
+
+/* Reset de margens, paddings e box-sizing para todos os elementos */
+* {
+    margin: 0px;
+    padding: 0px;
+    box-sizing: border-box; /* Inclui padding e border no tamanho total */
+    color: #2e2d37;
+    font-family: "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans",
+        "Droid Sans", "Helvetica Neue", sans-serif;
+}
+
+/* ========================================
+   BODY - Container principal
+   ======================================== */
+body {
+    min-height: 100vh; /* Altura mínima de 100% da viewport */
+    display: flex;
+    flex-direction: column; /* Layout vertical */
+    background-color: #fbfbff;
+}
+
+/* ========================================
+   HEADER - Barra de navegação superior
+   ======================================== */
+header {
+    background-color: #0049ff;
+    width: 100%;
+    height: 4.375rem; /* 70px */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: sticky; /* Fixa no topo ao rolar */
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
+        0 4px 6px -4px rgba(0, 0, 0, 0.1);
+}
+
+/* Container principal da navegação */
+.nav-container {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    gap: 20rem; /* Espaçamento entre seções */
+    align-items: center;
+    padding-left: 15rem;
+}
+
+/* ========================================
+   NAVEGAÇÃO ESQUERDA - Logo e busca
+   ======================================== */
+.left-nav-container {
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    gap: 8%;
+}
+
+/* Container do logo */
+.lg-div {
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.lg-div img {
+    height: 2.813rem; /* 45px */
+}
+
+/* ========================================
+   BUSCADOR - Campo de pesquisa
+   ======================================== */
+.buscador-div {
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative; /* Para posicionar label e ícone */
+}
+
+/* Campo de input da busca */
+.buscador {
+    border: 1px solid #ffffff4d; /* Borda semi-transparente */
+    background-color: #ffffff33; /* Fundo semi-transparente */
+    color: #fff;
+    border-radius: 6px;
+    width: 20rem;
+    height: 65%;
+    padding-left: 2%;
+    padding-top: 3%;
+    font-size: 0.875rem;
+    outline: none; /* Remove outline padrão */
+}
+
+/* Estado focado do buscador */
+.buscador:focus {
+    border: 2px solid #fff;
+}
+
+/* Label flutuante do buscador */
+.bs-label {
+    position: absolute;
+    left: 3%;
+    font-size: 0.875rem;
+    pointer-events: none; /* Não interfere com cliques */
+    transition: all 0.3s ease;
+    color: #ffffff99;
+}
+
+/* Animação do label ao focar no input */
+.buscador:focus~.bs-label {
+    top: 22%;
+    font-weight: 600;
+    font-size: 0.625rem; /* Diminui o tamanho */
+}
+
+/* Ícone de busca */
+.bs-svg {
+    position: relative;
+    right: 10%;
+    cursor: pointer;
+}
+
+.bs-svg path {
+    color: #ffffffcc;
+}
+
+/* ========================================
+   NAVEGAÇÃO DIREITA - Links e perfil
+   ======================================== */
+.right-nav-container {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    height: 100%;
+    gap: 1rem;
+}
+
+/* Lista de links de navegação */
+.nav-links {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    border-right: 1px solid rgba(255, 255, 255, 0.3); /* Separador */
+    padding-right: 1rem;
+    list-style: none;
+}
+
+/* Estilo de cada link */
+.nav-link {
+    height: 100%;
+    padding: 0.781rem 1rem;
+    border-radius: 0.375rem;
+    font-size: 0.9375rem;
+    font-weight: 600;
+    color: white;
+    text-decoration: none;
+    transition: background-color 0.2s;
+}
+
+.nav-link:hover {
+    background-color: #ffffff1a; /* Fundo semi-transparente ao hover */
+}
+
+/* ========================================
+   BOTÕES DE PERFIL E FAVORITOS
+   ======================================== */
+.right-itens {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+}
+
+.perfil-btn,
+.favoritos-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.781rem 1rem;
+    border: none;
+    border-radius: 0.375rem;
+    background-color: transparent;
+    font-size: 0.875rem;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.perfil-btn:hover,
+.favoritos-btn:hover {
+    background-color: #ffffff1a;
+}
+
+.perfil-name {
+    color: #fff;
+}
+
+/* ========================================
+   PERFIL PROFISSIONAL - Container principal
+   ======================================== */
+.perfil_profisional-main {
+    width: 100%;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* ========================================
+   BANNER DE FUNDO E CARD DE PERFIL
+   ======================================== */
+.img_fundo-card-perfil {
+    position: relative;
+    margin-bottom: 2rem;
+    width: 100%;
+}
+
+/* Banner superior com gradiente */
+.img-fundo {
+    height: 16rem;
+    background: linear-gradient(135deg, var(--primary), var(--accent));
+}
+
+/* Card principal do perfil (sobrepõe o banner) */
+.card-perfil {
+    width: 70%;
+    margin: -5rem auto 0; /* Margem negativa para sobrepor */
+    background-color: var(--card);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-lg);
+    padding: 2rem;
+}
+
+/* ========================================
+   TOPO DO CARD - Informações principais
+   ======================================== */
+.top-content-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 2rem;
+    flex-wrap: wrap; /* Responsivo */
+}
+
+/* Lado esquerdo - Foto e informações */
+.TCC-left {
+    display: flex;
+    gap: 1.5rem;
+    flex: 1;
+    align-items: flex-end;
+}
+
+/* Foto de perfil circular */
+.foto-perfil {
+    width: 8rem;
+    height: 8rem;
+    border-radius: 50%;
+    border: 4px solid var(--card);
+    background-color: var(--muted);
+    background-size: cover;
+    background-position: center;
+    box-shadow: var(--shadow-md);
+    flex-shrink: 0; /* Não encolhe */
+}
+
+/* Container de informações do perfil */
+.informacoes-card_perfil {
+    flex: 1;
+}
+
+/* Nome do profissional */
+.nome-perfil {
+    font-size: 1.875rem; /* 30px */
+    font-weight: 700;
+    color: var(--foreground);
+    margin-bottom: 0.5rem;
+}
+
+/* Profissão/cargo */
+.profissao {
+    font-size: 1.25rem; /* 20px */
+    color: var(--muted-foreground);
+    margin-bottom: 1rem;
+}
+
+/* ========================================
+   MINI INFORMAÇÕES - Localização, avaliação, etc
+   ======================================== */
+.mini-informacoes {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    align-items: center;
+    font-size: 0.875rem;
+}
+
+/* Localização e avaliação */
+.localizacao-TCC,
+.avaliacao-TCC {
+    display: flex;
+    align-items: center;
+    gap: 0.375rem;
+    color: var(--muted-foreground);
+}
+
+.localizacao-TCC svg {
+    width: 1rem;
+    height: 1rem;
+}
+
+.lc-cidade_estado {
+    display: flex;
+    gap: 0.25rem;
+}
+
+/* Sistema de estrelas de avaliação */
+.star {
+    display: flex;
+    align-items: center;
+}
+
+.star svg {
+    width: 1rem;
+    height: 1rem;
+    fill: #facc15; /* Amarelo para estrelas */
+    stroke: #facc15;
+}
+
+.quant-stars {
+    font-weight: 600;
+    color: var(--foreground);
+    margin-left: 0.25rem;
+}
+
+/* ========================================
+   BADGES - Disponibilidade e tipo
+   ======================================== */
+.disponibilidade,
+.empre_profi {
+    padding: 0.25rem 0.75rem;
+    border-radius: calc(var(--radius) - 2px);
+    font-size: 0.8125rem;
+    font-weight: 600;
+}
+
+/* Badge verde para disponível */
+.disponibilidade {
+    background-color: #dcfce7;
+    color: #16a34a;
+}
+
+/* Badge azul para tipo de profissional */
+.empre_profi {
+    background-color: #0048ff18;
+    color: var(--secondary-foreground);
+}
+
+/* ========================================
+   LADO DIREITO - Botões de ação
+   ======================================== */
+.TCC-right {
+    display: flex;
+    gap: 0.5rem;
+}
+
+/* Botão de editar perfil */
+.btn-editar-perfil {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.625rem 1.25rem;
+    background-color: transparent;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.btn-editar-perfil svg {
+    stroke: #2e2d37;
+}
+
+/* Efeito hover do botão editar */
+.btn-editar-perfil:hover {
+    border-color: #0048ff;
+    color: #0048ff;
+}
+
+.btn-editar-perfil:hover svg {
+    stroke: #0048ff;
+}
+
+/* ========================================
+   MODAL - Overlay e estrutura base
+   ======================================== */
+.modal-overlay {
+    position: fixed;
+    inset: 0; /* top: 0, right: 0, bottom: 0, left: 0 */
+    background-color: rgba(0, 0, 0, 0.5); /* Fundo escuro semi-transparente */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 50;
+    padding: 20px;
+    height: 100%;
+}
+
+/* Card do formulário de registro */
+.register-card {
+    width: 100%;
+    max-width: 48rem; /* 768px */
+    background-color: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 0.75rem;
+    box-shadow: var(--shadow-medium);
+    overflow: hidden;
+}
+
+/* ========================================
+   SELETOR DE TIPO DE CADASTRO
+   ======================================== */
+.tipo-cadastro-selector {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* 3 colunas iguais */
+    border-bottom: 1px solid var(--border);
+    background-color: hsl(240, 20%, 98%);
+}
+
+/* Botões de tipo de cadastro */
+.tipo-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 1.25rem 1rem;
+    background: transparent;
+    border: none;
+    border-bottom: 3px solid transparent; /* Indicador de seleção */
+    cursor: pointer;
+    transition: var(--transition-smooth);
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--muted-foreground);
+}
+
+.tipo-btn svg {
+    stroke: var(--muted-foreground);
+    transition: var(--transition-smooth);
+}
+
+.tipo-btn:hover {
+    background-color: hsl(240, 20%, 96%);
+}
+
+/* Estado ativo do botão */
+.tipo-btn.active {
+    color: var(--primary);
+    border-bottom-color: var(--primary); /* Linha azul embaixo */
+    background-color: var(--card);
+}
+
+.tipo-btn.active svg {
+    stroke: var(--primary);
+}
+
+/* ========================================
+   CONTEÚDO DO CARD - Formulários
+   ======================================== */
+.card-content {
+    padding: 2rem;
+    max-height: 90vh;
+    overflow-y: scroll; /* Scroll quando necessário */
+}
+
+/* ========================================
+   FORMULÁRIOS - Estrutura e animação
+   ======================================== */
+.register-form {
+    display: none; /* Oculto por padrão */
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+.register-form.active {
+    display: block; /* Mostra quando ativo */
+}
+
+/* Animação de fade in */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ========================================
+   UPLOAD DE IMAGENS - Banner e Perfil
+   ======================================== */
+.image-uploads-section {
+    position: relative;
+    margin-bottom: 2rem;
+}
+
+.banner-upload {
+    width: 100%;
+    margin-bottom: 1rem;
+}
+
+/* Upload de foto de perfil (sobrepõe o banner) */
+.profile-upload {
+    position: absolute;
+    bottom: -3rem;
+    left: 2rem;
+    z-index: 10;
+}
+
+.upload-label {
+    display: block;
+    cursor: pointer;
+}
+
+/* Área de upload do banner */
+.banner-label .upload-placeholder {
+    width: 100%;
+    height: 12rem;
+    background: linear-gradient(135deg, hsl(240, 20%, 97%) 0%, hsl(240, 20%, 95%) 100%);
+    border: 2px dashed var(--border); /* Borda tracejada */
+    border-radius: 0.75rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    transition: var(--transition-smooth);
+    overflow: hidden;
+    position: relative;
+}
+
+/* Efeito hover na área de upload */
+.banner-label .upload-placeholder:hover {
+    border-color: var(--primary);
+    background: linear-gradient(135deg, hsl(221, 100%, 98%) 0%, hsl(221, 100%, 96%) 100%);
+}
+
+.banner-label .upload-placeholder svg {
+    stroke: var(--muted-foreground);
+}
+
+.banner-label .upload-placeholder span {
+    color: var(--muted-foreground);
+    font-size: 0.875rem;
+    font-weight: 500;
+}
+
+/* Quando há imagem carregada */
+.banner-label .upload-placeholder.has-image {
+    border: none;
+}
+
+.banner-label .upload-placeholder img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+/* ========================================
+   UPLOAD DE FOTO DE PERFIL - Circular
+   ======================================== */
+.profile-label .upload-placeholder {
+    width: 7rem;
+    height: 7rem;
+    background: var(--card);
+    border: 3px solid var(--card);
+    border-radius: 50%; /* Circular */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: var(--shadow-medium);
+    transition: var(--transition-smooth);
+    overflow: hidden;
+    position: relative;
+    background: linear-gradient(135deg, hsl(240, 20%, 97%) 0%, hsl(240, 20%, 95%) 100%);
+}
+
+.profile-label .upload-placeholder:hover {
+    transform: scale(1.05); /* Aumenta levemente ao hover */
+}
+
+.profile-label .upload-placeholder svg {
+    stroke: var(--muted-foreground);
+}
+
+.profile-label .upload-placeholder.has-image {
+    border-color: var(--primary);
+}
+
+.profile-label .upload-placeholder img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+/* Input file oculto (substitui por labels customizados) */
+.file-input {
+    display: none;
+}
+
+/* ========================================
+   CAMPOS DE FORMULÁRIO
+   ======================================== */
+.form-fields {
+    margin-top: 4rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+/* Label dos campos */
+.form-label {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #292932;
+}
+
+/* Input text padrão */
+.form-input {
+    width: 100%;
+    height: 2.75rem;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.875rem;
+    color: #292932;
+    background-color: #fff;
+    border: 1px solid #e3e3e8;
+    border-radius: 0.375rem;
+    outline: none;
+    transition: all 0.3s;
+}
+
+.form-input::placeholder {
+    color: var(--muted-foreground);
+}
+
+/* Estado focado do input */
+.form-input:focus {
+    border-color: var(--input-focus);
+    box-shadow: 0 0 0 3px hsla(221, 100%, 50%, 0.1); /* Glow azul */
+}
+
+.btn-text,
+.btn-loading {
+    display: inline-block;
+}
+
+/* ========================================
+   NOTIFICAÇÃO TOAST
+   ======================================== */
+.toast {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    padding: 1rem 1.5rem;
+    background-color: var(--foreground);
+    color: white;
+    border-radius: 0.5rem;
+    box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.3);
+    opacity: 0;
+    transform: translateY(20px); /* Começa abaixo */
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    pointer-events: none;
+    z-index: 1000;
+    max-width: 20rem;
+}
+
+/* Toast visível */
+.toast.show {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+}
+
+/* Toast de sucesso (verde) */
+.toast.success {
+    background-color: hsl(142, 76%, 36%);
+}
+
+/* Toast de erro (vermelho) */
+.toast.error {
+    background-color: hsl(0, 84%, 60%);
+}
+
+/* ========================================
+   ESPECIALIDADES - Input e tags
+   ======================================== */
+.especialidades-input-group {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.especialidades-input-group .form-input {
+    flex: 1;
+}
+
+/* Botão de adicionar especialidade */
+.add-btn {
+    width: 2.75rem;
+    height: 2.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--muted);
+    border: none;
+    border-radius: 0.375rem;
+    cursor: pointer;
+    transition: all 0.1s;
+    flex-shrink: 0;
+}
+
+.add-btn:hover svg{
+    stroke: #fff;
+}
+
+.add-btn:hover {
+    opacity: 0.9;
+    transform: scale(1.02);
+    background-color: #0049ff;
+}
+
+/* Lista de especialidades adicionadas */
+.especialidades-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+/* Tag individual de especialidade */
+.especialidade-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 0.75rem;
+    background-color: var(--muted);
+    color: var(--secondary-foreground);
+    border-radius: 0.375rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+}
+
+/* Botão de remover tag */
+.remove-tag-btn {
+    width: 1.25rem;
+    height: 1.25rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    border: none;
+    border-radius: 50%;
+    color: var(--muted-foreground);
+    cursor: pointer;
+    transition: color 0.2s;
+    padding: 0;
+}
+
+.remove-tag-btn:hover {
+    color: #fff;
+    background-color: #ef4343b9;
+}
+
+/* ========================================
+   SELECT PESQUISÁVEL
+   ======================================== */
+.searchable-select {
+    position: relative;
+    width: 100%;
+}
+
+/* Lista de opções do select */
+.options-list {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: #fff;
+    border: 1px solid #ccc;
+    border-top: none;
+    max-height: 180px;
+    overflow-y: auto;
+    z-index: 20;
+    border-radius: 0 0 8px 8px;
+}
+
+.options-list li {
+    padding: 8px 12px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.options-list li:hover {
+    background: #efefef;
+}
+
+/* Classe utilitária para ocultar elementos */
+.hidden {
+    display: none;
+}
+
+/* ========================================
+   REMOVE SPIN BUTTONS DE INPUTS NUMBER
+   ======================================== */
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+input[type=number] {
+    appearance: none;
+}
+
+/* ========================================
+   TEXTAREA - Área de texto
+   ======================================== */
+.form-textarea {
+    width: 100%;
+    padding: 0.75rem;
+    font-size: 0.875rem;
+    color: var(--foreground);
+    background-color: var(--card);
+    border: 1px solid var(--input-border);
+    border-radius: 0.375rem;
+    outline: none;
+    resize: vertical; /* Permite redimensionar verticalmente */
+    transition: var(--transition-smooth);
+    min-height: 120px;
+    resize: none;
+}
+
+.form-textarea::placeholder {
+    color: var(--muted-foreground);
+}
+
+.form-textarea:focus {
+    border-color: var(--input-focus);
+    box-shadow: 0 0 0 3px hsla(221, 100%, 50%, 0.1);
+}
+
+/* ========================================
+   BOTÕES - Primário e Secundário
+   ======================================== */
+
+/* Botão primário (ações principais) */
+.btn-primary {
+    background: var(--primary);
+    color: white;
+    border: none;
+    padding: 0.7rem 1.4rem;
+    border-radius: var(--radius);
+    cursor: pointer;
+    font-weight: 600;
+    transition: 0.25s ease;
+    box-shadow: var(--shadow-sm);
+}
+
+.btn-primary:hover {
+    background: var(--primary-hover);
+    transform: translateY(-2px); /* Eleva o botão */
+}
+
+.btn-primary:active {
+    transform: scale(0.98); /* Efeito de clique */
+}
+
+/* Botão secundário (ações alternativas) */
+.btn-secondary {
+    background-color: var(--muted);
+    color: var(--foreground);
+    border-radius: var(--radius);
+    border: none;
+    padding: 1rem;
+    transition: all 0.3s;
+}
+
+.btn-secondary:hover {
+    background-color: #ef4343; /* Vermelho ao hover */
+    color: #fff;
+    box-shadow: var(--shadow-sm);
+    transform: translateY(-2px);
+}
+
+/* ========================================
+   AÇÕES DO FORMULÁRIO - Botões de ação
+   ======================================== */
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    padding-top: 24px;
+    border-top: 1px solid #e2e8f0;
+    margin-top: 32px;
+}
+
+/* ========================================
+   SEÇÃO DO BANNER - Edição de perfil
+   ======================================== */
+.banner-section {
+    position: relative;
+    height: 200px;
+    background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
+    overflow: hidden;
+    flex-shrink: 0;
+}
+
+.banner-image {
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+}
+
+/* Overlay escuro ao hover */
+.banner-overlay {
+    position: absolute;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0);
+    transition: background-color 0.3s ease;
+}
+
+.banner-section:hover .banner-overlay {
+    background-color: rgba(0, 0, 0, 0.2);
+}
+
+/* Botão de câmera para trocar banner */
+#camera-banner {
+    position: absolute;
+    bottom: 16px;
+    right: 16px;
+    width: 40px;
+    height: 40px;
+    background-color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    transition: all 0.2s ease;
+}
+
+#camera-banner:hover {
+    background-color: #f1f5f9;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* ========================================
+   BOTÃO FECHAR - Modal
+   ======================================== */
+.close-btn {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #64748b;
+    padding: 8px;
+    border-radius: 50%;
+    transition: all 0.2s ease;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.close-btn:hover {
+    background-color: rgba(255, 255, 255, 0.8);
+    color: #1a202c;
+}
+
+/* ========================================
+   AVATAR - Foto de perfil circular
+   ======================================== */
+.avatar-container {
+    position: absolute;
+    top: 6.25rem;
+    width: fit-content;
+    height: fit-content;
+    display: flex;
+    justify-content: flex-start;
+    padding-left: 32px;
+    z-index: 20;
+    flex-shrink: 0;
+}
+
+.avatar {
+    width: 8rem;
+    height: 8rem;
+    border-radius: 50%;
+    border: 4px solid white;
+    background: linear-gradient(135deg, #cbd5e1 0%, #e2e8f0 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-size: cover;
+    background-position: center;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    position: relative;
+}
+
+/* Botão de câmera no avatar */
+#camera-avatar {
+    position: absolute;
+    bottom: 0px;
+    right: 0px;
+    width: 2rem;
+    height: 2rem;
+    background-color: #fff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: white;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    z-index: 30;
+}
+
+#camera-avatar:hover {
+    background-color: #475569;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+/* ========================================
+   CONTEÚDO DO MODAL - Área de scroll
+   ======================================== */
+.modal-content {
+    overflow-y: auto;
+    flex: 1;
+    padding: 2rem;
+    padding-top: 56px;
+}
+
+.modal-content1 {
+    background: var(--card);
+    border-radius: var(--radius);
+    max-width: 700px;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+    position: relative;
+    animation: all 0.3s ease;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+}
+
+/* ========================================
+   SEÇÕES DO FORMULÁRIO
+   ======================================== */
+.form-section {
+    margin-bottom: 32px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+/* Labels do modal */
+.modal-overlay label {
+    display: block;
+    font-size: 0.75;
+    font-weight: 500;
+    color: #475569;
+    margin-bottom: 8px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+}
+
+/* ========================================
+   TEXTAREA FIELD - Área de texto estilizada
+   ======================================== */
+.textarea-field {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    background-color: #f8f9fa;
+    font-size: 16px;
+    color: #1a202c;
+    resize: none;
+    font-family: inherit;
+    transition: all 0.3s ease;
+    outline: none;
+    min-height: 80px;
+}
+
+.textarea-field:focus {
+    border-color: #94a3b8;
+    background-color: white;
+}
+
+.textarea-field::placeholder {
+    color: #94a3b8;
+}
+
+/* ========================================
+   INPUT DE ESPECIALIDADES
+   ======================================== */
+.specialty-input-group {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 12px;
+}
+
+.specialty-input-group .input-field {
+    flex: 1;
+}
+
+/* Container de especialidades */
+.specialties-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    min-height: 32px;
+}
+
+/* Tag de especialidade */
+.specialty-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 12px;
+    background-color: #e2e8f0;
+    border-radius: 20px;
+    font-size: 14px;
+    color: #475569;
+}
+
+.specialty-tag button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #94a3b8;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color 0.2s ease;
+}
+
+.specialty-tag button:hover {
+    color: #64748b;
+}
+
+/* ========================================
+   BOTÕES DO MODAL
+   ======================================== */
+
+/* Botão sair da conta */
+.btn-SairConta{
+    background-color: var(--muted);
+    color: var(--foreground);
+    border-radius: var(--radius);
+    border: none;
+    padding: 1rem;
+    transition: all 0.3s;
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.btn-SairConta:hover{
+    background-color: #ef4343;
+    color: #fff;
+    box-shadow: var(--shadow-sm);
+    transform: translateY(-2px);
+}
+
+/* Botão excluir conta */
+.btn-excluirconta{
+    background-color: var(--muted);
+    color: var(--foreground);
+    border-radius: var(--radius);
+    border: none;
+    padding: 1rem;
+    transition: all 0.3s;
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.btn-excluirconta:hover{
+    background-color: #ef4343;
+    color: #fff;
+    box-shadow: var(--shadow-sm);
+    transform: translateY(-2px);
+}
+
+/* Botão excluir */
+.Excluir {
+    background-color: var(--muted);
+    color: var(--foreground);
+    border-radius: var(--radius);
+    border: none;
+    padding: 1rem;
+    transition: all 0.3s;
+}
+
+.Excluir:hover {
+    background-color: #ef4343;
+    color: #fff;
+    box-shadow: var(--shadow-sm);
+    transform: translateY(-2px);
+}
+
+/* Botão salvar alterações */
+.salvar-alteracoes {
+    background: var(--primary);
+    color: white;
+    border: none;
+    padding: 0.7rem 1.4rem;
+    border-radius: var(--radius);
+    cursor: pointer;
+    font-weight: 600;
+    transition: 0.25s ease;
+    box-shadow: var(--shadow-sm);
+}
+
+.salvar-alteracoes:hover {
+    background: var(--primary-hover);
+    transform: translateY(-2px);
+}
+
+/* Input oculto */
+.hidden-input {
+    display: none;
+}
+
+/* ========================================
+   ÍCONES
+   ======================================== */
+.icon {
+    width: 20px;
+    height: 20px;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+/* ========================================
+   LINHA DIVISÓRIA
+   ======================================== */
+.line {
+    height: 1px;
+    background-color: var(--border);
+    margin: 1.5rem 0;
+}
+
+/* ========================================
+   PARTE INFERIOR DO CARD - Estatísticas
+   ======================================== */
+.bottom-content-card {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+/* Topo das estatísticas (grid responsivo) */
+.BCC-top {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+}
+
+/* Cards de estatísticas */
+.projetos_concluidos,
+.tempo_experiencia,
+.avaliacao-BCC {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+/* Ícones das estatísticas */
+.PC-icon,
+.TE-icon,
+.ABCC-icon {
+    width: 3rem;
+    height: 3rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--radius);
+    background-color: hsl(223, 100%, 50%, 0.1); /* Azul claro */
+}
+
+.PC-icon svg,
+.TE-icon svg,
+.ABCC-icon svg {
+    width: 1.5rem;
+    height: 1.5rem;
+    stroke: var(--primary);
+}
+
+/* Ícone de avaliação (amarelo) */
+.ABCC-icon {
+    background-color: #fef3c7;
+}
+
+.ABCC-icon svg {
+    fill: #d97706;
+    stroke: #d97706;
+}
+
+/* Textos das estatísticas */
+.projetos_concluidos-text,
+.tempo_experiencia-text,
+.avaliacao-BCC-text {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--foreground);
+    display: block;
+    line-height: 1;
+    margin-bottom: 0.4rem;
+}
+
+.projetos_concluidos p,
+.tempo_experiencia p,
+.avaliacao-BCC p {
+    font-size: 0.875rem;
+    color: var(--muted-foreground);
+    line-height: 1;
+}
+
+/* ========================================
+   BOTÕES DE CONTATO - Telefone e Email
+   ======================================== */
+.BCC-bottom {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+}
+
+.button-telefone,
+.button-email {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.625rem 1rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background-color: var(--card);
+    color: var(--foreground);
+    font-size: 0.875rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition-smooth);
+}
+
+.button-telefone:hover,
+.button-email:hover {
+    background-color: var(--secondary);
+    border-color: var(--primary);
+}
+
+.button-telefone svg,
+.button-email svg {
+    stroke: var(--primary);
+}
+
+/* ========================================
+   MAIS INFORMAÇÕES - Abas de navegação
+   ======================================== */
+.mais-informacoes {
+    margin-top: 2rem;
+    width: 70%;
+}
+
+/* Navegação entre seções */
+.nav-perfil {
+    display: flex;
+    gap: 0.5rem;
+    background-color: var(--muted);
+    padding: 0.25rem;
+    border-radius: var(--radius);
+    margin-bottom: 2rem;
+}
+
+.nav-perfil .button-navper {
+    flex: 1;
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: calc(var(--radius) - 2px);
+    background-color: transparent;
+    color: var(--muted-foreground);
+    font-size: 0.9375rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition-smooth);
+}
+
+.nav-perfil .button-navper:hover {
+    color: var(--foreground);
+}
+
+/* Botão ativo */
+.nav-perfil .button-navper.ativo {
+    background-color: var(--card);
+    color: var(--foreground);
+    box-shadow: var(--shadow-sm);
+}
+
+/* ========================================
+   SEÇÕES DO PERFIL - Sobre, Publicações, Avaliações
+   ======================================== */
+
+/* Oculta seções por padrão */
+.sobre {
+    display: none;
+}
+
+.publicacoes {
+    display: none;
+}
+
+.avaliacao {
+    display: none;
+}
+
+/* Mostra seção ativa */
+.sobre.sessao {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+/* ========================================
+   CARDS DE INFORMAÇÃO - Sobre, Especialidades, Contato
+   ======================================== */
+.sobre_profissional,
+.especialidades,
+.informacoes-contato_redes {
+    background-color: var(--card);
+    padding: 1.5rem;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-sm);
+}
+
+.sobre_profissional h3,
+.especialidades h3,
+.informacoes-contato_redes h3 {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--foreground);
+    margin-bottom: 1rem;
+    text-transform: capitalize;
+}
+
+.sobre_profissional p {
+    color: var(--muted-foreground);
+    line-height: 1.7;
+}
+
+/* Tags de especialidades */
+.span-esp_op {
+    padding: 0.5rem 1rem;
+    background-color: var(--secondary);
+    border-radius: calc(var(--radius) - 2px);
+    display: inline-block;
+}
+
+.especialidade-op {
+    color: var(--secondary-foreground);
+    font-size: 0.875rem;
+    font-weight: 500;
+}
+
+/* ========================================
+   INFORMAÇÕES DE CONTATO E REDES SOCIAIS
+   ======================================== */
+.telefone,
+.email,
+.instagram,
+.facebook,
+.X {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem 0;
+    color: var(--muted-foreground);
+    font-size: 0.9375rem;
+}
+
+.telefone svg,
+.email svg {
+    width: 1.25rem;
+    height: 1.25rem;
+    stroke: var(--primary);
+}
+
+.instagram svg,
+.facebook svg,
+.X svg {
+    width: 1.5rem;
+    height: 1.5rem;
+    fill: var(--foreground);
+}
+
+/* ========================================
+   SEÇÃO DE PUBLICAÇÕES
+   ======================================== */
+.publicacoes.sessao {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+/* Botão adicionar publicação */
+.btn-add-post {
+    background-color: transparent;
+    border: 2px dashed var(--border);
+    border-radius: var(--radius);
+    padding: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    color: #6d6c7f;
+    transition: all 0.3s;
+}
+
+.btn-add-post svg {
+    transform: rotateZ(45deg); /* Rotação inicial */
+    transition: all 0.3s;
+    height: 15px;
+    width: 15px;
+    stroke: #6d6c7f;
+}
+
+.btn-add-post:hover {
+    background-color: #e1e7ef80;
+    border-color: #0048ff80;
+}
+
+.btn-add-post:hover svg {
+    transform: rotateZ(135deg); /* Rotação ao hover */
+}
+
+/* ========================================
+   MODAL DE CRIAR PUBLICAÇÃO
+   ======================================== */
+.modal-add-publicacao-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.45);
+    backdrop-filter: blur(6px); /* Efeito de desfoque */
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 15000;
+}
+
+.modal-add-publicacao-overlay.active {
+    display: flex;
+}
+
+.modal-add-publicacao {
+    background: var(--card);
+    border-radius: var(--radius);
+    padding: 2rem;
+    width: 600px;
+    max-width: 90%;
+    box-shadow: var(--shadow-lg);
+    animation: fadeIn 0.25s ease;
+}
+
+/* ========================================
+   HEADER DO MODAL DE PUBLICAÇÃO
+   ======================================== */
+.map-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.map-header h2 {
+    font-size: 1.3rem;
+    color: var(--foreground);
+    margin: 0;
+}
+
+.map-close {
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    font-size: 1.7rem;
+    font-weight: bold;
+    color: var(--foreground);
+    transition: 0.2s ease;
+    border-radius: var(--radius);
+    padding: 0.5rem;
+    display: flex;
+}
+
+.map-close:hover {
+    background-color: var(--muted);
+}
+
+/* ========================================
+   CORPO DO MODAL DE PUBLICAÇÃO
+   ======================================== */
+.map-body {
+    margin-top: 1.2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.map-body label {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--muted-foreground);
+}
+
+.map-body input,
+.map-body textarea {
+    width: 100%;
+    padding: 0.75rem;
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    background: var(--secondary);
+    color: var(--foreground);
+    outline: none;
+    font-size: 0.95rem;
+    transition: 0.25s ease;
+}
+
+.map-body input:focus,
+.map-body textarea:focus {
+    border-color: var(--primary);
+    box-shadow: var(--shadow-sm);
+}
+
+.map-body textarea {
+    height: 110px;
+    resize: none;
+}
+
+/* ========================================
+   PREVIEW DAS MÍDIAS (Imagens/Vídeos)
+   ======================================== */
+.preview-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 10px;
+}
+
+.preview-item {
+    width: 200px;
+    height: 180px;
+    border-radius: 10px;
+    overflow: hidden;
+    position: relative;
+    background: var(--secondary);
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow);
+}
+
+.preview-item img,
+.preview-item video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Botão de remover mídia */
+.preview-remove {
+    position: absolute;
+    top: 10px;
+    right: 6px;
+    background: rgba(0, 0, 0, 0.65);
+    border-radius: 50%;
+    width: 28px;
+    height: 28px;
+    border: none;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: 0.2s ease;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.preview-remove svg {
+    height: 1rem;
+    width: 1rem;
+    stroke: #fff;
+    display: block;
+}
+
+.preview-remove:hover {
+    background: rgba(255, 0, 0, 0.85);
+}
+
+/* ========================================
+   RODAPÉ DO MODAL DE PUBLICAÇÃO
+   ======================================== */
+.map-footer {
+    margin-top: 1.5rem;
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+}
+
+.adicionar {
+    background: var(--primary);
+    color: white;
+    border: none;
+    padding: 0.7rem 1.4rem;
+    border-radius: var(--radius);
+    cursor: pointer;
+    font-weight: 600;
+    transition: 0.25s ease;
+    box-shadow: var(--shadow-sm);
+}
+
+.adicionar:hover {
+    background: var(--primary-hover);
+    transform: translateY(-2px);
+}
+
+/* ========================================
+   INPUT DE UPLOAD DE MÍDIA
+   ======================================== */
+
+/* Oculta o input real */
+#pubMidias {
+    display: none;
+}
+
+/* Botão estilizado para upload */
+.btn-upload-midia {
+    display: inline-flex;
+    align-items: center;
+    gap: .6rem;
+    background: var(--secondary);
+    border: 1px solid var(--border);
+    padding: 0.7rem 1.1rem;
+    border-radius: var(--radius);
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: var(--foreground);
+    transition: 0.25s ease;
+    box-shadow: var(--shadow);
+}
+
+.btn-upload-midia svg {
+    height: 1.5rem;
+    width: 1.5rem;
+    stroke: #2e2d37;
+}
+
+.btn-upload-midia:hover {
+    background: var(--primary);
+    color: white;
+    border-color: var(--primary);
+    box-shadow: var(--shadow-sm);
+}
+
+.btn-upload-midia:hover path,
+.btn-upload-midia:hover circle {
+    stroke: white;
+}
+
+/* ========================================
+   GRID DE CARDS DE PUBLICAÇÕES
+   ======================================== */
+.home-cards-post {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 1.5rem;
+}
+
+/* Card individual de publicação */
+.card-publicacoes {
+    background-color: var(--card);
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+    transition: var(--transition-smooth);
+    cursor: pointer;
+}
+
+.card-publicacoes:hover {
+    transform: translateY(-4px); /* Eleva o card */
+    box-shadow: var(--shadow-lg);
+}
+
+/* Imagem do card */
+.img-card_publicacoes {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    background-color: var(--muted);
+    background-size: cover;
+    background-position: center;
+    transition: var(--transition-smooth);
+}
+
+.card-publicacoes:hover .img-card_publicacoes {
+    transform: scale(1.05); /* Zoom na imagem */
+}
+
+/* Informações do card */
+.mini-informacoes-card_publicacoes {
+    padding: 1rem;
+}
+
+.mini-informacoes-card_publicacoes h4 {
+    font-size: 1.125rem;
+    font-weight: 700;
+    color: var(--foreground);
+    margin-bottom: 0.5rem;
+}
+
+.mini-informacoes-card_publicacoes p {
+    font-size: 0.875rem;
+    color: var(--muted-foreground);
+    line-height: 1.6;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* ========================================
+   MODAL DE EDITAR PUBLICAÇÃO
+   ======================================== */
+
+/* Botão editar publicação */
+.editar-publicacao {
+    background-color: var(--primary);
+    color: #fff;
+    font-size: 0.875rem;
+    font-weight: 600;
+    border: none;
+    border-radius: var(--radius);
+    padding: 0.4rem 0.9rem;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    margin-right: 0.5rem;
+}
+
+.editar-publicacao:hover {
+    background-color: var(--primary-hover);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-sm);
+}
+
+#editarMidias{
+    display: none;
+}
+
+.modal-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.modal-header h3 {
+    color: var(--foreground);
+    font-size: 1.2rem;
+    font-weight: 700;
+}
+
+/* Fundo fosco do modal */
+.fundo-fosco {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(8px);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 10000;
+}
+
+.fundo-fosco.active {
+    display: flex;
+}
+
+/* Container do modal de edição */
+.editar-publicacao-container {
+    background: var(--card);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-lg);
+    padding: 2rem;
+    width: 500px;
+    max-width: 90%;
+    animation: fadeIn 0.3s ease;
+}
+
+.ep-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Formulário de edição */
+.ep-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-top: 1.5rem;
+}
+
+.ep-form label {
+    font-weight: 600;
+    color: var(--foreground);
+}
+
+.ep-form input,
+.ep-form textarea {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--secondary);
+    color: var(--foreground);
+    resize: none;
+    outline: none;
+    transition: var(--transition-smooth);
+}
+
+.ep-form input:focus,
+.ep-form textarea:focus {
+    border-color: var(--primary);
+}
+
+/* ========================================
+   SEÇÃO DE AVALIAÇÕES
+   ======================================== */
+.avaliacao.sessao {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+/* Topo da seção de avaliações */
+.top-sess_avali {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 1.5rem;
+}
+
+.top-sess_avali-left,
+.top-sess_avali-right {
+    background-color: var(--card);
+    padding: 1.5rem;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-sm);
+}
+
+.top-sess_avali-left {
+    text-align: center;
+}
+
+.top-sess_avali-left h3,
+.top-sess_avali-right h3 {
+    font-size: 1.125rem;
+    font-weight: 700;
+    color: var(--foreground);
+    margin-bottom: 1rem;
+}
+
+/* Nota geral grande */
+.top-sess_avali-left .quant-stars {
+    display: block;
+    font-size: 3.75rem;
+    font-weight: 700;
+    color: var(--foreground);
+    margin: 0.5rem 0;
+}
+
+/* Estrelas de avaliação */
+.top-sess_avali-left .stars {
+    display: flex;
+    justify-content: center;
+    gap: 0.25rem;
+    margin: 1rem 0;
+}
+
+.top-sess_avali-left .stars svg {
+    width: 1.5rem;
+    height: 1.5rem;
+}
+
+/* Estrelas preenchidas (amarelo) */
+.top-sess_avali-left .stars .pri,
+.top-sess_avali-left .stars .seg,
+.top-sess_avali-left .stars .ter,
+.top-sess_avali-left .stars .qua {
+    fill: #facc15;
+    stroke: #facc15;
+}
+
+/* Estrela vazia (cinza) */
+.top-sess_avali-left .stars .qui {
+    fill: none;
+    stroke: #d1d5db;
+}
+
+.top-sess_avali-left p {
+    color: var(--muted-foreground);
+    font-size: 0.9375rem;
+}
+
+/* ========================================
+   DISTRIBUIÇÃO DAS AVALIAÇÕES
+   ======================================== */
+.distri_avali-content {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.distri_avali-content-line {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.distri_avali-content-line p {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    width: 5rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--foreground);
+}
+
+.distri_avali-content-line svg {
+    width: 1rem;
+    height: 1rem;
+    fill: #facc15;
+    stroke: #facc15;
+}
+
+/* ========================================
+   DISTRIBUIÇÃO DAS AVALIAÇÕES (continuação)
+   ======================================== */
+
+/* Barra de progresso */
+.progresso-avali {
+    flex: 1;
+    height: 0.75rem;
+    background-color: var(--muted);
+    border-radius: 9999px; /* Bordas completamente arredondadas */
+    overflow: hidden;
+    position: relative;
+}
+
+/* Preenchimento da barra de progresso */
+.progresso-avali::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    background-color: #facc15; /* Amarelo */
+    border-radius: 9999px;
+    transition: width 0.3s ease;
+}
+
+/* Larguras específicas para cada nível de avaliação */
+.progresso-avali.quinto::after {
+    width: 78%; /* 5 estrelas */
+}
+
+.progresso-avali.quarto::after {
+    width: 18%; /* 4 estrelas */
+}
+
+.progresso-avali.terceiro::after {
+    width: 3%; /* 3 estrelas */
+}
+
+.progresso-avali.segundo::after {
+    width: 1%; /* 2 estrelas */
+}
+
+.progresso-avali.primeiro::after {
+    width: 0%; /* 1 estrela */
+}
+
+/* Porcentagem ao lado da barra */
+.progresso-avali-porcentagem {
+    width: 3rem;
+    text-align: right;
+    font-size: 0.875rem;
+    color: var(--muted-foreground);
+}
+
+/* ========================================
+   MODAL DE VISUALIZAÇÃO DE PUBLICAÇÃO
+   ======================================== */
+
+/* Overlay do modal */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.7); /* Fundo escuro semi-transparente */
+    backdrop-filter: blur(4px); /* Desfoque do fundo */
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    padding: 1rem;
+    animation: fadeIn 0.3s ease;
+}
+
+.modal-overlay.active {
+    display: flex;
+}
+
+/* Animações do modal */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes slideUp {
+    from {
+        transform: translateY(20px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+/* Container do conteúdo do modal */
+.modal-content {
+    background: var(--card);
+    border-radius: var(--radius);
+    max-width: 700px;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto; /* Scroll quando necessário */
+    position: relative;
+    animation: slideUp 0.3s ease;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+}
+
+/* Header do modal (sticky) */
+.modal-header {
+    position: sticky;
+    top: 0;
+    background: var(--card);
+    padding: 1.5rem;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 10;
+}
+
+.modal-header h3 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--foreground);
+    margin: 0;
+}
+
+/* Botão de fechar modal */
+.modal-close {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--radius);
+    transition: var(--transition-smooth);
+}
+
+.modal-close:hover {
+    background: var(--muted);
+}
+
+.modal-close svg {
+    height: 1.5rem;
+    width: 1.5rem;
+    stroke: var(--foreground);
+}
+
+/* Corpo do modal */
+.modal-body {
+    padding: 1.5rem;
+}
+
+/* Imagem principal do modal */
+.modal-image {
+    width: 100%;
+    height: 400px;
+    background: var(--muted);
+    border-radius: var(--radius);
+    margin-bottom: 1.5rem;
+    object-fit: cover; /* Mantém proporção da imagem */
+}
+
+/* Descrição da publicação */
+.modal-description {
+    color: var(--foreground);
+    line-height: 1.6;
+    font-size: 1rem;
+}
+
+/* ========================================
+   FOOTER - Rodapé do site
+   ======================================== */
+footer {
+    background-color: #1e293b; /* Cinza escuro */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 5%;
+}
+
+/* Container principal do footer */
+.footer-content {
+    display: flex;
+    justify-content: center;
+    width: 70%;
+    padding: 3%;
+}
+
+/* Seção individual do footer */
+.footer-section {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.footer-section {
+    margin-right: 8%; /* Espaçamento entre seções */
+}
+
+.footer-section.end {
+    margin: 0; /* Última seção sem margem */
+}
+
+.footer-section ul li {
+    list-style: none;
+    margin-bottom: 10%;
+}
+
+/* Logo do footer */
+.ft-logo {
+    display: flex;
+    gap: 2%;
+    margin-bottom: 5%;
+}
+
+.ft-logo img {
+    height: 2.5rem;
+}
+
+.footer-title-logo {
+    font-size: 1.5rem;
+    color: #fff;
+    white-space: nowrap;
+}
+
+/* Subtítulo do footer */
+.footer-subtitle {
+    font-size: 0.875rem;
+    color: #ffffffb3; /* Branco semi-transparente */
+    line-height: 1.6;
+    padding-left: 2%;
+    margin-bottom: 7%;
+}
+
+/* Links de redes sociais */
+.social-link svg {
+    height: 3rem;
+    transition: all 0.3s;
+}
+
+.social-link svg:hover {
+    transform: translateY(-0.5rem); /* Eleva o ícone ao hover */
+}
+
+.social-link svg g {
+    fill: #3a7afe; /* Azul */
+}
+
+/* Títulos das seções do footer */
+.footer-title {
+    font-size: 1.125rem;
+    color: #fff;
+    margin-bottom: 1rem;
+    white-space: nowrap;
+}
+
+/* Links do footer */
+.footer-link {
+    font-size: 0.875rem;
+    color: #ffffffb3;
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+.footer-link:hover {
+    color: #3a7afe; /* Azul ao hover */
+    text-decoration: underline;
+}
+
+/* ========================================
+   FOOTER BOTTOM - Parte inferior do rodapé
+   ======================================== */
+.footer-bottom {
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    background-color: #0f172a; /* Azul escuro */
+    width: 100%;
+}
+
+.footer-bottom-content {
+    max-width: 1280px; /* 80rem */
+    margin: 0 auto;
+    padding: 1.5rem 2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+}
+
+/* Responsivo - alinha horizontalmente em telas maiores */
+@media (min-width: 768px) {
+    .footer-bottom-content {
+        flex-direction: row;
+    }
+}
+
+/* Copyright */
+.copyright {
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.875rem;
+}
+
+/* Links do footer bottom */
+.footer-bottom-links {
+    display: flex;
+    gap: 1.5rem;
+}
+
+.footer-bottom-link {
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.875rem;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+.footer-bottom-link:hover {
+    color: #2563eb; /* Azul ao hover */
+}
+
+/* ========================================
+   RESPONSIVIDADE - Media Queries
+   ======================================== */
+
+/* Telas pequenas (até 640px) */
+@media (max-width: 640px) {
+    /* Modal ocupa tela inteira */
+    .modal-container {
+        max-height: 100vh;
+        border-radius: 0;
+    }
+
+    .modal-content {
+        padding: 24px;
+        padding-top: 48px;
+    }
+
+    /* Form row vira coluna única */
+    .form-row {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+
+    /* Botões em coluna */
+    .form-actions {
+        flex-direction: column;
+    }
+
+    .btn {
+        width: 100%;
+    }
+}
