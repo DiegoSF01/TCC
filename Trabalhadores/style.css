@@ -241,7 +241,7 @@ header {
     margin-bottom: 10%;
 }
 
-.content{
+.content {
     min-height: 100vh;
     width: 100%;
     display: flex;
@@ -341,7 +341,7 @@ header {
     background-color: #0049ff;
 }
 
-.add-btn:hover svg{
+.add-btn:hover svg {
     stroke: #fff;
 }
 
@@ -383,7 +383,7 @@ header {
     background-color: #ef4343b9;
 }
 
-.remove-tag-btn:hover svg{
+.remove-tag-btn:hover svg {
     stroke: #fff;
 }
 
@@ -608,7 +608,8 @@ header {
     flex-direction: column;
     border: 1px solid #e5e7eb;
     background-color: #fff;
-    max-width: 410px;;
+    max-width: 410px;
+    ;
     border-radius: 10px;
     padding: 1.5rem;
     width: 100%;
