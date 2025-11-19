@@ -154,4 +154,21 @@ if (loginForm) {
     setButtonLoading(btn, false, "Entrar");
   });
 }
+document.getElementById('continuarBtn').addEventListener('click', function(e){
+  e.preventDefault();
 
+  // Pega os dados do formulário
+  const email = document.getElementById('registerEmail').value;
+  const password = document.getElementById('registerPassword').value;
+  const confpassword = document.getElementById('confirmPassword').value;
+
+  // Armazena no sessionStorage
+  sessionStorage.setItem('cadastroParte1', JSON.stringify({
+      email,
+      password,
+      confpassword
+  }));
+
+  // Redireciona para a segunda parte
+  window.location.href = '../Parte2/index.html';
+});

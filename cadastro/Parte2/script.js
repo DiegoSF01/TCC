@@ -184,5 +184,44 @@ function searchableSelect(inputId, hiddenId, optionsId){
 // Campos de área
 searchableSelect('profissionalAreaInput','profissionalArea','profissionalAreaOptions');
 searchableSelect('empresaAreaInput','empresaArea','empresaAreaOptions');
-
+const formParte2 = document.getElementById('parte2Form');
+        
+        formParte2.addEventListener('submit', async (e) => {
+            e.preventDefault();
+        
+            // Recupera dados da Parte 1 do cadastro
+            const dadosParte1 = JSON.parse(sessionStorage.getItem('cadastroParte1') || '{}');
+        
+            // Cria FormData e adiciona dados da Parte 1
+            const formData = new FormData();
+            for (const key in dadosParte1) {
+                formData.append(key, dadosParte1[key]);
+            }
+        
+            // Adiciona dados da Parte 2
+            const formInputs = new FormData(formParte2);
+            formInputs.forEach((value, key) => formData.append(key, value));
+        
+            try {
+                const response = await fetch('http://127.0.0.1:8000/usuario/cadastro', {
+                    method: 'POST',
+                    body: formData
+                });
+        
+                const result = await response.json();
+        
+                if (response.ok) {
+                    alert('Cadastro realizado com sucesso!');
+                    sessionStorage.removeItem('cadastroParte1');
+                    // Redireciona para a página Home
+                    window.location.href = '../Home/index.html';
+                } else {
+                    alert('Erro ao cadastrar: ' + (result.message || 'Verifique os campos'));
+                    console.log(result);
+                }
+            } catch (error) {
+                console.error('Erro na requisição:', error);
+                alert('Erro de conexão com a API.');
+            }
+        });
 

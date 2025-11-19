@@ -81,12 +81,12 @@
                     <!-- Formulário de Login -->
                     <form id="loginForm" class="auth-form active">
                         <div class="form-group">
-                            <label for="loginEmail" class="form-label">Email</label>
+                            <label for="loginEmail" class="form-label" name="email">Email</label>
                             <input type="email" id="loginEmail" class="form-input" placeholder="seu@email.com" required>
                         </div>
 
                         <div class="form-group">
-                            <label for="loginPassword" class="form-label">Senha</label>
+                            <label for="loginPassword" class="form-label" name="senha">Senha</label>
                             <input type="password" id="loginPassword" class="form-input" placeholder="••••••••"
                                 required>
                         </div>
@@ -106,33 +106,33 @@
                     <!-- Formulário de Cadastro -->
                     <form id="registerForm" class="auth-form">
                         <div class="form-group">
-                            <label for="registerEmail" class="form-label">Email</label>
+                            <label for="registerEmail" class="form-label" name="email">Email</label>
                             <input type="email" id="registerEmail" class="form-input" placeholder="seu@email.com"
                                 required>
                         </div>
 
                         <div class="form-group">
-                            <label for="registerPassword" class="form-label">Senha</label>
+                            <label for="registerPassword" class="form-label" name="password">Senha</label>
                             <input type="password" id="registerPassword" class="form-input" placeholder="••••••••"
                                 required>
                         </div>
 
                         <div class="form-group">
-                            <label for="confirmPassword" class="form-label">Confirmar Senha</label>
+                            <label for="confirmPassword" class="form-label" name="confpassword">Confirmar Senha</label>
                             <input type="password" id="confirmPassword" class="form-input" placeholder="••••••••"
                                 required>
                         </div>
 
-                        <a href="../Parte2/index.html"type="submit" class="btn-primary" >
+                        <button type="submit" class="btn-primary" >
                             <span class="btn-text">Continuar</span>
                             <span class="btn-loading" style="display: none;">Cadastrando...</span>
-                        </a>
+                        </button>
                     </form>
 
                     <!-- Formulário de Recuperação de Senha -->
                     <form id="forgotPasswordForm" class="auth-form">
                         <div class="form-group">
-                            <label for="forgotEmail" class="form-label">Email</label>
+                            <label for="forgotEmail" class="form-label" name="email">Email</label>
                             <input type="email" id="forgotEmail" class="form-input" placeholder="seu@email.com"
                                 required>
                         </div>
@@ -375,8 +375,8 @@
         </div>
     </footer>
 
-    
-    <script src="../../public/cadastro.js"></script>
+<script src="../../public/api.js"></script>
+<script src="../../public/auth.js"></script>
 
 </body>
 
