@@ -4,7 +4,7 @@ let currentView = 'login'; // 'login', 'register', 'forgot-password'
 const En_btn = document.getElementById('En-btn');
 const Ca_btn = document.getElementById('Ca-btn');
 
-Ca_btn.addEventListener('click', function(){
+Ca_btn.addEventListener('click', function () {
   if (currentView === 'login') {
     switchView('register');
   } else {
@@ -12,7 +12,7 @@ Ca_btn.addEventListener('click', function(){
   }
 });
 
-En_btn.addEventListener('click', function(){
+En_btn.addEventListener('click', function () {
   if (currentView === 'login') {
     switchView('register');
   } else {
@@ -35,10 +35,10 @@ const switchText = document.getElementById('switchText');
 function showToast(message, type = 'success') {
   const toast = document.getElementById('toast');
   const toastMessage = document.getElementById('toastMessage');
-  
+
   toastMessage.textContent = message;
   toast.className = 'toast show ' + type;
-  
+
   setTimeout(() => {
     toast.classList.remove('show');
   }, 3000);
@@ -47,12 +47,12 @@ function showToast(message, type = 'success') {
 // Função para alternar entre as views
 function switchView(view) {
   currentView = view;
-  
+
   // Esconder todos os forms
   loginForm.classList.remove('active');
   registerForm.classList.remove('active');
   forgotPasswordForm.classList.remove('active');
-  
+
   // Atualizar textos e mostrar form correto
   if (view === 'login') {
     loginForm.classList.add('active');
@@ -99,7 +99,7 @@ forgotPasswordLink.addEventListener('click', () => {
 function setButtonLoading(button, isLoading) {
   const btnText = button.querySelector('.btn-text');
   const btnLoading = button.querySelector('.btn-loading');
-  
+
   if (isLoading) {
     btnText.style.display = 'none';
     btnLoading.style.display = 'inline-block';
@@ -114,19 +114,19 @@ function setButtonLoading(button, isLoading) {
 // Handle Login
 loginForm.addEventListener('submit', (e) => {
   e.preventDefault();
-  
+
   const email = document.getElementById('loginEmail').value;
   const password = document.getElementById('loginPassword').value;
   const submitBtn = loginForm.querySelector('.btn-primary');
-  
+
   setButtonLoading(submitBtn, true);
-  
+
   // Simulação de requisição - substitua com sua API
   setTimeout(() => {
     console.log('Login:', { email, password });
     showToast('Login realizado com sucesso!', 'success');
     setButtonLoading(submitBtn, false);
-    
+
     // Redirecionar para home ou dashboard
     // window.location.href = '/';
   }, 1000);
@@ -135,27 +135,27 @@ loginForm.addEventListener('submit', (e) => {
 // Handle Register
 registerForm.addEventListener('submit', (e) => {
   e.preventDefault();
-  
+
   const name = document.getElementById('registerName').value;
   const email = document.getElementById('registerEmail').value;
   const password = document.getElementById('registerPassword').value;
   const confirmPassword = document.getElementById('confirmPassword').value;
   const submitBtn = registerForm.querySelector('.btn-primary');
-  
+
   // Validar se as senhas coincidem
   if (password !== confirmPassword) {
     showToast('As senhas não coincidem', 'error');
     return;
   }
-  
+
   setButtonLoading(submitBtn, true);
-  
+
   // Simulação de requisição - substitua com sua API
   setTimeout(() => {
     console.log('Registro:', { name, email, password });
     showToast('Cadastro realizado com sucesso! Faça login para continuar.', 'success');
     setButtonLoading(submitBtn, false);
-    
+
     // Limpar formulário e voltar para login
     registerForm.reset();
     switchView('login');
@@ -165,18 +165,18 @@ registerForm.addEventListener('submit', (e) => {
 // Handle Forgot Password
 forgotPasswordForm.addEventListener('submit', (e) => {
   e.preventDefault();
-  
+
   const email = document.getElementById('forgotEmail').value;
   const submitBtn = forgotPasswordForm.querySelector('.btn-primary');
-  
+
   setButtonLoading(submitBtn, true);
-  
+
   // Simulação de requisição - substitua com sua API
   setTimeout(() => {
     console.log('Recuperação de senha:', { email });
     showToast('Um email de recuperação foi enviado para ' + email, 'success');
     setButtonLoading(submitBtn, false);
-    
+
     // Limpar formulário e voltar para login
     forgotPasswordForm.reset();
     switchView('login');
@@ -185,3 +185,73 @@ forgotPasswordForm.addEventListener('submit', (e) => {
 
 // Inicializar na view de login
 switchView('login');
+
+
+document.getElementById("btn-cadastro1").addEventListener("click", salvarParte1);
+
+function salvarParte1(event) {
+  event.preventDefault(); // evita recarregar a página
+
+  const email = document.getElementById("registerEmail").value.trim();
+  const senha = document.getElementById("registerPassword").value.trim();
+  const confirmar = document.getElementById("confirmPassword").value.trim();
+
+  if (!email || !senha || !confirmar) {
+    alert("Preencha todos os campos.");
+    return;
+  }
+
+  if (senha.length < 6) {
+    alert("A senha deve ter no mínimo 6 caracteres");
+    return;
+  }
+
+  if (senha !== confirmar) {
+    alert("As senhas não coincidem.");
+    return;
+  }
+
+  const parte1 = {
+    email: email,
+    password: senha
+  };
+
+  localStorage.setItem("cadastro_parte1", JSON.stringify(parte1));
+
+  window.location.href = "../../cadastro/Parte2/index.html";
+}
+
+
+document.getElementById("btn-login").addEventListener("click", async function (e) {
+  e.preventDefault();
+
+  const email = document.getElementById("loginEmail").value.trim();
+  const password = document.getElementById("loginPassword").value.trim();
+
+  const formData = new FormData();
+  formData.append("email", email);
+  formData.append("password", password);
+
+  const resp = await fetch("process-login.php", {
+    method: "POST",
+    body: formData
+  });
+
+  const json = await resp.json();
+
+  if (!json.success) {
+    alert(json.message);
+    return;
+  }
+
+  const tipo = json.type;
+
+  // Redirecionamento
+  if (tipo === "contratante") {
+    window.location.href = "../../Perfil/PróprioC/index.html";
+  } else if (tipo === "empresa") {
+    window.location.href = "../../Perfil/PróprioTE/PróprioE/index.html";
+  } else if (tipo === "profissional") {
+    window.location.href = "../../Perfil/PróprioTE/PróprioT/index.html";
+  }
+});

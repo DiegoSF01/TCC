@@ -40,8 +40,6 @@ btn_sobre.addEventListener('click', clicou_sobre);
 btn_postagens.addEventListener('click', clicou_postagens);
 btn_avaliacao.addEventListener('click', clicou_avaliacao);
 
-
-
 // ============================================
 // MODAL DE PUBLICAÇÕES - INTERFACE ATUALIZADA
 // ============================================
@@ -171,7 +169,7 @@ window.addEventListener('load', function () {
     // Coletar todas as imagens do card (por enquanto só uma, mas preparado para múltiplas)
     const imgElement = card.querySelector('.img-card_publicacoes');
     const imagemBg = window.getComputedStyle(imgElement).backgroundImage;
-    const imagemUrl = imagemBg.replace(/url\(["']?|["']?\)/g, '');
+    const imagemUrl = imagemBg.replace(/url$$["']?|["']?$$/g, '');
     
     // Armazenar array de imagens (futuramente você pode adicionar mais)
     imagensAtivas = [imagemUrl];
@@ -246,7 +244,7 @@ window.addEventListener('load', function () {
     arquivosEditarSelecionados = [];
 
     // Adicionar imagem atual ao preview
-    const bg = modalImage.style.backgroundImage.replace(/url\(["']?|["']?\)/g, '');
+    const bg = modalImage.style.backgroundImage.replace(/url$$["']?|["']?$$/g, '');
     if (bg && bg !== 'none') {
       const previewItem = document.createElement("div");
       previewItem.classList.add("preview-item");
@@ -422,27 +420,35 @@ window.addEventListener('load', function () {
 
 const btnAddPost = document.querySelector('.btn-add-post');
 const modalAddPub = document.getElementById('modalAddPub');
-
-function abrirAddPub() {
-  modalAddPub.classList.add('active');
-}
-
-btnAddPost.addEventListener('click', abrirAddPub);
-
-document.getElementById('fecharAddPub').addEventListener('click', () => {
-  modalAddPub.classList.remove('active');
-});
-
-document.getElementById('cancelarAddPub').addEventListener('click', () => {
-  modalAddPub.classList.remove('active');
-});
-
+const confirmarAddPubBtn = document.getElementById('confirmarAddPub');
+const homeCardsPost = document.querySelector('.home-cards-post');
 const inputMidias = document.getElementById("pubMidias");
 const previewContainer = document.getElementById("previewContainer");
 
 let arquivosSelecionados = [];
 
-// Quando o usuário seleciona arquivos:
+function abrirAddPub() {
+  modalAddPub.classList.add('active');
+}
+
+function fecharAddPub() {
+  modalAddPub.classList.remove('active');
+  limparFormularioPost();
+}
+
+function limparFormularioPost() {
+  document.getElementById('pubTitulo').value = '';
+  document.getElementById('pubDescricao').value = '';
+  previewContainer.innerHTML = '';
+  inputMidias.value = '';
+  arquivosSelecionados = [];
+}
+
+btnAddPost.addEventListener('click', abrirAddPub);
+
+document.getElementById('fecharAddPub').addEventListener('click', fecharAddPub);
+document.getElementById('cancelarAddPub').addEventListener('click', fecharAddPub);
+
 inputMidias.addEventListener("change", () => {
   const arquivos = Array.from(inputMidias.files);
 
@@ -451,7 +457,6 @@ inputMidias.addEventListener("change", () => {
     criarPreview(arquivo);
   });
 
-  // Limpa o input para permitir selecionar o mesmo arquivo novamente, se quiser
   inputMidias.value = "";
 });
 
@@ -473,12 +478,19 @@ function criarPreview(arquivo) {
 
     midia.src = e.target.result;
 
-    // Botão para remover a mídia
     const btnRemover = document.createElement("button");
     btnRemover.classList.add("preview-remove");
-    btnRemover.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg>';
+    btnRemover.type = "button";
+    btnRemover.innerHTML = `
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M18 6 6 18"></path>
+        <path d="m6 6 12 12"></path>
+      </svg>
+    `;
 
-    btnRemover.addEventListener("click", () => {
+    btnRemover.addEventListener("click", (e) => {
+      e.preventDefault();
       previewItem.remove();
       arquivosSelecionados = arquivosSelecionados.filter(a => a !== arquivo);
     });
@@ -491,7 +503,68 @@ function criarPreview(arquivo) {
   reader.readAsDataURL(arquivo);
 }
 
+confirmarAddPubBtn.addEventListener('click', () => {
+  const titulo = document.getElementById('pubTitulo').value.trim();
+  const descricao = document.getElementById('pubDescricao').value.trim();
 
+  // Validate inputs
+  if (!titulo) {
+    alert('Por favor, adicione um título para a publicação');
+    return;
+  }
+
+  if (!descricao) {
+    alert('Por favor, adicione uma descrição para a publicação');
+    return;
+  }
+
+  if (arquivosSelecionados.length === 0) {
+    alert('Por favor, adicione pelo menos uma imagem ou vídeo');
+    return;
+  }
+
+  // Get the first image from selected files
+  const primeiraImagem = arquivosSelecionados[0];
+  const reader = new FileReader();
+
+  reader.onload = (e) => {
+    // Create new card element
+    const novoCard = document.createElement('div');
+    novoCard.classList.add('card-publicacoes');
+    novoCard.innerHTML = `
+      <div class="img-card_publicacoes" style="background-image: url('${e.target.result}')"></div>
+      <div class="mini-informacoes-card_publicacoes">
+        <h4>${titulo}</h4>
+        <p>${descricao}</p>
+      </div>
+    `;
+
+    // Add the new card to the container
+    homeCardsPost.appendChild(novoCard);
+
+    // Close modal and clear form
+    fecharAddPub();
+
+    // Show success message
+    console.log('[v0] Post adicionado com sucesso:', { titulo, descricao });
+  };
+
+  reader.readAsDataURL(primeiraImagem);
+});
+
+// Close modal when clicking outside
+modalAddPub.addEventListener('click', (e) => {
+  if (e.target === modalAddPub) {
+    fecharAddPub();
+  }
+});
+
+// Close modal with ESC key
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape' && modalAddPub.classList.contains('active')) {
+    fecharAddPub();
+  }
+});
 
 class ProfileEditor {
   constructor() {
@@ -685,7 +758,6 @@ btn_editarper.addEventListener('click', () => {
   profileEditor.openModal();
 });
 
-
 // Inicializar quando o DOM estiver pronto
 document.addEventListener('DOMContentLoaded', () => {
   window.profileEditor = new ProfileEditor();
@@ -764,7 +836,6 @@ function removeEspecialidade(index) {
   renderEspecialidades();
   updateHiddenField();
 }
-
 
 function renderEspecialidades() {
   if (!especialidadesList) return;

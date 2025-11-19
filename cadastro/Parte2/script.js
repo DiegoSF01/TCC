@@ -146,12 +146,18 @@ empresaForm.addEventListener('submit', (e) => {
   // Coleta dados
   const formData = {
     tipo: 'empresa',
-    nome: empresaNome.value,
-    cnpj: empresaCnpj.value,
-    cep: empresaCep.value,
-    area: empresaArea.value,
-    fotoPerfil: empresaPerfil.files[0],
-    fotoBanner: empresaBanner.files[0]
+    nome: document.getElementById('empresaNome').value,
+    cnpj: document.getElementById('empresaCnpj').value,
+    cep: document.getElementById('empresaCep').value,
+    endereco: document.getElementById('empresaEndereco').value,
+    numero: document.getElementById('empresaNumero').value,
+    bairro: document.getElementById('empresaBairro').value,
+    complemento: document.getElementById('empresaComplemento').value,
+    cidade: document.getElementById('empresaCidade').value,
+    estado: document.getElementById('empresaEstado').value.toUpperCase(),
+    area: document.getElementById('empresaArea').value,
+    fotoPerfil: document.getElementById('empresaPerfil').files[0],
+    fotoBanner: document.getElementById('empresaBanner').files[0]
   };
 
   setButtonLoading(submitBtn, true);
@@ -174,12 +180,18 @@ profissionalForm.addEventListener('submit', (e) => {
 
   const formData = {
     tipo: 'profissional',
-    nome: profissionalNome.value,
-    cpf: profissionalCpf.value,
-    cep: profissionalCep.value,
-    area: profissionalArea.value,
-    fotoPerfil: profissionalPerfil.files[0],
-    fotoBanner: profissionalBanner.files[0]
+    nome: document.getElementById('profissionalNome').value,
+    cpf: document.getElementById('profissionalCpf').value,
+    cep: document.getElementById('profissionalCep').value,
+    endereco: document.getElementById('profissionalEndereco').value,
+    numero: document.getElementById('profissionalNumero').value,
+    bairro: document.getElementById('profissionalBairro').value,
+    complemento: document.getElementById('profissionalComplemento').value,
+    cidade: document.getElementById('profissionalCidade').value,
+    estado: document.getElementById('profissionalEstado').value.toUpperCase(),
+    area: document.getElementById('profissionalArea').value,
+    fotoPerfil: document.getElementById('profissionalPerfil').files[0],
+    fotoBanner: document.getElementById('profissionalBanner').files[0]
   };
 
   setButtonLoading(submitBtn, true);
@@ -201,11 +213,17 @@ contratanteForm.addEventListener('submit', (e) => {
 
   const formData = {
     tipo: 'contratante',
-    nome: contratanteNome.value,
-    cpf: contratanteCpf.value,
-    cep: contratanteCep.value,
-    fotoPerfil: contratantePerfil.files[0],
-    fotoBanner: contratanteBanner.files[0]
+    nome: document.getElementById('contratanteNome').value,
+    cpf: document.getElementById('contratanteCpf').value,
+    cep: document.getElementById('contratanteCep').value,
+    endereco: document.getElementById('contratanteEndereco').value,
+    numero: document.getElementById('contratanteNumero').value,
+    bairro: document.getElementById('contratanteBairro').value,
+    complemento: document.getElementById('contratanteComplemento').value,
+    cidade: document.getElementById('contratanteCidade').value,
+    estado: document.getElementById('contratanteEstado').value.toUpperCase(),
+    fotoPerfil: document.getElementById('contratantePerfil').files[0],
+    fotoBanner: document.getElementById('contratanteBanner').files[0]
   };
 
   setButtonLoading(submitBtn, true);
@@ -258,7 +276,6 @@ document.addEventListener("click", (e) => {
     optionsList.classList.add("hidden");
   }
 });
-
 
 // ========================================================================================
 // === CAMPO COM BUSCA (ÁREA DA EMPRESA) ===
@@ -365,4 +382,221 @@ phoneInputCon.addEventListener("input", function (e) {
   }
 
   e.target.value = value;
+});
+
+// ===============================
+//  CONFIGURAÇÃO
+// ===============================
+const $ = id => document.getElementById(id);
+
+// Botões
+const btnEmpresa = $("btn-cadastroE");
+const btnPrestador = $("btn-cadastroT");
+const btnContratante = $("btn-cadastroC");
+
+// Mostrar loading no botão
+function setLoading(btn, state) {
+  const txt = btn.querySelector(".btn-text");
+  const load = btn.querySelector(".btn-loading");
+  btn.disabled = state;
+  txt.style.display = state ? "none" : "";
+  load.style.display = state ? "inline-block" : "none";
+}
+
+// ===============================
+//  CEP - ViaCEP
+// ===============================
+async function validarCEP(cep) {
+  cep = cep.replace(/\D/g, "");
+  if (cep.length !== 8) {
+    alert("CEP inválido");
+    return null;
+  }
+
+  try {
+    const r = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
+    const data = await r.json();
+    if (data.erro) {
+      alert("CEP não encontrado.");
+      return null;
+    }
+    return data;
+  } catch {
+    alert("Erro ao consultar CEP.");
+    return null;
+  }
+}
+
+// ===============================
+//  PARTE 1
+// ===============================
+function getParte1() {
+  try {
+    return JSON.parse(localStorage.getItem("cadastro_parte1"));
+  } catch {
+    return null;
+  }
+}
+
+// ===============================
+//  MONTA FORMULÁRIO COMPLETO
+// ===============================
+async function montarForm(tipo) {
+  const parte1 = getParte1();
+  if (!parte1) {
+    alert("Erro: volte para a parte 1.");
+    return null;
+  }
+
+  const form = new FormData();
+
+  // Dados da Parte 1
+  form.append("email", parte1.email);
+  form.append("password", parte1.password);
+  form.append("tipo", tipo);
+
+  let cepInput, ruaInput, numeroInput, bairroInput, cidadeInput, estadoInput;
+
+  // --------------------------
+  // EMPRESA
+  // --------------------------
+  if (tipo === "empresa") {
+    const cep = $("empresaCep").value;
+    const data = await validarCEP(cep);
+    if (!data) return null;
+
+    // Preencher automaticamente
+    $("empresaEndereco").value = data.logradouro;
+    $("empresaBairro").value = data.bairro;
+    $("empresaCidade").value = data.localidade;
+    $("empresaEstado").value = data.uf;
+
+    form.append("cnpj", $("empresaCnpj").value);
+    form.append("razao_social", $("empresaNome").value);
+    form.append("id_categoria", $("empresaArea").value);
+
+    form.append("cep", cep);
+    form.append("rua", $("empresaEndereco").value);
+    form.append("numero", $("empresaNumero").value);
+    form.append("localidade", $("empresaCidade").value);
+    form.append("estado", $("empresaEstado").value);
+    form.append("uf", data.uf);
+    form.append("descricao", $("empresaDescricao")?.value || "");
+
+    if ($("empresaPerfil").files[0]) form.append("foto", $("empresaPerfil").files[0]);
+    if ($("empresaBanner").files[0]) form.append("capa", $("empresaBanner").files[0]);
+  }
+
+  // --------------------------
+  // PRESTADOR
+  // --------------------------
+  if (tipo === "prestador") {
+    const cep = $("profissionalCep").value;
+    const data = await validarCEP(cep);
+    if (!data) return null;
+
+    $("profissionalEndereco").value = data.logradouro;
+    $("profissionalBairro").value = data.bairro;
+    $("profissionalCidade").value = data.localidade;
+    $("profissionalEstado").value = data.uf;
+
+    form.append("nome", $("profissionalNome").value);
+    form.append("cpf", $("profissionalCpf").value);
+    form.append("id_ramo", $("profissionalArea").value);
+
+    form.append("cep", cep);
+    form.append("rua", $("profissionalEndereco").value);
+    form.append("numero", $("profissionalNumero").value);
+    form.append("localidade", $("profissionalCidade").value);
+    form.append("estado", $("profissionalEstado").value);
+    form.append("uf", data.uf);
+    form.append("descricao", $("profissionalDescricao")?.value || "");
+
+    if ($("profissionalPerfil").files[0]) form.append("foto", $("profissionalPerfil").files[0]);
+    if ($("profissionalBanner").files[0]) form.append("capa", $("profissionalBanner").files[0]);
+  }
+
+  // --------------------------
+  // CONTRATANTE
+  // --------------------------
+  if (tipo === "contratante") {
+    const cep = $("contratanteCep").value;
+    const data = await validarCEP(cep);
+    if (!data) return null;
+
+    $("contratanteEndereco").value = data.logradouro;
+    $("contratanteBairro").value = data.bairro;
+    $("contratanteCidade").value = data.localidade;
+    $("contratanteEstado").value = data.uf;
+
+    form.append("nome", $("contratanteNome").value);
+    form.append("cpf", $("contratanteCpf").value);
+
+    form.append("cep", cep);
+    form.append("rua", $("contratanteEndereco").value);
+    form.append("numero", $("contratanteNumero").value);
+    form.append("localidade", $("contratanteCidade").value);
+    form.append("estado", $("contratanteEstado").value);
+    form.append("uf", data.uf);
+
+    if ($("contratantePerfil").files[0]) form.append("foto", $("contratantePerfil").files[0]);
+    if ($("contratanteBanner").files[0]) form.append("capa", $("contratanteBanner").files[0]);
+  }
+
+  return form;
+}
+
+// ===============================
+//  ENVIAR CADASTRO
+// ===============================
+async function enviarCadastro(tipo, btn) {
+  setLoading(btn, true);
+
+  const form = await montarForm(tipo);
+  if (!form) {
+    setLoading(btn, false);
+    return;
+  }
+
+  const resp = await fetch("process-cadastro.php", {
+    method: "POST",
+    body: form
+  });
+
+  const json = await resp.json();
+
+  if (!json.success) {
+    alert(json.message);
+    setLoading(btn, false);
+    return;
+  }
+
+  localStorage.removeItem("cadastro_parte1");
+
+  // REDIRECIONAR
+  if (json.type === "empresa") {
+    window.location.href = "../../Perfil/PróprioTE/PróprioE/index.html";
+  } else if (json.type === "prestador") {
+    window.location.href = "../../Perfil/PróprioTE/PróprioT/index.html";
+  } else {
+    window.location.href = "../../Perfil/PróprioC/index.html";
+  }
+}
+
+// ===============================
+//  EVENTOS DOS BOTÕES
+// ===============================
+btnEmpresa.addEventListener("click", e => {
+  e.preventDefault();
+  enviarCadastro("empresa", btnEmpresa);
+});
+
+btnPrestador.addEventListener("click", e => {
+  e.preventDefault();
+  enviarCadastro("prestador", btnPrestador);
+});
+
+btnContratante.addEventListener("click", e => {
+  e.preventDefault();
+  enviarCadastro("contratante", btnContratante);
 });

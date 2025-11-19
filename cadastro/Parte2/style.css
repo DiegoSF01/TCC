@@ -185,7 +185,7 @@ header.header-passed-hero {
     background-color: #ffffff1a;
 }
 
-#Ca-btn{
+#Ca-btn {
     background-color: #ffffff1a;
 }
 
@@ -702,10 +702,11 @@ footer {
     border-top: 1px solid rgba(255, 255, 255, 0.1);
     background-color: #0f172a;
     width: 100%;
-  }
-  
-  .footer-bottom-content {
-    max-width: 1280px; /* ou 80rem */
+}
+
+.footer-bottom-content {
+    max-width: 1280px;
+    /* ou 80rem */
     margin: 0 auto;
     padding: 1.5rem 2rem;
     display: flex;
@@ -713,34 +714,34 @@ footer {
     justify-content: space-between;
     align-items: center;
     gap: 1rem;
-  }
-  
-  @media (min-width: 768px) {
+}
+
+@media (min-width: 768px) {
     .footer-bottom-content {
-      flex-direction: row;
+        flex-direction: row;
     }
-  }
-  
-  .copyright {
+}
+
+.copyright {
     color: rgba(255, 255, 255, 0.6);
     font-size: 0.875rem;
-  }
-  
-  .footer-bottom-links {
+}
+
+.footer-bottom-links {
     display: flex;
     gap: 1.5rem;
-  }
-  
-  .footer-bottom-link {
+}
+
+.footer-bottom-link {
     color: rgba(255, 255, 255, 0.6);
     font-size: 0.875rem;
     text-decoration: none;
     transition: color 0.3s;
-  }
-  
-  .footer-bottom-link:hover {
+}
+
+.footer-bottom-link:hover {
     color: #2563eb;
-  }  
+}
 
 /* Responsive */
 @media (max-width: 768px) {
@@ -775,6 +776,11 @@ footer {
 
     .form-fields {
         margin-top: 3.5rem;
+    }
+
+    /* Responsive grid for address fields */
+    [style*="display: grid"] {
+        grid-template-columns: 1fr !important;
     }
 
     .toast {

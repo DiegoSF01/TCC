@@ -703,8 +703,8 @@ header {
 }
 
 .star.qui {
-    stroke: none;
-    fill: #facc15;
+    fill: none;
+    stroke: #d1d5db;
 }
 
 .quant-stars {

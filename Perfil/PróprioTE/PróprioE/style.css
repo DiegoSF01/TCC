@@ -309,7 +309,7 @@ header {
     height: 8rem;
     border-radius: 50%;
     border: 4px solid var(--card);
-    background-color: var(--muted);
+    background-image: url('../../../img/Logo\ moderno\ para\ empresa\ de\ calhas.png');
     background-size: cover;
     background-position: center;
     box-shadow: var(--shadow-md);
@@ -1340,7 +1340,7 @@ input[type=number] {
 
 /* Cards de estatísticas */
 .projetos_concluidos,
-.tempo_experiencia,
+.idade_empresa,
 .avaliacao-BCC {
     display: flex;
     align-items: center;
@@ -1380,7 +1380,7 @@ input[type=number] {
 
 /* Textos das estatísticas */
 .projetos_concluidos-text,
-.tempo_experiencia-text,
+.idade_empresa-text,
 .avaliacao-BCC-text {
     font-size: 1.5rem;
     font-weight: 700;
@@ -1391,7 +1391,7 @@ input[type=number] {
 }
 
 .projetos_concluidos p,
-.tempo_experiencia p,
+.idade_empresa p,
 .avaliacao-BCC p {
     font-size: 0.875rem;
     color: var(--muted-foreground);

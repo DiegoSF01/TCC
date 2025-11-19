@@ -12,7 +12,7 @@
     <header>
         <div class="nav-container">
             <div class="left-nav-container">
-                <div class="lg-div"><img src="/img/logo.png" alt="Logo OPI"></div>
+                <div class="lg-div"><img src="../../img/logo.png" alt="Logo OPI"></div>
 
                 <div class="buscador-div">
                     <input class="buscador" id="buscador">
@@ -75,7 +75,8 @@
                 <!-- Seletor de Tipo de Cadastro -->
                 <div class="tipo-cadastro-selector">
                     <button class="tipo-btn active" data-tipo="empresa">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
                             <rect x="3" y="3" width="7" height="7"></rect>
                             <rect x="14" y="3" width="7" height="7"></rect>
                             <rect x="14" y="14" width="7" height="7"></rect>
@@ -84,14 +85,16 @@
                         <span>Empresa</span>
                     </button>
                     <button class="tipo-btn" data-tipo="profissional">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
                             <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
                             <circle cx="12" cy="7" r="4"></circle>
                         </svg>
                         <span>Profissional</span>
                     </button>
                     <button class="tipo-btn" data-tipo="contratante">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
                             <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
                             <circle cx="9" cy="7" r="4"></circle>
                             <path d="M22 21v-2a4 4 0 0 0-3-3.87"></path>
@@ -108,7 +111,8 @@
                             <div class="banner-upload">
                                 <label for="empresaBanner" class="upload-label banner-label">
                                     <div class="upload-placeholder" id="empresaBannerPreview">
-                                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none"
+                                            stroke="currentColor" stroke-width="2">
                                             <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
                                             <circle cx="8.5" cy="8.5" r="1.5"></circle>
                                             <polyline points="21 15 16 10 5 21"></polyline>
@@ -122,7 +126,8 @@
                             <div class="profile-upload">
                                 <label for="empresaPerfil" class="upload-label profile-label">
                                     <div class="upload-placeholder circular" id="empresaPerfilPreview">
-                                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none"
+                                            stroke="currentColor" stroke-width="2">
                                             <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
                                             <circle cx="12" cy="7" r="4"></circle>
                                         </svg>
@@ -135,17 +140,20 @@
                         <div class="form-fields">
                             <div class="form-group">
                                 <label for="empresaNome" class="form-label">Nome da Empresa</label>
-                                <input type="text" id="empresaNome" class="form-input" placeholder="Digite o nome da empresa" required>
+                                <input type="text" id="empresaNome" class="form-input"
+                                    placeholder="Digite o nome da empresa" required>
                             </div>
 
                             <div class="form-group">
                                 <label for="registerTelEm" class="form-label">Telefone</label>
-                                <input type="tel" id="registerTelEm" class="form-input" placeholder="(DDD) 00000-0000" required>
+                                <input type="tel" id="registerTelEm" class="form-input" placeholder="(DDD) 00000-0000"
+                                    required>
                             </div>
 
                             <div class="form-group">
                                 <label for="empresaCnpj" class="form-label">CNPJ</label>
-                                <input type="text" id="empresaCnpj" class="form-input" placeholder="00.000.000/0000-00" required>
+                                <input type="text" id="empresaCnpj" class="form-input" placeholder="00.000.000/0000-00"
+                                    required>
                             </div>
 
                             <div class="form-group">
@@ -153,38 +161,71 @@
                                 <input type="text" id="empresaCep" class="form-input" placeholder="00000-000" required>
                             </div>
 
+                            <!-- Added address fields for empresa -->
+                            <div class="form-group">
+                                <label for="empresaEndereco" class="form-label">Endereço</label>
+                                <input type="text" id="empresaEndereco" class="form-input"
+                                    placeholder="Rua, Avenida, etc." required>
+                            </div>
+
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                                <div class="form-group">
+                                    <label for="empresaNumero" class="form-label">Número</label>
+                                    <input type="text" id="empresaNumero" class="form-input" placeholder="000" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="empresaBairro" class="form-label">Bairro</label>
+                                    <input type="text" id="empresaBairro" class="form-input" placeholder="Bairro"
+                                        required>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="empresaComplemento" class="form-label">Complemento</label>
+                                <input type="text" id="empresaComplemento" class="form-input"
+                                    placeholder="Apto, sala, etc. (opcional)">
+                            </div>
+
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                                <div class="form-group">
+                                    <label for="empresaCidade" class="form-label">Cidade</label>
+                                    <input type="text" id="empresaCidade" class="form-input" placeholder="Cidade"
+                                        required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="empresaEstado" class="form-label">Estado</label>
+                                    <input type="text" id="empresaEstado" class="form-input" placeholder="UF"
+                                        maxlength="2" required>
+                                </div>
+                            </div>
+
                             <div class="form-group">
                                 <div class="searchable-select">
                                     <label for="empresaAreaInput" class="form-label">Área da Empresa</label>
-                                    
-                                    <input 
-                                        type="text" 
-                                        id="empresaAreaInput" 
-                                        class="form-input" 
-                                        placeholder="Digite para buscar..." 
-                                        autocomplete="off"
-                                        required
-                                    >
-                                
+
+                                    <input type="text" id="empresaAreaInput" class="form-input"
+                                        placeholder="Digite para buscar..." autocomplete="off" required>
+
                                     <ul id="empresaAreaOptions" class="options-list hidden">
-                                        <li data-value="construcao">Construção Civil</li>
-                                        <li data-value="pintura">Pintura</li>
-                                        <li data-value="eletrica">Serviços Elétricos</li>
-                                        <li data-value="hidraulica">Hidráulica</li>
-                                        <li data-value="marcenaria">Marcenaria</li>
-                                        <li data-value="jardinagem">Jardinagem</li>
-                                        <li data-value="limpeza">Limpeza / Conservação</li>
-                                        <li data-value="tecnologia">Tecnologia / Desenvolvimento</li>
-                                        <li data-value="outros">Outros</li>
+                                        <li data-value="1">Construção e Reforma</li>
+                                        <li data-value="2">Instalações e Manutenções</li>
+                                        <li data-value="3">Limpeza e Conservação</li>
+                                        <li data-value="4">Jardinagem e Paisagismo</li>
+                                        <li data-value="5">Decoração e Acabamento</li>
+                                        <li data-value="6">Serviços Industriais e Técnicos</li>
+                                        <li data-value="7">Transporte e Logística</li>
+                                        <li data-value="8">Serviços Domésticos e Pessoais</li>
+                                        <li data-value="9">Comunicação e Design</li>
+                                        <li data-value="10">Outros</li>
                                     </ul>
-                                
+
                                     <!-- Campo enviado no form -->
                                     <input type="hidden" id="empresaArea" name="empresaArea">
                                 </div>
                             </div>
                         </div>
 
-                        <button type="submit" class="btn-primary">
+                        <button type="submit" class="btn-primary" id="btn-cadastroE">
                             <span class="btn-text">Criar Conta como Empresa</span>
                             <span class="btn-loading" style="display: none;">Cadastrando...</span>
                         </button>
@@ -196,7 +237,8 @@
                             <div class="banner-upload">
                                 <label for="profissionalBanner" class="upload-label banner-label">
                                     <div class="upload-placeholder" id="profissionalBannerPreview">
-                                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none"
+                                            stroke="currentColor" stroke-width="2">
                                             <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
                                             <circle cx="8.5" cy="8.5" r="1.5"></circle>
                                             <polyline points="21 15 16 10 5 21"></polyline>
@@ -210,7 +252,8 @@
                             <div class="profile-upload">
                                 <label for="profissionalPerfil" class="upload-label profile-label">
                                     <div class="upload-placeholder circular" id="profissionalPerfilPreview">
-                                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none"
+                                            stroke="currentColor" stroke-width="2">
                                             <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
                                             <circle cx="12" cy="7" r="4"></circle>
                                         </svg>
@@ -223,56 +266,94 @@
                         <div class="form-fields">
                             <div class="form-group">
                                 <label for="profissionalNome" class="form-label">Nome Completo</label>
-                                <input type="text" id="profissionalNome" class="form-input" placeholder="Digite seu nome completo" required>
+                                <input type="text" id="profissionalNome" class="form-input"
+                                    placeholder="Digite seu nome completo" required>
                             </div>
 
                             <div class="form-group">
                                 <label for="registerTelPro" class="form-label">Telefone</label>
-                                <input type="tel" id="registerTelPro" class="form-input" placeholder="(DDD) 00000-0000" required>
+                                <input type="tel" id="registerTelPro" class="form-input" placeholder="(DDD) 00000-0000"
+                                    required>
                             </div>
-                            
+
                             <div class="form-group">
                                 <label for="profissionalCpf" class="form-label">CPF</label>
-                                <input type="text" id="profissionalCpf" class="form-input" placeholder="000.000.000-00" required>
+                                <input type="text" id="profissionalCpf" class="form-input" placeholder="000.000.000-00"
+                                    required>
                             </div>
 
                             <div class="form-group">
                                 <label for="profissionalCep" class="form-label">CEP</label>
-                                <input type="text" id="profissionalCep" class="form-input" placeholder="00000-000" required>
+                                <input type="text" id="profissionalCep" class="form-input" placeholder="00000-000"
+                                    required>
+                            </div>
+
+                            <!-- Added address fields for profissional -->
+                            <div class="form-group">
+                                <label for="profissionalEndereco" class="form-label">Endereço</label>
+                                <input type="text" id="profissionalEndereco" class="form-input"
+                                    placeholder="Rua, Avenida, etc." required>
+                            </div>
+
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                                <div class="form-group">
+                                    <label for="profissionalNumero" class="form-label">Número</label>
+                                    <input type="text" id="profissionalNumero" class="form-input" placeholder="000"
+                                        required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="profissionalBairro" class="form-label">Bairro</label>
+                                    <input type="text" id="profissionalBairro" class="form-input" placeholder="Bairro"
+                                        required>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="profissionalComplemento" class="form-label">Complemento</label>
+                                <input type="text" id="profissionalComplemento" class="form-input"
+                                    placeholder="Apto, sala, etc. (opcional)">
+                            </div>
+
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                                <div class="form-group">
+                                    <label for="profissionalCidade" class="form-label">Cidade</label>
+                                    <input type="text" id="profissionalCidade" class="form-input" placeholder="Cidade"
+                                        required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="profissionalEstado" class="form-label">Estado</label>
+                                    <input type="text" id="profissionalEstado" class="form-input" placeholder="UF"
+                                        maxlength="2" required>
+                                </div>
                             </div>
 
                             <div class="form-group">
                                 <div class="searchable-select">
                                     <label for="profissionalAreaInput" class="form-label">Área de Atuação</label>
-                                    
-                                    <input 
-                                        type="text" 
-                                        id="profissionalAreaInput" 
-                                        class="form-input" 
-                                        placeholder="Digite para buscar..." 
-                                        autocomplete="off"
-                                        required
-                                    >
-                                
+
+                                    <input type="text" id="profissionalAreaInput" class="form-input"
+                                        placeholder="Digite para buscar..." autocomplete="off" required>
+
                                     <ul id="profissionalAreaOptions" class="options-list hidden">
-                                        <li data-value="pedreiro">Pedreiro</li>
-                                        <li data-value="pintor">Pintor</li>
-                                        <li data-value="eletricista">Eletricista</li>
-                                        <li data-value="encanador">Encanador</li>
-                                        <li data-value="marceneiro">Marceneiro</li>
-                                        <li data-value="jardineiro">Jardineiro</li>
-                                        <li data-value="faxineiro">Faxineiro</li>
-                                        <li data-value="desenvolvedor">Desenvolvedor</li>
-                                        <li data-value="outros">Outros</li>
+                                        <li data-value="1">Construção e Reforma</li>
+                                        <li data-value="2">Instalações e Manutenções</li>
+                                        <li data-value="3">Limpeza e Conservação</li>
+                                        <li data-value="4">Jardinagem e Paisagismo</li>
+                                        <li data-value="5">Decoração e Acabamento</li>
+                                        <li data-value="6">Serviços Industriais e Técnicos</li>
+                                        <li data-value="7">Transporte e Logística</li>
+                                        <li data-value="8">Serviços Domésticos e Pessoais</li>
+                                        <li data-value="9">Comunicação e Design</li>
+                                        <li data-value="10">Outros</li>
                                     </ul>
-                                
+
                                     <input type="hidden" id="profissionalArea" name="profissionalArea">
                                 </div>
-                                
+
                             </div>
                         </div>
 
-                        <button type="submit" class="btn-primary">
+                        <button type="submit" class="btn-primary" id="btn-cadastroT">
                             <span class="btn-text">Criar Conta como Profissional</span>
                             <span class="btn-loading" style="display: none;">Cadastrando...</span>
                         </button>
@@ -284,7 +365,8 @@
                             <div class="banner-upload">
                                 <label for="contratanteBanner" class="upload-label banner-label">
                                     <div class="upload-placeholder" id="contratanteBannerPreview">
-                                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none"
+                                            stroke="currentColor" stroke-width="2">
                                             <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
                                             <circle cx="8.5" cy="8.5" r="1.5"></circle>
                                             <polyline points="21 15 16 10 5 21"></polyline>
@@ -298,7 +380,8 @@
                             <div class="profile-upload">
                                 <label for="contratantePerfil" class="upload-label profile-label">
                                     <div class="upload-placeholder circular" id="contratantePerfilPreview">
-                                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none"
+                                            stroke="currentColor" stroke-width="2">
                                             <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
                                             <circle cx="12" cy="7" r="4"></circle>
                                         </svg>
@@ -311,26 +394,69 @@
                         <div class="form-fields">
                             <div class="form-group">
                                 <label for="contratanteNome" class="form-label">Nome Completo</label>
-                                <input type="text" id="contratanteNome" class="form-input" placeholder="Digite seu nome completo" required>
+                                <input type="text" id="contratanteNome" class="form-input"
+                                    placeholder="Digite seu nome completo" required>
                             </div>
 
                             <div class="form-group">
                                 <label for="registerTelCon" class="form-label">Telefone</label>
-                                <input type="tel" id="registerTelCon" class="form-input" placeholder="(DDD) 00000-0000" required>
+                                <input type="tel" id="registerTelCon" class="form-input" placeholder="(DDD) 00000-0000"
+                                    required>
                             </div>
 
                             <div class="form-group">
                                 <label for="contratanteCpf" class="form-label">CPF</label>
-                                <input type="text" id="contratanteCpf" class="form-input" placeholder="000.000.000-00" required>
+                                <input type="text" id="contratanteCpf" class="form-input" placeholder="000.000.000-00"
+                                    required>
                             </div>
 
                             <div class="form-group">
                                 <label for="contratanteCep" class="form-label">CEP</label>
-                                <input type="text" id="contratanteCep" class="form-input" placeholder="00000-000" required>
+                                <input type="text" id="contratanteCep" class="form-input" placeholder="00000-000"
+                                    required>
+                            </div>
+
+                            <!-- Added address fields for contratante -->
+                            <div class="form-group">
+                                <label for="contratanteEndereco" class="form-label">Endereço</label>
+                                <input type="text" id="contratanteEndereco" class="form-input"
+                                    placeholder="Rua, Avenida, etc." required>
+                            </div>
+
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                                <div class="form-group">
+                                    <label for="contratanteNumero" class="form-label">Número</label>
+                                    <input type="text" id="contratanteNumero" class="form-input" placeholder="000"
+                                        required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="contratanteBairro" class="form-label">Bairro</label>
+                                    <input type="text" id="contratanteBairro" class="form-input" placeholder="Bairro"
+                                        required>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="contratanteComplemento" class="form-label">Complemento</label>
+                                <input type="text" id="contratanteComplemento" class="form-input"
+                                    placeholder="Apto, sala, etc. (opcional)">
+                            </div>
+
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                                <div class="form-group">
+                                    <label for="contratanteCidade" class="form-label">Cidade</label>
+                                    <input type="text" id="contratanteCidade" class="form-input" placeholder="Cidade"
+                                        required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="contratanteEstado" class="form-label">Estado</label>
+                                    <input type="text" id="contratanteEstado" class="form-input" placeholder="UF"
+                                        maxlength="2" required>
+                                </div>
                             </div>
                         </div>
 
-                        <button type="submit" class="btn-primary">
+                        <button type="submit" class="btn-primary" id="btn-cadastroC">
                             <span class="btn-text">Criar Conta como Contratante</span>
                             <span class="btn-loading" style="display: none;">Cadastrando...</span>
                         </button>
@@ -364,7 +490,7 @@
         <div class="footer-content">
             <div class="footer-section pri">
                 <div class="ft-logo">
-                    <img src="/img/logo.png" alt="logo OPI">
+                    <img src="../../img/logo.png" alt="logo OPI">
                     <h3 class="footer-title-logo">TCC Plataforma</h3>
                 </div>
 
@@ -562,6 +688,38 @@
             </div>
         </div>
     </footer>
+
+    <script>
+        // =========================
+        // SELEÇÃO DE CATEGORIA - EMPRESA
+        // =========================
+        document.querySelectorAll("#empresaAreaOptions li").forEach(item => {
+            item.addEventListener("click", () => {
+                const inputBusca = document.getElementById("empresaAreaInput");
+                const inputHidden = document.getElementById("empresaArea");
+        
+                inputBusca.value = item.innerText;      // mostra nome no input
+                inputHidden.value = item.dataset.value; // envia valor real para o backend
+        
+                document.getElementById("empresaAreaOptions").classList.add("hidden");
+            });
+        });
+        
+        // =========================
+        // SELEÇÃO DE CATEGORIA - PROFISSIONAL
+        // =========================
+        document.querySelectorAll("#profissionalAreaOptions li").forEach(item => {
+            item.addEventListener("click", () => {
+                const inputBusca = document.getElementById("profissionalAreaInput");
+                const inputHidden = document.getElementById("profissionalArea");
+        
+                inputBusca.value = item.innerText;      // mostra nome
+                inputHidden.value = item.dataset.value; // valor enviado ao backend
+        
+                document.getElementById("profissionalAreaOptions").classList.add("hidden");
+            });
+        });
+    </script>        
 
     <script src="script.js"></script>
 </body>
