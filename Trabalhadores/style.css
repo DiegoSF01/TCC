@@ -922,4 +922,52 @@ footer {
 
 .footer-bottom-link:hover {
     color: #2563eb;
-}
+}/* Adicione este CSS ao seu style.css */
+
+/* Toast Notifications */
+.toast-notification {
+    position: fixed;
+    bottom: -100px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #333;
+    color: white;
+    padding: 16px 24px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    z-index: 10000;
+    transition: bottom 0.3s ease;
+    font-size: 14px;
+    font-weight: 500;
+    min-width: 250px;
+    text-align: center;
+  }
+  
+  .toast-notification.show {
+    bottom: 30px;
+  }
+  
+  .toast-notification.toast-success {
+    background-color: #10b981;
+  }
+  
+  .toast-notification.toast-error {
+    background-color: #ef4444;
+  }
+  
+  .toast-notification.toast-info {
+    background-color: #3b82f6;
+  }
+  
+  .toast-notification.toast-warning {
+    background-color: #f59e0b;
+  }
+  
+  /* Responsivo */
+  @media (max-width: 768px) {
+    .toast-notification {
+      min-width: 200px;
+      font-size: 13px;
+      padding: 12px 20px;
+    }
+  }

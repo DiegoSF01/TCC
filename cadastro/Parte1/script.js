@@ -1,9 +1,12 @@
+// === PARTE 1 DO CADASTRO - SALVAR EMAIL E SENHA ===
+
 // Estado atual da view
-let currentView = 'login'; // 'login', 'register', 'forgot-password'
+let currentView = 'login';
 
 const En_btn = document.getElementById('En-btn');
 const Ca_btn = document.getElementById('Ca-btn');
 
+// Alternar entre Login e Cadastro
 Ca_btn.addEventListener('click', function () {
   if (currentView === 'login') {
     switchView('register');
@@ -48,12 +51,10 @@ function showToast(message, type = 'success') {
 function switchView(view) {
   currentView = view;
 
-  // Esconder todos os forms
   loginForm.classList.remove('active');
   registerForm.classList.remove('active');
   forgotPasswordForm.classList.remove('active');
 
-  // Atualizar textos e mostrar form correto
   if (view === 'login') {
     loginForm.classList.add('active');
     En_btn.style.backgroundColor = '#ffffff1a';
@@ -111,147 +112,136 @@ function setButtonLoading(button, isLoading) {
   }
 }
 
-// Handle Login
-loginForm.addEventListener('submit', (e) => {
+// === HANDLE LOGIN ===
+loginForm.addEventListener('submit', async (e) => {
   e.preventDefault();
 
-  const email = document.getElementById('loginEmail').value;
-  const password = document.getElementById('loginPassword').value;
+  const email = document.getElementById('loginEmail').value.trim();
+  const password = document.getElementById('loginPassword').value.trim();
   const submitBtn = loginForm.querySelector('.btn-primary');
+
+  if (!email || !password) {
+    showToast('Preencha todos os campos', 'error');
+    return;
+  }
 
   setButtonLoading(submitBtn, true);
 
-  // Simulação de requisição - substitua com sua API
-  setTimeout(() => {
-    console.log('Login:', { email, password });
-    showToast('Login realizado com sucesso!', 'success');
-    setButtonLoading(submitBtn, false);
+  try {
+    const formData = new FormData();
+    formData.append('email', email);
+    formData.append('password', password);
 
-    // Redirecionar para home ou dashboard
-    // window.location.href = '/';
-  }, 1000);
+    const response = await fetch('process-login.php', {
+      method: 'POST',
+      body: formData
+    });
+
+    const json = await response.json();
+
+    if (!json.success) {
+      showToast(json.message || 'Erro ao fazer login', 'error');
+      setButtonLoading(submitBtn, false);
+      return;
+    }
+
+    showToast('Login realizado com sucesso!', 'success');
+
+    // Redirecionar baseado no tipo
+    const tipo = json.type;
+    setTimeout(() => {
+      if (tipo === 'contratante') {
+        window.location.href = '../../Perfil/PróprioC/index.html';
+      } else if (tipo === 'empresa') {
+        window.location.href = '../../Perfil/PróprioTE/PróprioE/index.html';
+      } else if (tipo === 'profissional') {
+        window.location.href = '../../Perfil/PróprioTE/PróprioT/index.html';
+      }
+    }, 500);
+
+  } catch (error) {
+    console.error('Erro:', error);
+    showToast('Erro ao conectar com o servidor', 'error');
+    setButtonLoading(submitBtn, false);
+  }
 });
 
-// Handle Register
-registerForm.addEventListener('submit', (e) => {
+// === HANDLE CADASTRO PARTE 1 - SALVAR NO LOCALSTORAGE ===
+document.getElementById('btn-cadastro1').addEventListener('click', function(e) {
   e.preventDefault();
 
-  const name = document.getElementById('registerName').value;
-  const email = document.getElementById('registerEmail').value;
-  const password = document.getElementById('registerPassword').value;
-  const confirmPassword = document.getElementById('confirmPassword').value;
-  const submitBtn = registerForm.querySelector('.btn-primary');
+  const email = document.getElementById('registerEmail').value.trim();
+  const password = document.getElementById('registerPassword').value.trim();
+  const confirmPassword = document.getElementById('confirmPassword').value.trim();
 
-  // Validar se as senhas coincidem
+  // Validações
+  if (!email || !password || !confirmPassword) {
+    showToast('Preencha todos os campos', 'error');
+    return;
+  }
+
+  // Validar formato de email
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(email)) {
+    showToast('Digite um email válido', 'error');
+    return;
+  }
+
+  if (password.length < 6) {
+    showToast('A senha deve ter no mínimo 6 caracteres', 'error');
+    return;
+  }
+
   if (password !== confirmPassword) {
     showToast('As senhas não coincidem', 'error');
     return;
   }
 
-  setButtonLoading(submitBtn, true);
+  // Salvar dados no localStorage
+  const cadastroParte1 = {
+    email: email,
+    password: password,
+    timestamp: new Date().toISOString()
+  };
 
-  // Simulação de requisição - substitua com sua API
-  setTimeout(() => {
-    console.log('Registro:', { name, email, password });
-    showToast('Cadastro realizado com sucesso! Faça login para continuar.', 'success');
-    setButtonLoading(submitBtn, false);
-
-    // Limpar formulário e voltar para login
-    registerForm.reset();
-    switchView('login');
-  }, 1000);
+  try {
+    localStorage.setItem('cadastro_parte1', JSON.stringify(cadastroParte1));
+    showToast('Dados salvos! Redirecionando...', 'success');
+    
+    // Redirecionar para Parte 2
+    setTimeout(() => {
+      window.location.href = '../../cadastro/Parte2/index.html';
+    }, 1000);
+  } catch (error) {
+    console.error('Erro ao salvar:', error);
+    showToast('Erro ao salvar dados', 'error');
+  }
 });
 
-// Handle Forgot Password
+// === HANDLE FORGOT PASSWORD ===
 forgotPasswordForm.addEventListener('submit', (e) => {
   e.preventDefault();
 
-  const email = document.getElementById('forgotEmail').value;
+  const email = document.getElementById('forgotEmail').value.trim();
   const submitBtn = forgotPasswordForm.querySelector('.btn-primary');
+
+  if (!email) {
+    showToast('Digite seu email', 'error');
+    return;
+  }
 
   setButtonLoading(submitBtn, true);
 
-  // Simulação de requisição - substitua com sua API
+  // Simulação de recuperação de senha
   setTimeout(() => {
     console.log('Recuperação de senha:', { email });
-    showToast('Um email de recuperação foi enviado para ' + email, 'success');
+    showToast('Email de recuperação enviado para ' + email, 'success');
     setButtonLoading(submitBtn, false);
 
-    // Limpar formulário e voltar para login
     forgotPasswordForm.reset();
     switchView('login');
-  }, 1000);
+  }, 1500);
 });
 
 // Inicializar na view de login
 switchView('login');
-
-
-document.getElementById("btn-cadastro1").addEventListener("click", salvarParte1);
-
-function salvarParte1(event) {
-  event.preventDefault(); // evita recarregar a página
-
-  const email = document.getElementById("registerEmail").value.trim();
-  const senha = document.getElementById("registerPassword").value.trim();
-  const confirmar = document.getElementById("confirmPassword").value.trim();
-
-  if (!email || !senha || !confirmar) {
-    alert("Preencha todos os campos.");
-    return;
-  }
-
-  if (senha.length < 6) {
-    alert("A senha deve ter no mínimo 6 caracteres");
-    return;
-  }
-
-  if (senha !== confirmar) {
-    alert("As senhas não coincidem.");
-    return;
-  }
-
-  const parte1 = {
-    email: email,
-    password: senha
-  };
-
-  localStorage.setItem("cadastro_parte1", JSON.stringify(parte1));
-
-  window.location.href = "../../cadastro/Parte2/index.html";
-}
-
-
-document.getElementById("btn-login").addEventListener("click", async function (e) {
-  e.preventDefault();
-
-  const email = document.getElementById("loginEmail").value.trim();
-  const password = document.getElementById("loginPassword").value.trim();
-
-  const formData = new FormData();
-  formData.append("email", email);
-  formData.append("password", password);
-
-  const resp = await fetch("process-login.php", {
-    method: "POST",
-    body: formData
-  });
-
-  const json = await resp.json();
-
-  if (!json.success) {
-    alert(json.message);
-    return;
-  }
-
-  const tipo = json.type;
-
-  // Redirecionamento
-  if (tipo === "contratante") {
-    window.location.href = "../../Perfil/PróprioC/index.html";
-  } else if (tipo === "empresa") {
-    window.location.href = "../../Perfil/PróprioTE/PróprioE/index.html";
-  } else if (tipo === "profissional") {
-    window.location.href = "../../Perfil/PróprioTE/PróprioT/index.html";
-  }
-});

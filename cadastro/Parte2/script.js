@@ -1,84 +1,24 @@
-// === ESTADO DO TIPO DE CADASTRO ATUAL (empresa, profissional ou contratante) ===
+// === CONFIGURAÇÃO E UTILITÁRIOS ===
+const $ = id => document.getElementById(id);
+
+// ⚠️ CONFIGURE A URL BASE DA SUA API AQUI
+const API_BASE_URL = 'http://127.0.0.1:8000';
+
 let tipoAtual = 'empresa';
 
-// === SELECIONA ELEMENTOS DO DOM ===
-const tipoBtns = document.querySelectorAll('.tipo-btn'); // Botões de seleção de tipo
-const empresaForm = document.getElementById('empresaForm');
-const profissionalForm = document.getElementById('profissionalForm');
-const contratanteForm = document.getElementById('contratanteForm');
-
-// === FUNÇÃO DE TOAST (mensagem que aparece no canto) ===
 function showToast(message, type = 'success') {
   const toast = document.getElementById('toast');
   const toastMessage = document.getElementById('toastMessage');
-
-  toastMessage.textContent = message; // Define texto
-  toast.className = 'toast show ' + type; // Adiciona classe de sucesso ou erro
-
-  // Some após 3 segundos
-  setTimeout(() => {
-    toast.classList.remove('show');
-  }, 3000);
+  
+  if (toast && toastMessage) {
+    toastMessage.textContent = message;
+    toast.className = 'toast show ' + type;
+    setTimeout(() => toast.classList.remove('show'), 3000);
+  } else {
+    alert(message);
+  }
 }
 
-// === ALTERA ENTRE TIPOS DE CADASTRO ===
-function switchTipo(tipo) {
-  tipoAtual = tipo;
-
-  // Remove destaque dos botões
-  tipoBtns.forEach(btn => btn.classList.remove('active'));
-
-  // Ativa botão clicado
-  document.querySelector(`[data-tipo="${tipo}"]`).classList.add('active');
-
-  // Esconde todos os formulários
-  empresaForm.classList.remove('active');
-  profissionalForm.classList.remove('active');
-  contratanteForm.classList.remove('active');
-
-  // Exibe formulário correto
-  if (tipo === 'empresa') empresaForm.classList.add('active');
-  else if (tipo === 'profissional') profissionalForm.classList.add('active');
-  else if (tipo === 'contratante') contratanteForm.classList.add('active');
-}
-
-// === EVENTOS PARA OS BOTÕES DE TIPO ===
-tipoBtns.forEach(btn => {
-  btn.addEventListener('click', () => {
-    const tipo = btn.getAttribute('data-tipo');
-    switchTipo(tipo);
-  });
-});
-
-// === FUNÇÃO PARA MOSTRAR PREVIEW DE IMAGEM SELECIONADA ===
-function handleImagePreview(inputId, previewId) {
-  const input = document.getElementById(inputId);
-  const preview = document.getElementById(previewId);
-
-  input.addEventListener('change', (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = (event) => {
-        preview.innerHTML = `<img src="${event.target.result}" alt="Preview">`;
-        preview.classList.add('has-image');
-      };
-      reader.readAsDataURL(file); // Converte imagem em base64
-    }
-  });
-}
-
-// === CONFIGURAR PREVIEW PARA CADA FORMULÁRIO ===
-handleImagePreview('empresaBanner', 'empresaBannerPreview');
-handleImagePreview('empresaPerfil', 'empresaPerfilPreview');
-
-handleImagePreview('profissionalBanner', 'profissionalBannerPreview');
-handleImagePreview('profissionalPerfil', 'profissionalPerfilPreview');
-
-handleImagePreview('contratanteBanner', 'contratanteBannerPreview');
-handleImagePreview('contratantePerfil', 'contratantePerfilPreview');
-
-// === FUNÇÃO QUE LIGA O "CARREGANDO" NO BOTÃO ===
 function setButtonLoading(button, isLoading) {
   const btnText = button.querySelector('.btn-text');
   const btnLoading = button.querySelector('.btn-loading');
@@ -94,12 +34,34 @@ function setButtonLoading(button, isLoading) {
   }
 }
 
-// === MÁSCARAS PARA CAMPOS DE INPUT ===
+// === VERIFICAR SE EXISTE PARTE 1 ===
+function getParte1() {
+  try {
+    const data = localStorage.getItem('cadastro_parte1');
+    if (!data) return null;
+    return JSON.parse(data);
+  } catch (error) {
+    console.error('Erro ao recuperar dados:', error);
+    return null;
+  }
+}
 
-// Máscara de CNPJ
+window.addEventListener('DOMContentLoaded', () => {
+  const parte1 = getParte1();
+  if (!parte1) {
+    showToast('Você precisa preencher a parte 1 primeiro', 'error');
+    setTimeout(() => {
+      window.location.href = '../Parte1/index.html';
+    }, 2000);
+  } else {
+    console.log('✅ Dados da Parte 1 recuperados:', parte1);
+  }
+});
+
+// === MÁSCARAS DE INPUT ===
 function maskCNPJ(value) {
   return value
-    .replace(/\D/g, '')                 // Remove tudo que não é número
+    .replace(/\D/g, '')
     .replace(/^(\d{2})(\d)/, '$1.$2')
     .replace(/^(\d{2})\.(\d{3})(\d)/, '$1.$2.$3')
     .replace(/\.(\d{3})(\d)/, '.$1/$2')
@@ -107,7 +69,6 @@ function maskCNPJ(value) {
     .substring(0, 18);
 }
 
-// Máscara de CPF
 function maskCPF(value) {
   return value
     .replace(/\D/g, '')
@@ -117,7 +78,6 @@ function maskCPF(value) {
     .substring(0, 14);
 }
 
-// Máscara de CEP
 function maskCEP(value) {
   return value
     .replace(/\D/g, '')
@@ -125,478 +85,566 @@ function maskCEP(value) {
     .substring(0, 9);
 }
 
-// === APLICA AS MÁSCARAS ===
-document.getElementById('empresaCnpj').addEventListener('input', e => e.target.value = maskCNPJ(e.target.value));
-document.getElementById('empresaCep').addEventListener('input', e => e.target.value = maskCEP(e.target.value));
-document.getElementById('profissionalCpf').addEventListener('input', e => e.target.value = maskCPF(e.target.value));
-document.getElementById('profissionalCep').addEventListener('input', e => e.target.value = maskCEP(e.target.value));
-document.getElementById('contratanteCpf').addEventListener('input', e => e.target.value = maskCPF(e.target.value));
-document.getElementById('contratanteCep').addEventListener('input', e => e.target.value = maskCEP(e.target.value));
-
-// ========================================================================================
-// === FORMULÁRIOS DE CADASTRO ===
-// ========================================================================================
-
-// --- EMPRESA ---
-empresaForm.addEventListener('submit', (e) => {
-  e.preventDefault();
-
-  const submitBtn = empresaForm.querySelector('.btn-primary');
-
-  // Coleta dados
-  const formData = {
-    tipo: 'empresa',
-    nome: document.getElementById('empresaNome').value,
-    cnpj: document.getElementById('empresaCnpj').value,
-    cep: document.getElementById('empresaCep').value,
-    endereco: document.getElementById('empresaEndereco').value,
-    numero: document.getElementById('empresaNumero').value,
-    bairro: document.getElementById('empresaBairro').value,
-    complemento: document.getElementById('empresaComplemento').value,
-    cidade: document.getElementById('empresaCidade').value,
-    estado: document.getElementById('empresaEstado').value.toUpperCase(),
-    area: document.getElementById('empresaArea').value,
-    fotoPerfil: document.getElementById('empresaPerfil').files[0],
-    fotoBanner: document.getElementById('empresaBanner').files[0]
-  };
-
-  setButtonLoading(submitBtn, true);
-
-  // Simulação de envio
-  setTimeout(() => {
-    console.log('Cadastro Empresa:', formData);
-    showToast('Empresa cadastrada com sucesso!', 'success');
-    setButtonLoading(submitBtn, false);
-
-    setTimeout(() => window.location.href = 'auth.html', 1500);
-  }, 1500);
-});
-
-// --- PROFISSIONAL ---
-profissionalForm.addEventListener('submit', (e) => {
-  e.preventDefault();
-
-  const submitBtn = profissionalForm.querySelector('.btn-primary');
-
-  const formData = {
-    tipo: 'profissional',
-    nome: document.getElementById('profissionalNome').value,
-    cpf: document.getElementById('profissionalCpf').value,
-    cep: document.getElementById('profissionalCep').value,
-    endereco: document.getElementById('profissionalEndereco').value,
-    numero: document.getElementById('profissionalNumero').value,
-    bairro: document.getElementById('profissionalBairro').value,
-    complemento: document.getElementById('profissionalComplemento').value,
-    cidade: document.getElementById('profissionalCidade').value,
-    estado: document.getElementById('profissionalEstado').value.toUpperCase(),
-    area: document.getElementById('profissionalArea').value,
-    fotoPerfil: document.getElementById('profissionalPerfil').files[0],
-    fotoBanner: document.getElementById('profissionalBanner').files[0]
-  };
-
-  setButtonLoading(submitBtn, true);
-
-  setTimeout(() => {
-    console.log('Cadastro Profissional:', formData);
-    showToast('Profissional cadastrado com sucesso!', 'success');
-    setButtonLoading(submitBtn, false);
-
-    setTimeout(() => window.location.href = 'auth.html', 1500);
-  }, 1500);
-});
-
-// --- CONTRATANTE ---
-contratanteForm.addEventListener('submit', (e) => {
-  e.preventDefault();
-
-  const submitBtn = contratanteForm.querySelector('.btn-primary');
-
-  const formData = {
-    tipo: 'contratante',
-    nome: document.getElementById('contratanteNome').value,
-    cpf: document.getElementById('contratanteCpf').value,
-    cep: document.getElementById('contratanteCep').value,
-    endereco: document.getElementById('contratanteEndereco').value,
-    numero: document.getElementById('contratanteNumero').value,
-    bairro: document.getElementById('contratanteBairro').value,
-    complemento: document.getElementById('contratanteComplemento').value,
-    cidade: document.getElementById('contratanteCidade').value,
-    estado: document.getElementById('contratanteEstado').value.toUpperCase(),
-    fotoPerfil: document.getElementById('contratantePerfil').files[0],
-    fotoBanner: document.getElementById('contratanteBanner').files[0]
-  };
-
-  setButtonLoading(submitBtn, true);
-
-  setTimeout(() => {
-    console.log('Cadastro Contratante:', formData);
-    showToast('Contratante cadastrado com sucesso!', 'success');
-    setButtonLoading(submitBtn, false);
-
-    setTimeout(() => window.location.href = 'auth.html', 1500);
-  }, 1500);
-});
-
-// Inicializa na aba "Empresa"
-switchTipo('empresa');
-
-// ========================================================================================
-// === CAMPO COM BUSCA (ÁREA DE ATUAÇÃO PROFISSIONAL) ===
-// ========================================================================================
-
-const inputArea = document.getElementById("profissionalAreaInput");
-const hiddenArea = document.getElementById("profissionalArea");
-const optionsList = document.getElementById("profissionalAreaOptions");
-
-// Abre lista ao focar
-inputArea.addEventListener("focus", () => {
-  optionsList.classList.remove("hidden");
-});
-
-// Filtra opções
-inputArea.addEventListener("input", () => {
-  const filter = inputArea.value.toLowerCase();
-  Array.from(optionsList.children).forEach(li => {
-    li.style.display = li.textContent.toLowerCase().includes(filter) ? "block" : "none";
-  });
-});
-
-// Seleciona item
-optionsList.addEventListener("click", (e) => {
-  if (e.target.tagName === "LI") {
-    inputArea.value = e.target.textContent;
-    hiddenArea.value = e.target.dataset.value;
-    optionsList.classList.add("hidden");
-  }
-});
-
-// Fecha ao clicar fora
-document.addEventListener("click", (e) => {
-  if (!e.target.closest(".searchable-select")) {
-    optionsList.classList.add("hidden");
-  }
-});
-
-// ========================================================================================
-// === CAMPO COM BUSCA (ÁREA DA EMPRESA) ===
-// ========================================================================================
-
-const empresaInput = document.getElementById("empresaAreaInput");
-const empresaHidden = document.getElementById("empresaArea");
-const empresaOptions = document.getElementById("empresaAreaOptions");
-
-// Abre lista ao focar
-empresaInput.addEventListener("focus", () => {
-  empresaOptions.classList.remove("hidden");
-});
-
-// Filtra ao digitar
-empresaInput.addEventListener("input", () => {
-  const filter = empresaInput.value.toLowerCase();
-  Array.from(empresaOptions.children).forEach(li => {
-    li.style.display = li.textContent.toLowerCase().includes(filter) ? "block" : "none";
-  });
-});
-
-// Seleciona item
-empresaOptions.addEventListener("click", (e) => {
-  if (e.target.tagName === "LI") {
-    empresaInput.value = e.target.textContent;
-    empresaHidden.value = e.target.dataset.value;
-    empresaOptions.classList.add("hidden");
-  }
-});
-
-// Fecha lista ao clicar fora
-document.addEventListener("click", (e) => {
-  if (!e.target.closest(".searchable-select")) {
-    empresaOptions.classList.add("hidden");
-  }
-});
-
-// ========================================================================================
-// === MÁSCARA DE TELEFONE (PROFISSIONAL E EMPRESA) ===
-// ========================================================================================
-
-const phoneInputEm = document.getElementById("registerTelEm");
-
-phoneInputEm.addEventListener("input", function (e) {
-  let value = e.target.value.replace(/\D/g, ""); // Remove tudo que não for número
-
-  // Limita a 11 dígitos
+function maskPhone(value) {
+  value = value.replace(/\D/g, '');
   if (value.length > 11) value = value.slice(0, 11);
-
-  // Aplica a máscara progressivamente
-  if (value.length > 0) {
-    value = "(" + value;
-  }
-  if (value.length > 3) {
-    value = value.slice(0, 3) + ") " + value.slice(3);
-  }
-  if (value.length > 10) {
-    value = value.slice(0, 10) + "-" + value.slice(10);
-  }
-
-  e.target.value = value;
-});
-
-const phoneInputPro = document.getElementById("registerTelPro");
-
-phoneInputPro.addEventListener("input", function (e) {
-  let value = e.target.value.replace(/\D/g, ""); // Remove tudo que não for número
-
-  // Limita a 11 dígitos
-  if (value.length > 11) value = value.slice(0, 11);
-
-  // Aplica a máscara progressivamente
-  if (value.length > 0) {
-    value = "(" + value;
-  }
-  if (value.length > 3) {
-    value = value.slice(0, 3) + ") " + value.slice(3);
-  }
-  if (value.length > 10) {
-    value = value.slice(0, 10) + "-" + value.slice(10);
-  }
-
-  e.target.value = value;
-});
-
-const phoneInputCon = document.getElementById("registerTelCon");
-
-phoneInputCon.addEventListener("input", function (e) {
-  let value = e.target.value.replace(/\D/g, ""); // Remove tudo que não for número
-
-  // Limita a 11 dígitos
-  if (value.length > 11) value = value.slice(0, 11);
-
-  // Aplica a máscara progressivamente
-  if (value.length > 0) {
-    value = "(" + value;
-  }
-  if (value.length > 3) {
-    value = value.slice(0, 3) + ") " + value.slice(3);
-  }
-  if (value.length > 10) {
-    value = value.slice(0, 10) + "-" + value.slice(10);
-  }
-
-  e.target.value = value;
-});
-
-// ===============================
-//  CONFIGURAÇÃO
-// ===============================
-const $ = id => document.getElementById(id);
-
-// Botões
-const btnEmpresa = $("btn-cadastroE");
-const btnPrestador = $("btn-cadastroT");
-const btnContratante = $("btn-cadastroC");
-
-// Mostrar loading no botão
-function setLoading(btn, state) {
-  const txt = btn.querySelector(".btn-text");
-  const load = btn.querySelector(".btn-loading");
-  btn.disabled = state;
-  txt.style.display = state ? "none" : "";
-  load.style.display = state ? "inline-block" : "none";
+  
+  if (value.length > 0) value = '(' + value;
+  if (value.length > 3) value = value.slice(0, 3) + ') ' + value.slice(3);
+  if (value.length > 10) value = value.slice(0, 10) + '-' + value.slice(10);
+  
+  return value;
 }
 
-// ===============================
-//  CEP - ViaCEP
-// ===============================
-async function validarCEP(cep) {
-  cep = cep.replace(/\D/g, "");
+// Aplicar máscaras
+if ($('empresaCnpj')) $('empresaCnpj').addEventListener('input', e => e.target.value = maskCNPJ(e.target.value));
+if ($('empresaCep')) $('empresaCep').addEventListener('input', e => e.target.value = maskCEP(e.target.value));
+if ($('registerTelEm')) $('registerTelEm').addEventListener('input', e => e.target.value = maskPhone(e.target.value));
+
+if ($('profissionalCpf')) $('profissionalCpf').addEventListener('input', e => e.target.value = maskCPF(e.target.value));
+if ($('profissionalCep')) $('profissionalCep').addEventListener('input', e => e.target.value = maskCEP(e.target.value));
+if ($('registerTelPro')) $('registerTelPro').addEventListener('input', e => e.target.value = maskPhone(e.target.value));
+
+if ($('contratanteCpf')) $('contratanteCpf').addEventListener('input', e => e.target.value = maskCPF(e.target.value));
+if ($('contratanteCep')) $('contratanteCep').addEventListener('input', e => e.target.value = maskCEP(e.target.value));
+if ($('registerTelCon')) $('registerTelCon').addEventListener('input', e => e.target.value = maskPhone(e.target.value));
+
+// === BUSCAR CEP VIA VIACEP ===
+async function buscarCEP(cep, tipo) {
+  cep = cep.replace(/\D/g, '');
+  
   if (cep.length !== 8) {
-    alert("CEP inválido");
+    showToast('CEP deve ter 8 dígitos', 'error');
     return null;
   }
 
+  console.log(`🔍 Buscando CEP: ${cep}`);
+
   try {
-    const r = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
-    const data = await r.json();
+    const response = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
+    const data = await response.json();
+    
     if (data.erro) {
-      alert("CEP não encontrado.");
+      showToast('CEP não encontrado', 'error');
       return null;
     }
+
+    console.log('✅ CEP encontrado:', data);
+
+    $(`${tipo}Endereco`).value = data.logradouro || '';
+    $(`${tipo}Bairro`).value = data.bairro || '';
+    $(`${tipo}Cidade`).value = data.localidade || '';
+    $(`${tipo}Estado`).value = data.uf || '';
+
     return data;
-  } catch {
-    alert("Erro ao consultar CEP.");
+  } catch (error) {
+    console.error('❌ Erro ao buscar CEP:', error);
+    showToast('Erro ao buscar CEP. Verifique sua conexão.', 'error');
     return null;
   }
 }
 
-// ===============================
-//  PARTE 1
-// ===============================
-function getParte1() {
-  try {
-    return JSON.parse(localStorage.getItem("cadastro_parte1"));
-  } catch {
-    return null;
+if ($('empresaCep')) {
+  $('empresaCep').addEventListener('blur', () => {
+    const cep = $('empresaCep').value;
+    if (cep) buscarCEP(cep, 'empresa');
+  });
+}
+
+if ($('profissionalCep')) {
+  $('profissionalCep').addEventListener('blur', () => {
+    const cep = $('profissionalCep').value;
+    if (cep) buscarCEP(cep, 'profissional');
+  });
+}
+
+if ($('contratanteCep')) {
+  $('contratanteCep').addEventListener('blur', () => {
+    const cep = $('contratanteCep').value;
+    if (cep) buscarCEP(cep, 'contratante');
+  });
+}
+
+// === PREVIEW DE IMAGENS ===
+function handleImagePreview(inputId, previewId) {
+  const input = $(inputId);
+  const preview = $(previewId);
+
+  if (input) {
+    input.addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (file) {
+        console.log(`📷 Preview de imagem: ${inputId}`, file);
+        const reader = new FileReader();
+        reader.onload = (event) => {
+          preview.innerHTML = `<img src="${event.target.result}" alt="Preview">`;
+          preview.classList.add('has-image');
+        };
+        reader.readAsDataURL(file);
+      }
+    });
   }
 }
 
-// ===============================
-//  MONTA FORMULÁRIO COMPLETO
-// ===============================
-async function montarForm(tipo) {
-  const parte1 = getParte1();
-  if (!parte1) {
-    alert("Erro: volte para a parte 1.");
-    return null;
-  }
+handleImagePreview('empresaBanner', 'empresaBannerPreview');
+handleImagePreview('empresaPerfil', 'empresaPerfilPreview');
+handleImagePreview('profissionalBanner', 'profissionalBannerPreview');
+handleImagePreview('profissionalPerfil', 'profissionalPerfilPreview');
+handleImagePreview('contratanteBanner', 'contratanteBannerPreview');
+handleImagePreview('contratantePerfil', 'contratantePerfilPreview');
 
-  const form = new FormData();
+// === ALTERNAR ENTRE TIPOS DE CADASTRO ===
+const tipoBtns = document.querySelectorAll('.tipo-btn');
 
-  // Dados da Parte 1
-  form.append("email", parte1.email);
-  form.append("password", parte1.password);
-  form.append("tipo", tipo);
+function switchTipo(tipo) {
+  tipoAtual = tipo;
+  console.log(`🔄 Tipo de cadastro alterado para: ${tipo}`);
 
-  let cepInput, ruaInput, numeroInput, bairroInput, cidadeInput, estadoInput;
+  tipoBtns.forEach(btn => btn.classList.remove('active'));
+  document.querySelector(`[data-tipo="${tipo}"]`)?.classList.add('active');
 
-  // --------------------------
-  // EMPRESA
-  // --------------------------
-  if (tipo === "empresa") {
-    const cep = $("empresaCep").value;
-    const data = await validarCEP(cep);
-    if (!data) return null;
+  $('empresaForm')?.classList.remove('active');
+  $('profissionalForm')?.classList.remove('active');
+  $('contratanteForm')?.classList.remove('active');
 
-    // Preencher automaticamente
-    $("empresaEndereco").value = data.logradouro;
-    $("empresaBairro").value = data.bairro;
-    $("empresaCidade").value = data.localidade;
-    $("empresaEstado").value = data.uf;
-
-    form.append("cnpj", $("empresaCnpj").value);
-    form.append("razao_social", $("empresaNome").value);
-    form.append("id_categoria", $("empresaArea").value);
-
-    form.append("cep", cep);
-    form.append("rua", $("empresaEndereco").value);
-    form.append("numero", $("empresaNumero").value);
-    form.append("localidade", $("empresaCidade").value);
-    form.append("estado", $("empresaEstado").value);
-    form.append("uf", data.uf);
-    form.append("descricao", $("empresaDescricao")?.value || "");
-
-    if ($("empresaPerfil").files[0]) form.append("foto", $("empresaPerfil").files[0]);
-    if ($("empresaBanner").files[0]) form.append("capa", $("empresaBanner").files[0]);
-  }
-
-  // --------------------------
-  // PRESTADOR
-  // --------------------------
-  if (tipo === "prestador") {
-    const cep = $("profissionalCep").value;
-    const data = await validarCEP(cep);
-    if (!data) return null;
-
-    $("profissionalEndereco").value = data.logradouro;
-    $("profissionalBairro").value = data.bairro;
-    $("profissionalCidade").value = data.localidade;
-    $("profissionalEstado").value = data.uf;
-
-    form.append("nome", $("profissionalNome").value);
-    form.append("cpf", $("profissionalCpf").value);
-    form.append("id_ramo", $("profissionalArea").value);
-
-    form.append("cep", cep);
-    form.append("rua", $("profissionalEndereco").value);
-    form.append("numero", $("profissionalNumero").value);
-    form.append("localidade", $("profissionalCidade").value);
-    form.append("estado", $("profissionalEstado").value);
-    form.append("uf", data.uf);
-    form.append("descricao", $("profissionalDescricao")?.value || "");
-
-    if ($("profissionalPerfil").files[0]) form.append("foto", $("profissionalPerfil").files[0]);
-    if ($("profissionalBanner").files[0]) form.append("capa", $("profissionalBanner").files[0]);
-  }
-
-  // --------------------------
-  // CONTRATANTE
-  // --------------------------
-  if (tipo === "contratante") {
-    const cep = $("contratanteCep").value;
-    const data = await validarCEP(cep);
-    if (!data) return null;
-
-    $("contratanteEndereco").value = data.logradouro;
-    $("contratanteBairro").value = data.bairro;
-    $("contratanteCidade").value = data.localidade;
-    $("contratanteEstado").value = data.uf;
-
-    form.append("nome", $("contratanteNome").value);
-    form.append("cpf", $("contratanteCpf").value);
-
-    form.append("cep", cep);
-    form.append("rua", $("contratanteEndereco").value);
-    form.append("numero", $("contratanteNumero").value);
-    form.append("localidade", $("contratanteCidade").value);
-    form.append("estado", $("contratanteEstado").value);
-    form.append("uf", data.uf);
-
-    if ($("contratantePerfil").files[0]) form.append("foto", $("contratantePerfil").files[0]);
-    if ($("contratanteBanner").files[0]) form.append("capa", $("contratanteBanner").files[0]);
-  }
-
-  return form;
+  if (tipo === 'empresa') $('empresaForm')?.classList.add('active');
+  else if (tipo === 'profissional') $('profissionalForm')?.classList.add('active');
+  else if (tipo === 'contratante') $('contratanteForm')?.classList.add('active');
 }
 
-// ===============================
-//  ENVIAR CADASTRO
-// ===============================
-async function enviarCadastro(tipo, btn) {
-  setLoading(btn, true);
+tipoBtns.forEach(btn => {
+  btn.addEventListener('click', () => {
+    const tipo = btn.getAttribute('data-tipo');
+    switchTipo(tipo);
+  });
+});
 
-  const form = await montarForm(tipo);
-  if (!form) {
-    setLoading(btn, false);
-    return;
-  }
+// === CAMPOS DE BUSCA (ÁREA DE ATUAÇÃO) ===
+function setupSearchableSelect(inputId, hiddenId, optionsId) {
+  const input = $(inputId);
+  const hidden = $(hiddenId);
+  const options = $(optionsId);
 
-  const resp = await fetch("process-cadastro.php", {
-    method: "POST",
-    body: form
+  if (!input || !hidden || !options) return;
+
+  input.addEventListener('focus', () => options.classList.remove('hidden'));
+
+  input.addEventListener('input', () => {
+    const filter = input.value.toLowerCase();
+    Array.from(options.children).forEach(li => {
+      li.style.display = li.textContent.toLowerCase().includes(filter) ? 'block' : 'none';
+    });
   });
 
-  const json = await resp.json();
+  options.addEventListener('click', (e) => {
+    if (e.target.tagName === 'LI') {
+      input.value = e.target.textContent;
+      hidden.value = e.target.dataset.value;
+      options.classList.add('hidden');
+      console.log(`✅ Área selecionada: ${e.target.textContent} (ID: ${e.target.dataset.value})`);
+    }
+  });
 
-  if (!json.success) {
-    alert(json.message);
-    setLoading(btn, false);
+  document.addEventListener('click', (e) => {
+    if (!e.target.closest('.searchable-select')) {
+      options.classList.add('hidden');
+    }
+  });
+}
+
+setupSearchableSelect('empresaAreaInput', 'empresaArea', 'empresaAreaOptions');
+setupSearchableSelect('profissionalAreaInput', 'profissionalArea', 'profissionalAreaOptions');
+
+// === VALIDAR CAMPOS ANTES DE ENVIAR ===
+function validarCampos(tipo) {
+  console.log(`🔍 Validando campos do tipo: ${tipo}`);
+
+  if (tipo === 'empresa') {
+    const campos = {
+      'empresaNome': 'Nome da Empresa',
+      'empresaCnpj': 'CNPJ',
+      'registerTelEm': 'Telefone',
+      'empresaCep': 'CEP',
+      'empresaEndereco': 'Endereço',
+      'empresaNumero': 'Número',
+      'empresaBairro': 'Bairro',
+      'empresaCidade': 'Cidade',
+      'empresaEstado': 'Estado',
+      'empresaArea': 'Área da Empresa'
+    };
+
+    for (const [id, nome] of Object.entries(campos)) {
+      const valor = $(id).value.trim();
+      if (!valor) {
+        showToast(`Campo "${nome}" é obrigatório`, 'error');
+        console.error(`❌ Campo obrigatório vazio: ${nome}`);
+        return false;
+      }
+    }
+  }
+  else if (tipo === 'prestador') {
+    const campos = {
+      'profissionalNome': 'Nome Completo',
+      'profissionalCpf': 'CPF',
+      'registerTelPro': 'Telefone',
+      'profissionalCep': 'CEP',
+      'profissionalEndereco': 'Endereço',
+      'profissionalNumero': 'Número',
+      'profissionalBairro': 'Bairro',
+      'profissionalCidade': 'Cidade',
+      'profissionalEstado': 'Estado',
+      'profissionalArea': 'Área de Atuação'
+    };
+
+    for (const [id, nome] of Object.entries(campos)) {
+      const valor = $(id).value.trim();
+      if (!valor) {
+        showToast(`Campo "${nome}" é obrigatório`, 'error');
+        console.error(`❌ Campo obrigatório vazio: ${nome}`);
+        return false;
+      }
+    }
+  }
+  else if (tipo === 'contratante') {
+    const campos = {
+      'contratanteNome': 'Nome Completo',
+      'contratanteCpf': 'CPF',
+      'registerTelCon': 'Telefone',
+      'contratanteCep': 'CEP',
+      'contratanteEndereco': 'Endereço',
+      'contratanteNumero': 'Número',
+      'contratanteBairro': 'Bairro',
+      'contratanteCidade': 'Cidade',
+      'contratanteEstado': 'Estado'
+    };
+
+    for (const [id, nome] of Object.entries(campos)) {
+      const valor = $(id).value.trim();
+      if (!valor) {
+        showToast(`Campo "${nome}" é obrigatório`, 'error');
+        console.error(`❌ Campo obrigatório vazio: ${nome}`);
+        return false;
+      }
+    }
+  }
+
+  console.log('✅ Todos os campos estão preenchidos');
+  return true;
+}
+
+// === MAPEAMENTO DE ESTADOS ===
+const ESTADOS_BRASIL = {
+  'AC': 'Acre',
+  'AL': 'Alagoas',
+  'AP': 'Amapá',
+  'AM': 'Amazonas',
+  'BA': 'Bahia',
+  'CE': 'Ceará',
+  'DF': 'Distrito Federal',
+  'ES': 'Espírito Santo',
+  'GO': 'Goiás',
+  'MA': 'Maranhão',
+  'MT': 'Mato Grosso',
+  'MS': 'Mato Grosso do Sul',
+  'MG': 'Minas Gerais',
+  'PA': 'Pará',
+  'PB': 'Paraíba',
+  'PR': 'Paraná',
+  'PE': 'Pernambuco',
+  'PI': 'Piauí',
+  'RJ': 'Rio de Janeiro',
+  'RN': 'Rio Grande do Norte',
+  'RS': 'Rio Grande do Sul',
+  'RO': 'Rondônia',
+  'RR': 'Roraima',
+  'SC': 'Santa Catarina',
+  'SP': 'São Paulo',
+  'SE': 'Sergipe',
+  'TO': 'Tocantins'
+};
+
+// === ENVIAR CADASTRO COMPLETO PARA API ===
+async function enviarCadastro(tipo, btn) {
+  console.log('═══════════════════════════════════════════════');
+  console.log('🚀 INICIANDO ENVIO DE CADASTRO COMPLETO');
+  console.log(`📋 Tipo: ${tipo}`);
+  console.log('═══════════════════════════════════════════════');
+
+  setButtonLoading(btn, true);
+
+  // ✅ BUSCAR DADOS DA PARTE 1 (EMAIL E SENHA)
+  const parte1 = getParte1();
+  if (!parte1) {
+    showToast('Erro: dados da parte 1 não encontrados', 'error');
+    console.error('❌ Dados da parte 1 não encontrados');
+    setButtonLoading(btn, false);
     return;
   }
 
-  localStorage.removeItem("cadastro_parte1");
+  console.log('✅ Dados da Parte 1:', parte1);
 
-  // REDIRECIONAR
-  if (json.type === "empresa") {
-    window.location.href = "../../Perfil/PróprioTE/PróprioE/index.html";
-  } else if (json.type === "prestador") {
-    window.location.href = "../../Perfil/PróprioTE/PróprioT/index.html";
-  } else {
-    window.location.href = "../../Perfil/PróprioC/index.html";
+  // VALIDAR CAMPOS DA PARTE 2
+  if (!validarCampos(tipo)) {
+    setButtonLoading(btn, false);
+    return;
+  }
+
+  const formData = new FormData();
+  
+  // ✅ ADICIONAR DADOS DA PARTE 1 (EMAIL E SENHA)
+  formData.append('email', parte1.email);
+  formData.append('password', parte1.password);
+  formData.append('type', tipo);
+
+  console.log('📦 Dados da Parte 1 adicionados:');
+  console.log('  - email:', parte1.email);
+  console.log('  - type:', tipo);
+
+  try {
+    // ✅ ADICIONAR DADOS DA PARTE 2 BASEADO NO TIPO
+    if (tipo === 'empresa') {
+      // Buscar CEP antes de enviar
+      const cepData = await buscarCEP($('empresaCep').value, 'empresa');
+      if (!cepData) {
+        setButtonLoading(btn, false);
+        return;
+      }
+
+      const cnpj = $('empresaCnpj').value.replace(/\D/g, '');
+      const telefone = $('registerTelEm').value.replace(/\D/g, '');
+      const cep = $('empresaCep').value.replace(/\D/g, '');
+      const uf = cepData.uf;
+      const estadoCompleto = ESTADOS_BRASIL[uf] || cepData.uf;
+
+      // Adicionar todos os campos obrigatórios
+      formData.append('razao_social', $('empresaNome').value.trim());
+      formData.append('cnpj', cnpj);
+      formData.append('telefone', telefone);
+      formData.append('id_categoria', $('empresaArea').value);
+      formData.append('cep', cep);
+      formData.append('rua', $('empresaEndereco').value.trim());
+      formData.append('numero', $('empresaNumero').value.trim());
+      formData.append('localidade', cepData.localidade);
+      formData.append('estado', estadoCompleto);
+      formData.append('uf', uf);
+      
+      // Campos opcionais
+      const complemento = $('empresaComplemento')?.value?.trim();
+      if (complemento) {
+        formData.append('infoadd', complemento);
+      }
+
+      // Foto de perfil
+      if ($('empresaPerfil')?.files[0]) {
+        formData.append('foto', $('empresaPerfil').files[0]);
+        console.log('📷 Foto de perfil adicionada');
+      }
+
+      console.log('📦 Dados da Empresa (Parte 2):');
+      console.log('  - razao_social:', $('empresaNome').value);
+      console.log('  - cnpj:', cnpj);
+      console.log('  - telefone:', telefone);
+      console.log('  - id_categoria:', $('empresaArea').value);
+      console.log('  - localidade:', cepData.localidade);
+      console.log('  - estado:', estadoCompleto);
+      console.log('  - uf:', uf);
+    }
+    else if (tipo === 'prestador') {
+      const cepData = await buscarCEP($('profissionalCep').value, 'profissional');
+      if (!cepData) {
+        setButtonLoading(btn, false);
+        return;
+      }
+
+      const cpf = $('profissionalCpf').value.replace(/\D/g, '');
+      const telefone = $('registerTelPro').value.replace(/\D/g, '');
+      const cep = $('profissionalCep').value.replace(/\D/g, '');
+      const uf = cepData.uf;
+      const estadoCompleto = ESTADOS_BRASIL[uf] || cepData.uf;
+
+      formData.append('nome', $('profissionalNome').value.trim());
+      formData.append('cpf', cpf);
+      formData.append('telefone', telefone);
+      formData.append('id_ramo', $('profissionalArea').value);
+      formData.append('cep', cep);
+      formData.append('rua', $('profissionalEndereco').value.trim());
+      formData.append('numero', $('profissionalNumero').value.trim());
+      formData.append('localidade', cepData.localidade);
+      formData.append('estado', estadoCompleto);
+      formData.append('uf', uf);
+      
+      const complemento = $('profissionalComplemento')?.value?.trim();
+      if (complemento) {
+        formData.append('infoadd', complemento);
+      }
+
+      if ($('profissionalPerfil')?.files[0]) {
+        formData.append('foto', $('profissionalPerfil').files[0]);
+        console.log('📷 Foto de perfil adicionada');
+      }
+
+      console.log('📦 Dados do Prestador (Parte 2):');
+      console.log('  - nome:', $('profissionalNome').value);
+      console.log('  - cpf:', cpf);
+      console.log('  - telefone:', telefone);
+      console.log('  - id_ramo:', $('profissionalArea').value);
+    }
+    else if (tipo === 'contratante') {
+      const cepData = await buscarCEP($('contratanteCep').value, 'contratante');
+      if (!cepData) {
+        setButtonLoading(btn, false);
+        return;
+      }
+
+      const cpf = $('contratanteCpf').value.replace(/\D/g, '');
+      const telefone = $('registerTelCon').value.replace(/\D/g, '');
+      const cep = $('contratanteCep').value.replace(/\D/g, '');
+      const uf = cepData.uf;
+      const estadoCompleto = ESTADOS_BRASIL[uf] || cepData.uf;
+
+      formData.append('nome', $('contratanteNome').value.trim());
+      formData.append('cpf', cpf);
+      formData.append('telefone', telefone);
+      formData.append('cep', cep);
+      formData.append('rua', $('contratanteEndereco').value.trim());
+      formData.append('numero', $('contratanteNumero').value.trim());
+      formData.append('localidade', cepData.localidade);
+      formData.append('estado', estadoCompleto);
+      formData.append('uf', uf);
+      
+      const complemento = $('contratanteComplemento')?.value?.trim();
+      if (complemento) {
+        formData.append('infoadd', complemento);
+      }
+
+      if ($('contratantePerfil')?.files[0]) {
+        formData.append('foto', $('contratantePerfil').files[0]);
+        console.log('📷 Foto de perfil adicionada');
+      }
+
+      console.log('📦 Dados do Contratante (Parte 2):');
+      console.log('  - nome:', $('contratanteNome').value);
+      console.log('  - cpf:', cpf);
+      console.log('  - telefone:', telefone);
+    }
+
+    // LOG COMPLETO DO FORMDATA
+    console.log('\n📋 DADOS COMPLETOS (PARTE 1 + PARTE 2):');
+    for (let [key, value] of formData.entries()) {
+      if (value instanceof File) {
+        console.log(`  ${key}: [Arquivo: ${value.name}, ${(value.size / 1024).toFixed(2)}KB]`);
+      } else {
+        console.log(`  ${key}: ${value}`);
+      }
+    }
+
+    // ✅ ENVIAR TUDO DE UMA VEZ PARA A API
+    const url = `${API_BASE_URL}/api/usuario/cadastro`;
+    console.log(`\n🌐 Enviando TUDO para: ${url}`);
+
+    const response = await fetch(url, {
+      method: 'POST',
+      body: formData,
+      headers: {
+        'Accept': 'application/json',
+      }
+    });
+
+    console.log(`📡 Status da resposta: ${response.status} ${response.statusText}`);
+
+    const contentType = response.headers.get('content-type');
+    console.log(`📄 Content-Type da resposta: ${contentType}`);
+
+    let result;
+    if (contentType && contentType.includes('application/json')) {
+      result = await response.json();
+      console.log('✅ Resposta JSON recebida:', result);
+    } else {
+      const text = await response.text();
+      console.error('❌ Resposta não é JSON:', text.substring(0, 500));
+      throw new Error('O servidor retornou uma resposta inválida. Verifique se a rota da API está correta.');
+    }
+
+    if (!response.ok) {
+      console.error('❌ Erro na resposta da API:', result);
+      
+      if (result.details && typeof result.details === 'object') {
+        const erros = Object.values(result.details).flat();
+        showToast(erros[0] || result.error || 'Erro ao cadastrar', 'error');
+        console.error('Erros de validação:', result.details);
+      } else {
+        showToast(result.message || result.error || 'Erro ao cadastrar', 'error');
+      }
+      
+      setButtonLoading(btn, false);
+      return;
+    }
+
+    console.log('✅ Cadastro realizado com sucesso!');
+    console.log('🎉 Token recebido:', result.access_token);
+
+    if (result.access_token) {
+      localStorage.setItem('auth_token', result.access_token);
+      console.log('💾 Token salvo no localStorage');
+    }
+
+    // ✅ LIMPAR LOCALSTORAGE DA PARTE 1
+    localStorage.removeItem('cadastro_parte1');
+    console.log('🗑️ Dados da parte 1 removidos do localStorage');
+
+    showToast('Cadastro realizado com sucesso! Redirecionando...', 'success');
+
+    // REDIRECIONAR BASEADO NO TIPO
+    setTimeout(() => {
+      if (tipo === 'empresa') {
+        console.log('🔀 Redirecionando para perfil de empresa');
+        window.location.href = '../../Perfil/PróprioTE/PróprioE/index.html';
+      } else if (tipo === 'prestador') {
+        console.log('🔀 Redirecionando para perfil de prestador');
+        window.location.href = '../../Perfil/PróprioTE/PróprioT/index.html';
+      } else {
+        console.log('🔀 Redirecionando para perfil de contratante');
+        window.location.href = '../../Perfil/PróprioC/index.html';
+      }
+    }, 1500);
+
+    console.log('═══════════════════════════════════════════════');
+
+  } catch (error) {
+    console.error('❌ ERRO FATAL:', error);
+    console.error('Stack trace:', error.stack);
+    showToast(error.message || 'Erro ao realizar cadastro', 'error');
+    setButtonLoading(btn, false);
   }
 }
 
-// ===============================
-//  EVENTOS DOS BOTÕES
-// ===============================
-btnEmpresa.addEventListener("click", e => {
-  e.preventDefault();
-  enviarCadastro("empresa", btnEmpresa);
-});
+// === EVENT LISTENERS DOS BOTÕES DE SUBMIT ===
+const btnEmpresa = $('btn-cadastroE');
+const btnProfissional = $('btn-cadastroT');
+const btnContratante = $('btn-cadastroC');
 
-btnPrestador.addEventListener("click", e => {
-  e.preventDefault();
-  enviarCadastro("prestador", btnPrestador);
-});
+if (btnEmpresa) {
+  btnEmpresa.addEventListener('click', (e) => {
+    e.preventDefault();
+    enviarCadastro('empresa', btnEmpresa);
+  });
+}
 
-btnContratante.addEventListener("click", e => {
-  e.preventDefault();
-  enviarCadastro("contratante", btnContratante);
-});
+if (btnProfissional) {
+  btnProfissional.addEventListener('click', (e) => {
+    e.preventDefault();
+    enviarCadastro('prestador', btnProfissional);
+  });
+}
+
+if (btnContratante) {
+  btnContratante.addEventListener('click', (e) => {
+    e.preventDefault();
+    enviarCadastro('contratante', btnContratante);
+  });
+}
+
+switchTipo('empresa');
+
+console.log('✅ Script carregado com sucesso!');
+console.log(`🔧 API Base URL configurada: ${API_BASE_URL}`);

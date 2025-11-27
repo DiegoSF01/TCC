@@ -1,178 +1,107 @@
 <?php
-header("Content-Type: application/json; charset=UTF-8");
 
-// ---------------------
-// BANCO DE DADOS
-// ---------------------
-$host = "localhost:3307";
-$user = "root";
-$pass = "";
-$db   = "opi_bd";
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+session_start();
 
-try {
-    $pdo = new PDO("mysql:host=$host;dbname=$db;charset=utf8", $user, $pass);
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-} catch (Exception $e) {
-    echo json_encode(["success" => false, "message" => "Erro ao conectar ao banco."]);
-    exit;
+// GARANTIR QUE TEMOS OS DADOS DA PRIMEIRA ETAPA
+if (!isset($_SESSION['email']) || !isset($_SESSION['password'])) {
+    die("Erro: dados da primeira etapa não encontrados.");
 }
 
-// ---------------------
-// RECEBE DADOS
-// ---------------------
-$tipo = $_POST['tipo'] ?? '';
-$email = $_POST['email'] ?? '';
-$password = $_POST['password'] ?? '';
+// DADOS DA PRIMEIRA ETAPA
+$email = $_SESSION['email'];
+$password = $_SESSION['password'];
 
-if (!$email || !$password || !$tipo) {
-    echo json_encode(["success" => false, "message" => "Dados incompletos."]);
-    exit;
-}
+// DETERMINAR SE É EMPRESA OU PROFISSIONAL
+$isEmpresa = isset($_POST['empresaArea']);
+$isProfissional = isset($_POST['profissionalArea']);
 
-// Verifica tipo permitido
-if (!in_array($tipo, ["empresa", "prestador", "contratante"])) {
-    echo json_encode(["success" => false, "message" => "Tipo inválido."]);
-    exit;
-}
+// VARIÁVEL FINAL
+$data = [
+    "email" => $email,
+    "password" => $password,
+];
 
-// ---------------------
-// VERIFICAR SE EMAIL EXISTE
-// ---------------------
-$sql = $pdo->prepare("SELECT id FROM users WHERE email = ?");
-$sql->execute([$email]);
-if ($sql->rowCount() > 0) {
-    echo json_encode(["success" => false, "message" => "E-mail já cadastrado."]);
-    exit;
-}
+// ===============================================
+// ------------ DADOS DO FORMULÁRIO DE EMPRESA ---
+// ===============================================
+if ($isEmpresa) {
 
-// ---------------------
-// CRIA USUÁRIO (TABELA users)
-// ---------------------
+    $data["tipo"] = "empresa";
+    $data["nome_empresa"] = $_POST['empresaNome'] ?? "";
+    $data["telefone"] = $_POST['registerTelEm'] ?? "";
+    $data["cnpj"] = $_POST['empresaCnpj'] ?? "";
+    $data["cep"] = $_POST['empresaCep'] ?? "";
+    $data["endereco"] = $_POST['empresaEndereco'] ?? "";
+    $data["numero"] = $_POST['empresaNumero'] ?? "";
+    $data["bairro"] = $_POST['empresaBairro'] ?? "";
+    $data["complemento"] = $_POST['empresaComplemento'] ?? "";
+    $data["cidade"] = $_POST['empresaCidade'] ?? "";
+    $data["estado"] = $_POST['empresaEstado'] ?? "";
+    $data["area_empresa"] = $_POST['empresaArea'] ?? "";
 
-$hash = password_hash($password, PASSWORD_DEFAULT);
-
-$insertUser = $pdo->prepare("
-    INSERT INTO users (email, password, type)
-    VALUES (?, ?, ?)
-");
-
-if (!$insertUser->execute([$email, $hash, $tipo])) {
-    echo json_encode(["success" => false, "message" => "Erro ao criar usuário."]);
-    exit;
-}
-
-$user_id = $pdo->lastInsertId();
-
-// ---------------------
-// PREPARA UPLOADS
-// ---------------------
-
-function salvarArquivo($campo, $prefixo) {
-    if (!isset($_FILES[$campo]) || $_FILES[$campo]['error'] !== UPLOAD_ERR_OK) {
-        return null;
+    // IMAGENS
+    if (isset($_FILES['empresaBanner'])) {
+        $data["banner"] = base64_encode(file_get_contents($_FILES['empresaBanner']['tmp_name']));
     }
 
-    $ext = pathinfo($_FILES[$campo]['name'], PATHINFO_EXTENSION);
-    $nome = $prefixo . "_" . time() . "." . $ext;
+    if (isset($_FILES['empresaPerfil'])) {
+        $data["perfil"] = base64_encode(file_get_contents($_FILES['empresaPerfil']['tmp_name']));
+    }
+}
 
-    $pasta = __DIR__ . "/uploads/";
 
-    if (!is_dir($pasta)) {
-        mkdir($pasta, 0777, true);
+// ===============================================
+// -------- DADOS DO FORMULÁRIO DE PROFISSIONAL --
+// ===============================================
+if ($isProfissional) {
+
+    $data["tipo"] = "profissional";
+    $data["nome_completo"] = $_POST['profissionalNome'] ?? "";
+    $data["telefone"] = $_POST['registerTelPro'] ?? "";
+    $data["cpf"] = $_POST['profissionalCpf'] ?? "";
+    $data["cep"] = $_POST['profissionalCep'] ?? "";
+    $data["endereco"] = $_POST['profissionalEndereco'] ?? "";
+    $data["numero"] = $_POST['profissionalNumero'] ?? "";
+    $data["bairro"] = $_POST['profissionalBairro'] ?? "";
+    $data["complemento"] = $_POST['profissionalComplemento'] ?? "";
+    $data["cidade"] = $_POST['profissionalCidade'] ?? "";
+    $data["estado"] = $_POST['profissionalEstado'] ?? "";
+    $data["area_atuacao"] = $_POST['profissionalArea'] ?? "";
+
+    // IMAGENS
+    if (isset($_FILES['profissionalBanner'])) {
+        $data["banner"] = base64_encode(file_get_contents($_FILES['profissionalBanner']['tmp_name']));
     }
 
-    $destino = $pasta . $nome;
-
-    if (move_uploaded_file($_FILES[$campo]['tmp_name'], $destino)) {
-        return "uploads/" . $nome;
+    if (isset($_FILES['profissionalPerfil'])) {
+        $data["perfil"] = base64_encode(file_get_contents($_FILES['profissionalPerfil']['tmp_name']));
     }
-
-    return null;
 }
 
-$foto = salvarArquivo("foto", "foto");
-$capa = salvarArquivo("capa", "capa");
 
-// ---------------------
-// CAMPOS COMUNS
-// ---------------------
-$cep = $_POST['cep'] ?? '';
-$rua = $_POST['rua'] ?? '';
-$numero = $_POST['numero'] ?? '';
-$localidade = $_POST['localidade'] ?? '';
-$uf = $_POST['uf'] ?? '';
-$estado = $_POST['estado'] ?? '';
-$descricao = $_POST['descricao'] ?? '';
-$infoadd = $_POST['infoadd'] ?? '';
+// ===============================================
+// ----------- ENVIAR PARA A API LARAVEL ---------
+// ===============================================
 
-// ---------------------
-// CADASTRAR POR TIPO
-// ---------------------
-
-if ($tipo === "empresa") {
-
-    $cnpj = $_POST['cnpj'] ?? '';
-    $razao = $_POST['razao_social'] ?? '';
-    $categoria = $_POST['id_categoria'] ?? '';
-
-    $sql = $pdo->prepare("
-        INSERT INTO empresa (user_id, cnpj, razao_social, foto, capa, localidade, uf, estado, cep, rua, numero, descricao, id_categoria)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-    ");
-
-    $ok = $sql->execute([
-        $user_id, $cnpj, $razao, $foto, $capa,
-        $localidade, $uf, $estado, $cep, $rua, $numero,
-        $descricao, $categoria
-    ]);
-}
-
-else if ($tipo === "prestador") {
-
-    $nome = $_POST['nome'] ?? '';
-    $cpf  = $_POST['cpf'] ?? '';
-    $ramo = $_POST['id_ramo'] ?? '';
-
-    $sql = $pdo->prepare("
-        INSERT INTO prestador (user_id, nome, cpf, foto, capa, localidade, uf, estado, cep, rua, numero, descricao, id_ramo)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-    ");
-
-    $ok = $sql->execute([
-        $user_id, $nome, $cpf, $foto, $capa,
-        $localidade, $uf, $estado, $cep, $rua, $numero,
-        $descricao, $ramo
-    ]);
-}
-
-else if ($tipo === "contratante") {
-
-    $nome = $_POST['nome'] ?? '';
-    $cpf = $_POST['cpf'] ?? '';
-
-    $sql = $pdo->prepare("
-        INSERT INTO contratante (user_id, nome, cpf, foto, capa, localidade, uf, estado, cep, rua, numero)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-    ");
-
-    $ok = $sql->execute([
-        $user_id, $nome, $cpf, $foto, $capa,
-        $localidade, $uf, $estado, $cep, $rua, $numero
-    ]);
-}
-
-if (!$ok) {
-    echo json_encode(["success" => false, "message" => "Erro ao salvar dados."]);
-    exit;
-}
-
-// ---------------------
-// SUCESSO
-// ---------------------
-echo json_encode([
-    "success" => true,
-    "message" => "Cadastro concluído!",
-    "user_id" => $user_id,
-    "type" => $tipo
+$curl = curl_init();
+curl_setopt_array($curl, [
+    CURLOPT_URL => "http://127.0.0.1:8000/api/usuario/cadastro",
+    CURLOPT_RETURNTRANSFER => true,
+    CURLOPT_POST => true,
+    CURLOPT_HTTPHEADER => ["Content-Type: application/json"],
+    CURLOPT_POSTFIELDS => json_encode($data)
 ]);
+
+$response = curl_exec($curl);
+$httpCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+
+curl_close($curl);
+
+header("Content-Type: application/json");
+echo $response;
+exit;
+
 ?>
