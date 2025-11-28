@@ -1,3 +1,61 @@
+// ==========================================
+// SCRIPT PERFIL PRÓPRIO - PRESTADOR/TRABALHADOR
+// ==========================================
+
+const API_URL = 'http://127.0.0.1:8000/api';
+
+// ========== UTILITÁRIOS ==========
+function showToast(message, type = 'success') {
+  let toast = document.querySelector('.toast-notification');
+  
+  if (!toast) {
+    toast = document.createElement('div');
+    toast.className = 'toast-notification';
+    toast.style.cssText = `
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      padding: 15px 20px;
+      background: #333;
+      color: white;
+      border-radius: 8px;
+      z-index: 10000;
+      opacity: 0;
+      transition: opacity 0.3s;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    `;
+    document.body.appendChild(toast);
+  }
+  
+  toast.textContent = message;
+  toast.style.opacity = '1';
+  
+  if (type === 'success') {
+    toast.style.background = '#28a745';
+  } else if (type === 'error') {
+    toast.style.background = '#dc3545';
+  } else {
+    toast.style.background = '#007bff';
+  }
+  
+  setTimeout(() => {
+    toast.style.opacity = '0';
+  }, 3000);
+}
+
+function getAuthToken() {
+  return localStorage.getItem('auth_token');
+}
+
+function getUserId() {
+  return localStorage.getItem('userId');
+}
+
+function getUserType() {
+  return localStorage.getItem('userType');
+}
+
+// ========== NAVEGAÇÃO ENTRE ABAS ==========
 const btn_sobre = document.getElementById('btn_navperfil-sobre');
 const btn_postagens = document.getElementById('btn_navperfil-postagens');
 const btn_avaliacao = document.getElementById('btn_navperfil-avaliacao');
@@ -8,924 +66,447 @@ const sessao_avaliacao = document.querySelector('.avaliacao');
 
 function clicou_sobre() {
   if (!btn_sobre.classList.contains('ativo')) {
-    document.querySelector('.button-navper.ativo').classList.remove('ativo');
+    document.querySelector('.button-navper.ativo')?.classList.remove('ativo');
     btn_sobre.classList.add('ativo');
-
-    document.querySelector('.sessao').classList.remove('sessao');
+    document.querySelector('.sessao')?.classList.remove('sessao');
     sessao_sobre.classList.add('sessao');
   }
 }
 
 function clicou_postagens() {
   if (!btn_postagens.classList.contains('ativo')) {
-    document.querySelector('.button-navper.ativo').classList.remove('ativo');
+    document.querySelector('.button-navper.ativo')?.classList.remove('ativo');
     btn_postagens.classList.add('ativo');
-
-    document.querySelector('.sessao').classList.remove('sessao');
+    document.querySelector('.sessao')?.classList.remove('sessao');
     sessao_publicacoes.classList.add('sessao');
   }
 }
 
 function clicou_avaliacao() {
   if (!btn_avaliacao.classList.contains('ativo')) {
-    document.querySelector('.button-navper.ativo').classList.remove('ativo');
+    document.querySelector('.button-navper.ativo')?.classList.remove('ativo');
     btn_avaliacao.classList.add('ativo');
-
-    document.querySelector('.sessao').classList.remove('sessao');
+    document.querySelector('.sessao')?.classList.remove('sessao');
     sessao_avaliacao.classList.add('sessao');
   }
 }
 
-btn_sobre.addEventListener('click', clicou_sobre);
-btn_postagens.addEventListener('click', clicou_postagens);
-btn_avaliacao.addEventListener('click', clicou_avaliacao);
+btn_sobre?.addEventListener('click', clicou_sobre);
+btn_postagens?.addEventListener('click', clicou_postagens);
+btn_avaliacao?.addEventListener('click', clicou_avaliacao);
 
-// ============================================
-// MODAL DE PUBLICAÇÕES - INTERFACE ATUALIZADA
-// ============================================
-window.addEventListener('load', function () {
-  // Modal principal (visualização)
-  const modalHTML = `
-    <div class="modal-overlay" id="modalPublicacao">
-      <div class="modal-content1">
-        <div class="modal-header">
-          <h3 id="modalTitle"></h3>
-          <div class="modal-actions">
-            <button class="editar-publicacao" id="editarPublicacao">Editar</button>
-            <button class="modal-close" id="closeModal">
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M18 6 6 18"></path>
-              <path d="m6 6 12 12"></path>
-            </svg>
-            </button>
-          </div>
-        </div>
-        <div class="modal-body">
-          <div class="modal-image-container">
-            <button class="modal-nav-btn modal-prev" id="modalPrev">
-              <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <polyline points="15 18 9 12 15 6"></polyline>
-              </svg>
-            </button>
-            <div class="modal-image" id="modalImage"></div>
-            <button class="modal-nav-btn modal-next" id="modalNext">
-              <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <polyline points="9 18 15 12 9 6"></polyline>
-              </svg>
-            </button>
-            <div class="modal-image-counter" id="modalCounter">1 / 1</div>
-          </div>
-          <p class="modal-description" id="modalDescription"></p>
-        </div>
-      </div>
-    </div>
-  `;
-  document.body.insertAdjacentHTML('beforeend', modalHTML);
-
-  // Modal de edição - NOVA INTERFACE
-  const modalEditarHTML = `
-    <div class="modal-add-publicacao-overlay" id="editarPublicacaoModal">
-      <div class="modal-add-publicacao">
-        <div class="map-header">
-          <h2>Editar Publicação</h2>
-          <button id="fecharEditarPub" class="map-close">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M18 6 6 18"></path>
-              <path d="m6 6 12 12"></path>
-            </svg>
-          </button>
-        </div>
-
-        <div class="map-body">
-          <label>Título</label>
-          <input type="text" id="editarTitulo" placeholder="Ex: Casa Moderna Finalizada">
-
-          <label>Descrição</label>
-          <textarea id="editarDescricao" placeholder="Descreva o projeto..."></textarea>
-
-          <label>Mídias (Fotos e Vídeos)</label>
-
-          <label for="editarMidias" class="btn-upload-midia">
-            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-              <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
-              <g id="SVGRepo_iconCarrier">
-                <circle cx="16" cy="8" r="2" stroke="#1C274C" stroke-width="1.5"></circle>
-                <path
-                  d="M2 12.5001L3.75159 10.9675C4.66286 10.1702 6.03628 10.2159 6.89249 11.0721L11.1822 15.3618C11.8694 16.0491 12.9512 16.1428 13.7464 15.5839L14.0446 15.3744C15.1888 14.5702 16.7369 14.6634 17.7765 15.599L21 18.5001"
-                  stroke="#1C274C" stroke-width="1.5" stroke-linecap="round"></path>
-                <path
-                  d="M22 12C22 16.714 22 19.0711 20.5355 20.5355C19.0711 22 16.714 22 12 22C7.28595 22 4.92893 22 3.46447 20.5355C2 19.0711 2 16.714 2 12C2 7.28595 2 4.92893 3.46447 3.46447C4.92893 2 7.28595 2 12 2C16.714 2 19.0711 2 20.5355 3.46447C21.5093 4.43821 21.8356 5.80655 21.9449 8"
-                  stroke="#1C274C" stroke-width="1.5" stroke-linecap="round"></path>
-              </g>
-            </svg>
-            Alterar foto/vídeo
-          </label>
-
-          <input type="file" id="editarMidias" accept="image/*,video/*" multiple>
-
-          <div id="editarPreviewContainer" class="preview-container"></div>
-        </div>
-
-        <div class="map-footer">
-          <button class="btn-secondary excluir-btn" id="ExcluirEditarPub">Excluir</button>
-          <button class="adicionar" id="salvarEditarPub">Salvar alterações</button>
-        </div>
-      </div>
-    </div>
-  `;
-  document.body.insertAdjacentHTML('beforeend', modalEditarHTML);
-
-  // Selecionar elementos principais
-  const modal = document.getElementById('modalPublicacao');
-  const modalTitle = document.getElementById('modalTitle');
-  const modalImage = document.getElementById('modalImage');
-  const modalDescription = document.getElementById('modalDescription');
-  const closeModal = document.getElementById('closeModal');
-  const modalPrev = document.getElementById('modalPrev');
-  const modalNext = document.getElementById('modalNext');
-  const modalCounter = document.getElementById('modalCounter');
-
-  const editarBtn = document.getElementById('editarPublicacao');
-  const editarModal = document.getElementById('editarPublicacaoModal');
-  const fecharEditarPub = document.getElementById('fecharEditarPub');
-  const excluirEditarPub = document.getElementById('ExcluirEditarPub');
-  const salvarEditarPub = document.getElementById('salvarEditarPub');
-  const editarMidiasInput = document.getElementById('editarMidias');
-  const editarPreviewContainer = document.getElementById('editarPreviewContainer');
-
-  let cardAtivo = null;
-  let arquivosEditarSelecionados = [];
-  let imagensAtivas = [];
-  let indiceImagemAtual = 0;
-
-  // Abrir modal de publicação
-  function abrirModal(card) {
-    cardAtivo = card;
-    const titulo = card.querySelector('h4').textContent;
-    const descricao = card.querySelector('p').textContent;
+// ========== CARREGAR MEU PERFIL (PRESTADOR LOGADO) ==========
+async function carregarMeuPerfil() {
+  try {
+    const userId = getUserId();
+    const userType = getUserType();
+    const token = getAuthToken();
     
-    // Coletar todas as imagens do card (por enquanto só uma, mas preparado para múltiplas)
-    const imgElement = card.querySelector('.img-card_publicacoes');
-    const imagemBg = window.getComputedStyle(imgElement).backgroundImage;
-    const imagemUrl = imagemBg.replace(/url$$["']?|["']?$$/g, '');
-    
-    // Armazenar array de imagens (futuramente você pode adicionar mais)
-    imagensAtivas = [imagemUrl];
-    indiceImagemAtual = 0;
-  
-    modalTitle.textContent = titulo;
-    modalDescription.textContent = descricao;
-    
-    atualizarImagemModal();
-    atualizarBotoesNavegacao();
-  
-    modal.classList.add('active');
-    document.body.style.overflow = 'hidden';
-  }
-
-  // Atualizar imagem exibida no modal
-  function atualizarImagemModal() {
-    const imagemAtual = imagensAtivas[indiceImagemAtual];
-    modalImage.style.backgroundImage = `url('${imagemAtual}')`;
-    modalImage.style.backgroundSize = 'cover';
-    modalImage.style.backgroundPosition = 'center';
-    modalCounter.textContent = `${indiceImagemAtual + 1} / ${imagensAtivas.length}`;
-  }
-
-  // Atualizar visibilidade dos botões de navegação
-  function atualizarBotoesNavegacao() {
-    if (imagensAtivas.length <= 1) {
-      modalPrev.style.display = 'none';
-      modalNext.style.display = 'none';
-      modalCounter.style.display = 'none';
-    } else {
-      modalPrev.style.display = 'flex';
-      modalNext.style.display = 'flex';
-      modalCounter.style.display = 'block';
-
-      // Desabilitar botões nos extremos
-      modalPrev.disabled = indiceImagemAtual === 0;
-      modalNext.disabled = indiceImagemAtual === imagensAtivas.length - 1;
-    }
-  }
-
-  // Navegação de imagens
-  function mostrarImagemAnterior() {
-    if (indiceImagemAtual > 0) {
-      indiceImagemAtual--;
-      atualizarImagemModal();
-      atualizarBotoesNavegacao();
-    }
-  }
-
-  function mostrarProximaImagem() {
-    if (indiceImagemAtual < imagensAtivas.length - 1) {
-      indiceImagemAtual++;
-      atualizarImagemModal();
-      atualizarBotoesNavegacao();
-    }
-  }
-
-  // Fechar modal principal
-  function fecharModal() {
-    modal.classList.remove('active');
-    document.body.style.overflow = 'auto';
-  }
-
-  // Abrir editor
-  function abrirEditorPublicacao() {
-    document.getElementById('editarTitulo').value = modalTitle.textContent;
-    document.getElementById('editarDescricao').value = modalDescription.textContent;
-
-    // Limpar preview anterior
-    editarPreviewContainer.innerHTML = '';
-    arquivosEditarSelecionados = [];
-
-    // Adicionar imagem atual ao preview
-    const bg = modalImage.style.backgroundImage.replace(/url$$["']?|["']?$$/g, '');
-    if (bg && bg !== 'none') {
-      const previewItem = document.createElement("div");
-      previewItem.classList.add("preview-item");
-      previewItem.innerHTML = `
-        <img src="${bg}" alt="Preview">
-        <button type="button" class="preview-remove">
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M18 6 6 18"></path>
-            <path d="m6 6 12 12"></path>
-          </svg>
-        </button>
-      `;
-      editarPreviewContainer.appendChild(previewItem);
-
-      previewItem.querySelector('.preview-remove').addEventListener('click', () => {
-        previewItem.remove();
-      });
-    }
-
-    editarModal.classList.add('active');
-  }
-
-  // Fechar editor
-  function fecharEditorPublicacao() {
-    editarModal.classList.remove('active');
-    editarPreviewContainer.innerHTML = '';
-    arquivosEditarSelecionados = [];
-    editarMidiasInput.value = '';
-  }
-
-  // Excluir publicação
-  function excluirEditorPublicacao() {
-    if (!cardAtivo) return;
-
-    if (confirm('Tem certeza que deseja excluir esta publicação?')) {
-      cardAtivo.remove();
-      cardAtivo = null;
-      fecharEditorPublicacao();
-      fecharModal();
-      document.body.style.overflow = 'auto';
-    }
-  }
-
-  // Salvar alterações
-  function salvarAlteracoesPublicacao() {
-    const novoTitulo = document.getElementById('editarTitulo').value.trim();
-    const novaDescricao = document.getElementById('editarDescricao').value.trim();
-
-    if (!novoTitulo) {
-      alert('Por favor, adicione um título');
+    if (!userId || !token) {
+      console.error('❌ Usuário não autenticado');
+      showToast('Você precisa estar logado', 'error');
+      setTimeout(() => window.location.href = '/Login/index.html', 2000);
       return;
     }
-
-    if (cardAtivo) {
-      if (novoTitulo) cardAtivo.querySelector('h4').textContent = novoTitulo;
-      if (novaDescricao) cardAtivo.querySelector('p').textContent = novaDescricao;
-
-      // Atualizar imagem se houver preview
-      const firstPreview = editarPreviewContainer.querySelector('img');
-      if (firstPreview) {
-        const imgElement = cardAtivo.querySelector('.img-card_publicacoes');
-        imgElement.style.backgroundImage = `url('${firstPreview.src}')`;
-
-        // Atualizar modal principal
-        modalImage.style.backgroundImage = `url('${firstPreview.src}')`;
+    
+    // Verificar se é prestador
+    if (userType !== 'prestador') {
+      console.error('❌ Tipo de usuário incorreto');
+      showToast('Acesso negado', 'error');
+      setTimeout(() => window.location.href = '/Login/index.html', 2000);
+      return;
+    }
+    
+    console.log('🔵 Carregando meu perfil (Prestador):', { userId, userType });
+    
+    // Buscar meus dados
+    const response = await fetch(`${API_URL}/usuarios/${userId}`, {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Accept': 'application/json'
       }
+    });
+    
+    if (!response.ok) {
+      throw new Error('Erro ao carregar perfil');
     }
-
-    modalTitle.textContent = novoTitulo;
-    modalDescription.textContent = novaDescricao;
-
-    fecharEditorPublicacao();
+    
+    const data = await response.json();
+    const usuario = data.user || data.data || data;
+    
+    console.log('✅ Meus dados recebidos:', usuario);
+    
+    // Preencher perfil
+    preencherPerfil(usuario);
+    
+  } catch (error) {
+    console.error('❌ Erro ao carregar perfil:', error);
+    showToast('Erro ao carregar perfil', 'error');
   }
+}
 
-  // Preview de mídias no editor
-  editarMidiasInput.addEventListener("change", () => {
-    const arquivos = Array.from(editarMidiasInput.files);
-
-    arquivos.forEach(arquivo => {
-      arquivosEditarSelecionados.push(arquivo);
-      criarPreviewEditar(arquivo);
-    });
-
-    editarMidiasInput.value = "";
-  });
-
-  function criarPreviewEditar(arquivo) {
-    const reader = new FileReader();
-
-    reader.onload = (e) => {
-      const previewItem = document.createElement("div");
-      previewItem.classList.add("preview-item");
-
-      let midia;
-
-      if (arquivo.type.startsWith("image/")) {
-        midia = document.createElement("img");
-      } else if (arquivo.type.startsWith("video/")) {
-        midia = document.createElement("video");
-        midia.controls = true;
-      }
-
-      midia.src = e.target.result;
-
-      const btnRemover = document.createElement("button");
-      btnRemover.classList.add("preview-remove");
-      btnRemover.type = "button";
-      btnRemover.innerHTML = `
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M18 6 6 18"></path>
-          <path d="m6 6 12 12"></path>
-        </svg>
-      `;
-
-      btnRemover.addEventListener("click", () => {
-        previewItem.remove();
-        arquivosEditarSelecionados = arquivosEditarSelecionados.filter(a => a !== arquivo);
-      });
-
-      previewItem.appendChild(midia);
-      previewItem.appendChild(btnRemover);
-      editarPreviewContainer.appendChild(previewItem);
-    };
-
-    reader.readAsDataURL(arquivo);
+// ========== PREENCHER DADOS DO PERFIL ==========
+function preencherPerfil(usuario) {
+  console.log('🔵 Preenchendo meu perfil com:', usuario);
+  
+  if (!usuario.prestador) {
+    console.error('❌ Dados de prestador não encontrados');
+    showToast('Erro nos dados do perfil', 'error');
+    return;
   }
-
-  // Eventos
-  closeModal.addEventListener('click', fecharModal);
-  editarBtn.addEventListener('click', abrirEditorPublicacao);
-  fecharEditarPub.addEventListener('click', fecharEditorPublicacao);
-  excluirEditarPub.addEventListener('click', excluirEditorPublicacao);
-  salvarEditarPub.addEventListener('click', salvarAlteracoesPublicacao);
-
-  // Eventos de navegação de imagens
-  modalPrev.addEventListener('click', mostrarImagemAnterior);
-  modalNext.addEventListener('click', mostrarProximaImagem);
-
-  // Navegação com teclado (setas)
-  document.addEventListener('keydown', (e) => {
-    if (modal.classList.contains('active') && !editarModal.classList.contains('active')) {
-      if (e.key === 'ArrowLeft') mostrarImagemAnterior();
-      if (e.key === 'ArrowRight') mostrarProximaImagem();
-    }
-  });
-
-  // Fechar modal ao clicar fora
-  modal.addEventListener('click', e => {
-    if (e.target === modal) fecharModal();
-  });
-  editarModal.addEventListener('click', e => {
-    if (e.target === editarModal) fecharEditorPublicacao();
-  });
-
-  // Fechar modal com ESC
-  document.addEventListener('keydown', e => {
-    if (e.key === 'Escape') {
-      if (editarModal.classList.contains('active')) fecharEditorPublicacao();
-      else if (modal.classList.contains('active')) fecharModal();
-    }
-  });
-
-  // Clicar nos cards abre o modal
-  const cardsPublicacoes = document.querySelectorAll('.card-publicacoes');
-  cardsPublicacoes.forEach(card => {
-    card.addEventListener('click', function () {
-      abrirModal(this);
-    });
-  });
-});
-
-const btnAddPost = document.querySelector('.btn-add-post');
-const modalAddPub = document.getElementById('modalAddPub');
-const confirmarAddPubBtn = document.getElementById('confirmarAddPub');
-const homeCardsPost = document.querySelector('.home-cards-post');
-const inputMidias = document.getElementById("pubMidias");
-const previewContainer = document.getElementById("previewContainer");
-
-let arquivosSelecionados = [];
-
-function abrirAddPub() {
-  modalAddPub.classList.add('active');
-}
-
-function fecharAddPub() {
-  modalAddPub.classList.remove('active');
-  limparFormularioPost();
-}
-
-function limparFormularioPost() {
-  document.getElementById('pubTitulo').value = '';
-  document.getElementById('pubDescricao').value = '';
-  previewContainer.innerHTML = '';
-  inputMidias.value = '';
-  arquivosSelecionados = [];
-}
-
-btnAddPost.addEventListener('click', abrirAddPub);
-
-document.getElementById('fecharAddPub').addEventListener('click', fecharAddPub);
-document.getElementById('cancelarAddPub').addEventListener('click', fecharAddPub);
-
-inputMidias.addEventListener("change", () => {
-  const arquivos = Array.from(inputMidias.files);
-
-  arquivos.forEach(arquivo => {
-    arquivosSelecionados.push(arquivo);
-    criarPreview(arquivo);
-  });
-
-  inputMidias.value = "";
-});
-
-function criarPreview(arquivo) {
-  const reader = new FileReader();
-
-  reader.onload = (e) => {
-    const previewItem = document.createElement("div");
-    previewItem.classList.add("preview-item");
-
-    let midia;
-
-    if (arquivo.type.startsWith("image/")) {
-      midia = document.createElement("img");
-    } else if (arquivo.type.startsWith("video/")) {
-      midia = document.createElement("video");
-      midia.controls = true;
-    }
-
-    midia.src = e.target.result;
-
-    const btnRemover = document.createElement("button");
-    btnRemover.classList.add("preview-remove");
-    btnRemover.type = "button";
-    btnRemover.innerHTML = `
-      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M18 6 6 18"></path>
-        <path d="m6 6 12 12"></path>
-      </svg>
-    `;
-
-    btnRemover.addEventListener("click", (e) => {
-      e.preventDefault();
-      previewItem.remove();
-      arquivosSelecionados = arquivosSelecionados.filter(a => a !== arquivo);
-    });
-
-    previewItem.appendChild(midia);
-    previewItem.appendChild(btnRemover);
-    previewContainer.appendChild(previewItem);
+  
+  const prestador = usuario.prestador;
+  
+  // Extrair dados
+  const dados = {
+    nome: prestador.nome || 'Nome não informado',
+    profissao: usuario.ramo?.nome || 'Profissão não informada',
+    cidade: prestador.localidade || 'Cidade não informada',
+    uf: prestador.uf || 'UF',
+    foto: prestador.foto,
+    capa: prestador.capa,
+    descricao: prestador.descricao || null,
+    email: usuario.email || 'Email não informado',
+    telefone: usuario.contato?.telefone || null,
+    instagram: usuario.contato?.instagram || null,
+    facebook: usuario.contato?.facebook || null,
+    twitter: usuario.contato?.twitter || null,
+    projetosConcluidos: prestador.projetos_concluidos || null,
+    tempoExperiencia: prestador.tempo_experiencia || null,
+    skills: prestador.skills || [],
+    disponibilidade: prestador.disponivel ? 'Disponível' : 'Indisponível'
   };
-
-  reader.readAsDataURL(arquivo);
+  
+  // Corrigir URLs das imagens
+  if (dados.foto && !dados.foto.startsWith('http')) {
+    dados.foto = `${API_URL.replace('/api', '')}/storage/${dados.foto}`;
+  }
+  
+  if (dados.capa && !dados.capa.startsWith('http')) {
+    dados.capa = `${API_URL.replace('/api', '')}/storage/${dados.capa}`;
+  }
+  
+  // ===== PREENCHER ELEMENTOS DA PÁGINA =====
+  
+  // Foto de fundo (capa)
+  const imgFundo = document.querySelector('.img-fundo');
+  if (imgFundo) {
+    if (dados.capa) {
+      imgFundo.style.backgroundImage = `url('${dados.capa}')`;
+      imgFundo.style.backgroundSize = 'cover';
+      imgFundo.style.backgroundPosition = 'center';
+    } else {
+      imgFundo.style.background = 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)';
+    }
+  }
+  
+  // Foto de perfil
+  const fotoPerfil = document.querySelector('.foto-perfil');
+  if (fotoPerfil) {
+    if (dados.foto) {
+      fotoPerfil.style.backgroundImage = `url('${dados.foto}')`;
+      fotoPerfil.style.backgroundSize = 'cover';
+      fotoPerfil.style.backgroundPosition = 'center';
+    } else {
+      fotoPerfil.style.background = 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)';
+      fotoPerfil.innerHTML = '<span style="color: white; font-size: 48px; font-weight: bold;">' + dados.nome.charAt(0).toUpperCase() + '</span>';
+      fotoPerfil.style.display = 'flex';
+      fotoPerfil.style.alignItems = 'center';
+      fotoPerfil.style.justifyContent = 'center';
+    }
+  }
+  
+  // Nome
+  const nomePerfil = document.querySelector('.nome-perfil');
+  if (nomePerfil) nomePerfil.textContent = dados.nome;
+  
+  // Profissão
+  const profissao = document.querySelector('.profissao');
+  if (profissao) profissao.textContent = dados.profissao;
+  
+  // Localização
+  const lcCidade = document.querySelector('.lc-cidade');
+  if (lcCidade) lcCidade.textContent = dados.cidade;
+  
+  const lcEstado = document.querySelector('.lc-estado');
+  if (lcEstado) lcEstado.textContent = dados.uf;
+  
+  // Tipo (Profissional)
+  const empProfi = document.querySelector('.empre_profi-text');
+  if (empProfi) empProfi.textContent = 'Profissional';
+  
+  // Disponibilidade
+  const disponibilidade = document.querySelector('.disponibilidade');
+  if (disponibilidade) {
+    disponibilidade.style.display = 'flex';
+    disponibilidade.querySelector('.disponi-text').textContent = dados.disponibilidade;
+  }
+  
+  // Projetos Concluídos
+  const projetosConcluidos = document.querySelector('.projetos_concluidos');
+  if (projetosConcluidos) {
+    const textElement = projetosConcluidos.querySelector('.projetos_concluidos-text');
+    if (dados.projetosConcluidos !== null && dados.projetosConcluidos !== undefined) {
+      projetosConcluidos.style.display = 'flex';
+      if (textElement) textElement.textContent = dados.projetosConcluidos;
+    } else {
+      projetosConcluidos.style.display = 'none';
+    }
+  }
+  
+  // Tempo de Experiência
+  const tempoExperiencia = document.querySelector('.tempo_experiencia');
+  if (tempoExperiencia) {
+    const textoElement = tempoExperiencia.querySelector('.tempo_experiencia-text');
+    if (dados.tempoExperiencia !== null && dados.tempoExperiencia !== undefined) {
+      tempoExperiencia.style.display = 'flex';
+      if (textoElement) {
+        textoElement.textContent = `${dados.tempoExperiencia} ${dados.tempoExperiencia === 1 ? 'ano' : 'anos'}`;
+      }
+    } else {
+      tempoExperiencia.style.display = 'none';
+    }
+  }
+  
+  // Telefone
+  document.querySelectorAll('.tl-numero, .telefone-numero').forEach(el => {
+    if (dados.telefone) {
+      el.textContent = dados.telefone;
+      el.closest('.telefone, .button-telefone')?.style.setProperty('display', 'flex', 'important');
+    } else {
+      el.closest('.telefone, .button-telefone')?.style.setProperty('display', 'none', 'important');
+    }
+  });
+  
+  // Email
+  document.querySelectorAll('.email-text').forEach(el => {
+    el.textContent = dados.email;
+  });
+  
+  // Sobre o Profissional
+  const sobreProfissional = document.querySelector('.sobre_profissional');
+  if (sobreProfissional) {
+    const paragrafo = sobreProfissional.querySelector('p');
+    const titulo = sobreProfissional.querySelector('h3');
+    
+    if (titulo) titulo.textContent = 'Sobre o Profissional';
+    
+    if (dados.descricao) {
+      sobreProfissional.style.display = 'block';
+      if (paragrafo) {
+        paragrafo.textContent = dados.descricao;
+        paragrafo.style.color = '';
+        paragrafo.style.fontStyle = '';
+      }
+    } else {
+      sobreProfissional.style.display = 'block';
+      if (paragrafo) {
+        paragrafo.textContent = 'Você ainda não adicionou uma descrição. Clique em "Editar Perfil" para adicionar.';
+        paragrafo.style.color = '#999';
+        paragrafo.style.fontStyle = 'italic';
+      }
+    }
+  }
+  
+  // Instagram
+  const instagram = document.querySelector('.instagram');
+  if (instagram) {
+    const nomeIns = instagram.querySelector('.name_perfil-ins');
+    if (dados.instagram) {
+      instagram.style.display = 'flex';
+      if (nomeIns) nomeIns.textContent = dados.instagram;
+    } else {
+      instagram.style.display = 'none';
+    }
+  }
+  
+  // Facebook
+  const facebook = document.querySelector('.facebook');
+  if (facebook) {
+    const nomeFac = facebook.querySelector('.name_perfil-fac');
+    if (dados.facebook) {
+      facebook.style.display = 'flex';
+      if (nomeFac) nomeFac.textContent = dados.facebook;
+    } else {
+      facebook.style.display = 'none';
+    }
+  }
+  
+  // Twitter/X
+  const twitter = document.querySelector('.X');
+  if (twitter) {
+    const nomeX = twitter.querySelector('.name_perfil-x');
+    if (dados.twitter) {
+      twitter.style.display = 'flex';
+      if (nomeX) nomeX.textContent = dados.twitter;
+    } else {
+      twitter.style.display = 'none';
+    }
+  }
+  
+  // Especialidades
+  const especialidadesContainer = document.querySelector('.especialidades');
+  if (especialidadesContainer) {
+    if (dados.skills && dados.skills.length > 0) {
+      especialidadesContainer.style.display = 'block';
+      especialidadesContainer.innerHTML = '<h3>Especialidades</h3>';
+      
+      dados.skills.forEach(skill => {
+        const spanDiv = document.createElement('div');
+        spanDiv.className = 'span-esp_op';
+        spanDiv.innerHTML = `<span class="especialidade-op">${skill.nome || skill.name || skill}</span>`;
+        especialidadesContainer.appendChild(spanDiv);
+      });
+    } else {
+      especialidadesContainer.style.display = 'none';
+    }
+  }
+  
+  // Avaliações
+  const avaliacao = usuario.avaliacao?.media || 0;
+  const numAvaliacoes = usuario.avaliacao?.total || 0;
+  
+  document.querySelectorAll('.quant-stars').forEach(el => {
+    el.textContent = avaliacao.toFixed(1);
+  });
+  
+  document.querySelectorAll('.quant-avaliacoes').forEach(el => {
+    el.textContent = numAvaliacoes;
+  });
+  
+  document.querySelectorAll('.quant_avaliacoes-text').forEach(el => {
+    el.textContent = numAvaliacoes === 1 ? 'avaliação' : 'avaliações';
+  });
+  
+  // Preencher estrelas
+  const estrelas = document.querySelectorAll('.avaliacao-TCC .star, .avaliacao-BCC .star');
+  estrelas.forEach((star, index) => {
+    if (index < Math.floor(avaliacao)) {
+      star.style.fill = 'currentColor';
+    } else {
+      star.style.fill = 'none';
+    }
+  });
+  
+  // Atualizar média de avaliação
+  const avaliacaoBCC = document.querySelector('.avaliacao-BCC-text');
+  if (avaliacaoBCC) {
+    avaliacaoBCC.textContent = `${avaliacao.toFixed(1)}/5.0`;
+  }
+  
+  // Carregar portfólio
+  if (usuario.portfolios && usuario.portfolios.length > 0) {
+    carregarPublicacoes(usuario.portfolios);
+  } else {
+    const publicacoesContainer = document.querySelector('.home-cards-post');
+    if (publicacoesContainer) {
+      publicacoesContainer.innerHTML = '<p style="text-align: center; padding: 40px; color: #999; font-style: italic;">Você ainda não possui publicações. Clique em "Nova publicação" para adicionar.</p>';
+    }
+  }
+  
+  console.log('✅ Meu perfil preenchido com sucesso');
 }
 
-confirmarAddPubBtn.addEventListener('click', () => {
-  const titulo = document.getElementById('pubTitulo').value.trim();
-  const descricao = document.getElementById('pubDescricao').value.trim();
-
-  // Validate inputs
-  if (!titulo) {
-    alert('Por favor, adicione um título para a publicação');
-    return;
-  }
-
-  if (!descricao) {
-    alert('Por favor, adicione uma descrição para a publicação');
-    return;
-  }
-
-  if (arquivosSelecionados.length === 0) {
-    alert('Por favor, adicione pelo menos uma imagem ou vídeo');
-    return;
-  }
-
-  // Get the first image from selected files
-  const primeiraImagem = arquivosSelecionados[0];
-  const reader = new FileReader();
-
-  reader.onload = (e) => {
-    // Create new card element
-    const novoCard = document.createElement('div');
-    novoCard.classList.add('card-publicacoes');
-    novoCard.innerHTML = `
-      <div class="img-card_publicacoes" style="background-image: url('${e.target.result}')"></div>
+// ========== CARREGAR PUBLICAÇÕES ==========
+function carregarPublicacoes(portfolios) {
+  const publicacoesContainer = document.querySelector('.home-cards-post');
+  if (!publicacoesContainer) return;
+  
+  publicacoesContainer.innerHTML = '';
+  
+  portfolios.forEach(portfolio => {
+    const card = document.createElement('div');
+    card.className = 'card-publicacoes';
+    
+    const imagemUrl = portfolio.fotos && portfolio.fotos[0] 
+      ? `${API_URL.replace('/api', '')}/storage/${portfolio.fotos[0].caminho}`
+      : '';
+    
+    card.innerHTML = `
+      <div class="img-card_publicacoes" style="background-image: url('${imagemUrl}'); background-size: cover; background-position: center;"></div>
       <div class="mini-informacoes-card_publicacoes">
-        <h4>${titulo}</h4>
-        <p>${descricao}</p>
+        <h4>${portfolio.titulo || 'Sem título'}</h4>
+        <p>${portfolio.descricao || 'Sem descrição'}</p>
       </div>
     `;
+    
+    publicacoesContainer.appendChild(card);
+  });
+}
 
-    // Add the new card to the container
-    homeCardsPost.appendChild(novoCard);
-
-    // Close modal and clear form
-    fecharAddPub();
-
-    // Show success message
-    console.log('[v0] Post adicionado com sucesso:', { titulo, descricao });
-  };
-
-  reader.readAsDataURL(primeiraImagem);
-});
-
-// Close modal when clicking outside
-modalAddPub.addEventListener('click', (e) => {
-  if (e.target === modalAddPub) {
-    fecharAddPub();
-  }
-});
-
-// Close modal with ESC key
-document.addEventListener('keydown', (e) => {
-  if (e.key === 'Escape' && modalAddPub.classList.contains('active')) {
-    fecharAddPub();
-  }
-});
-
-class ProfileEditor {
-  constructor() {
-    this.specialties = [];
-    this.initElements();
-    this.attachEventListeners();
-  }
-
-  initElements() {
-    // Inputs
-    this.nameInput = document.getElementById('name');
-    this.professionInput = document.getElementById('profession');
-    this.cepInput = document.getElementById('cep');
-    this.projectsInput = document.getElementById('projects');
-    this.experienceInput = document.getElementById('experience');
-    this.aboutInput = document.getElementById('about');
-    this.specialtyInput = document.getElementById('specialtyInput');
-    this.phoneInput = document.getElementById('phone');
-    this.emailInput = document.getElementById('email');
-    this.instagramInput = document.getElementById('instagram');
-    this.facebookInput = document.getElementById('facebook');
-    this.twitterInput = document.getElementById('twitter');
-
-    const phoneInput = document.getElementById("phone");
-
-    phoneInput.addEventListener("input", function (e) {
-      let value = e.target.value.replace(/\D/g, ""); // Remove tudo que não for número
-
-      // Limita a 11 dígitos
-      if (value.length > 11) value = value.slice(0, 11);
-
-      // Aplica a máscara progressivamente
-      if (value.length > 0) {
-        value = "(" + value;
-      }
-      if (value.length > 3) {
-        value = value.slice(0, 3) + ") " + value.slice(3);
-      }
-      if (value.length > 10) {
-        value = value.slice(0, 10) + "-" + value.slice(10);
-      }
-
-      e.target.value = value;
-    });
-
-    const cepInput = document.getElementById("cep");
-
-    cepInput.addEventListener("input", function (e) {
-      let value = e.target.value.replace(/\D/g, ""); // Remove tudo que não for número
-
-      // Limita a 8 dígitos
-      if (value.length > 8) value = value.slice(0, 8);
-
-      // Aplica a máscara dinamicamente
-      if (value.length > 5) {
-        value = value.slice(0, 5) + "-" + value.slice(5);
-      }
-
-      e.target.value = value;
-    });
-
-    // File inputs
-    this.profilePhotoInput = document.getElementById('profilePhotoInput');
-    this.backgroundPhotoInput = document.getElementById('backgroundPhotoInput');
-
-    // Display elements
-    this.avatar = document.getElementById('avatarImage');
-    this.bannerImage = document.getElementById('bannerImage');
-    this.specialtiesContainer = document.getElementById('specialtiesContainer');
-
-    // Buttons
-    this.addSpecialtyBtn = document.getElementById('addSpecialtyBtn');
-    this.cancelBtn = document.getElementById('cancelBtn');
-    this.closeBtn = document.getElementById('closeBtn');
-    this.profileForm = document.getElementById('profileForm');
-    this.modalOverlay = document.getElementById('modalOverlay');
-  }
-
-  attachEventListeners() {
-    // File upload handlers
-    this.profilePhotoInput.addEventListener('change', (e) => this.handleProfilePhotoChange(e));
-    this.backgroundPhotoInput.addEventListener('change', (e) => this.handleBackgroundPhotoChange(e));
-
-    // Specialty handlers
-    this.addSpecialtyBtn.addEventListener('click', () => this.addSpecialty());
-    this.specialtyInput.addEventListener('keypress', (e) => {
-      if (e.key === 'Enter') {
-        e.preventDefault();
-        this.addSpecialty();
-      }
-    });
-
-    // Form handlers
-    this.profileForm.addEventListener('submit', (e) => this.handleSubmit(e));
-    this.cancelBtn.addEventListener('click', () => this.closeModal());
-    this.closeBtn.addEventListener('click', () => this.closeModal());
-    this.modalOverlay.addEventListener('click', (e) => {
-      if (e.target === this.modalOverlay) this.closeModal();
-    });
-  }
-
-  handleProfilePhotoChange(e) {
-    const file = e.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        this.avatar.style.backgroundImage = `url(${reader.result})`;
-      };
-      reader.readAsDataURL(file);
+// ========== BOTÃO EDITAR PERFIL ==========
+const btnEditarPerfil = document.querySelector('.btn-editar-perfil');
+if (btnEditarPerfil) {
+  btnEditarPerfil.addEventListener('click', () => {
+    const modal = document.getElementById('modalPerfil');
+    if (modal) {
+      modal.classList.add('active');
     }
-  }
+  });
+}
 
-  handleBackgroundPhotoChange(e) {
-    const file = e.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        this.bannerImage.style.backgroundImage = `url(${reader.result})`;
-      };
-      reader.readAsDataURL(file);
-    }
-  }
-
-  addSpecialty() {
-    const value = this.specialtyInput.value.trim();
-    if (value) {
-      this.specialties.push(value);
-      this.specialtyInput.value = '';
-      this.renderSpecialties();
-    }
-  }
-
-  removeSpecialty(index) {
-    this.specialties.splice(index, 1);
-    this.renderSpecialties();
-  }
-
-  renderSpecialties() {
-    this.specialtiesContainer.innerHTML = '';
-    this.specialties.forEach((specialty, index) => {
-      const tag = document.createElement('div');
-      tag.className = 'specialty-tag';
-      tag.innerHTML = `
-              ${specialty}
-              <button type="button" aria-label="Remover ${specialty}">
-                  <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                      <line x1="18" y1="6" x2="6" y2="18"></line>
-                      <line x1="6" y1="6" x2="18" y2="18"></line>
-                  </svg>
-              </button>
-          `;
-      tag.querySelector('button').addEventListener('click', () => this.removeSpecialty(index));
-      this.specialtiesContainer.appendChild(tag);
-    });
-  }
-
-  handleSubmit(e) {
+// ========== SAIR DA CONTA ==========
+const sairContaBtn = document.getElementById('SairConta');
+if (sairContaBtn) {
+  sairContaBtn.addEventListener('click', (e) => {
     e.preventDefault();
-    const formData = {
-      name: this.nameInput.value,
-      profession: this.professionInput.value,
-      cep: this.cepInput.value,
-      projects: this.projectsInput.value,
-      experience: this.experienceInput.value,
-      about: this.aboutInput.value,
-      specialties: this.specialties,
-      phone: this.phoneInput.value,
-      email: this.emailInput.value,
-      instagram: this.instagramInput.value,
-      facebook: this.facebookInput.value,
-      twitter: this.twitterInput.value,
-    };
-    console.log('Dados do perfil:', formData);
-    alert('Perfil salvo com sucesso!');
-    this.closeModal();
-  }
-
-  closeModal() {
-    this.modalOverlay.style.display = 'none';
-  }
-
-  openModal() {
-    this.modalOverlay.style.display = 'flex';
-  }
-}
-
-const btn_editarper = document.querySelector('.btn-editar-perfil');
-
-// Abrir modal de edição de perfil
-btn_editarper.addEventListener('click', () => {
-  profileEditor.openModal();
-});
-
-// Inicializar quando o DOM estiver pronto
-document.addEventListener('DOMContentLoaded', () => {
-  window.profileEditor = new ProfileEditor();
-});
-
-// Abrir modal de editar perfil
-const editarPerfilBtn = document.querySelector('.btn-editar-perfil');
-const modalPerfil = document.getElementById('modalPerfil');
-const cancelBtn = document.getElementById('cancelBtn');
-
-editarPerfilBtn.addEventListener('click', () => {
-  modalPerfil.classList.add('active');
-});
-
-// Botão cancelar fecha o modal
-cancelBtn.addEventListener('click', () => {
-  modalPerfil.classList.remove('active');
-});
-
-// Fechar clicando fora do modal
-modalPerfil.addEventListener('click', (e) => {
-  if (e.target === modalPerfil) {
-    modalPerfil.classList.remove('active');
-  }
-});
-
-function maskCEP(value) {
-  return value
-    .replace(/\D/g, '')
-    .replace(/^(\d{5})(\d)/, '$1-$2')
-    .substring(0, 9);
-}
-
-const addEspecialidadeBtn = document.getElementById('addEspecialidadeBtn');
-const especialidadesList = document.getElementById('especialidadesList');
-// o input onde usuário digita a especialidade
-const especialidadeInput = document.getElementById('especialidadeInput');
-// campo hidden para enviar no form (opcional — coloque este input hidden no HTML se quiser enviar)
-const especialidadesHidden = document.getElementById('especialidadesHidden');
-
-let especialidades = [];
-
-// atualiza campo hidden (se existir)
-function updateHiddenField() {
-  if (especialidadesHidden) {
-    especialidadesHidden.value = JSON.stringify(especialidades);
-  }
-}
-
-// Função de adicionar especialidade (mantive sua lógica)
-function addEspecialidade() {
-  if (!especialidadeInput) return;
-  const value = especialidadeInput.value.trim();
-
-  if (value === '') {
-    showToast('Digite uma especialidade', 'error');
-    return;
-  }
-
-  if (especialidades.includes(value)) {
-    showToast('Especialidade já adicionada', 'error');
-    return;
-  }
-
-  especialidades.push(value);
-  renderEspecialidades();
-  updateHiddenField();
-  especialidadeInput.value = '';
-  // opcional: focar no input novamente
-  especialidadeInput.focus();
-}
-
-// Remover especialidade
-function removeEspecialidade(index) {
-  especialidades.splice(index, 1);
-  renderEspecialidades();
-  updateHiddenField();
-}
-
-function renderEspecialidades() {
-  if (!especialidadesList) return;
-  especialidadesList.innerHTML = '';
-
-  especialidades.forEach((especialidade, index) => {
-    const tag = document.createElement('div');
-    tag.className = 'especialidade-tag';
-    tag.innerHTML = `
-        <span>${especialidade}</span>
-        <button type="button" class="remove-tag-btn" data-index="${index}">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <line x1="18" y1="6" x2="6" y2="18"></line>
-            <line x1="6" y1="6" x2="18" y2="18"></line>
-          </svg>
-        </button>
-      `;
-    especialidadesList.appendChild(tag);
-  });
-
-  const buttons = especialidadesList.querySelectorAll('.remove-tag-btn');
-  buttons.forEach(btn => {
-    btn.removeEventListener('click', handleRemoveClick);
-    btn.addEventListener('click', handleRemoveClick);
-  });
-}
-
-function handleRemoveClick(e) {
-  const idx = Number(e.currentTarget.getAttribute('data-index'));
-  if (!isNaN(idx)) removeEspecialidade(idx);
-}
-
-window.removeEspecialidade = removeEspecialidade;
-
-if (addEspecialidadeBtn) {
-  addEspecialidadeBtn.addEventListener('click', addEspecialidade);
-}
-
-if (especialidadeInput) {
-  especialidadeInput.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter') {
-      e.preventDefault();
-      addEspecialidade();
+    
+    if (confirm('Deseja realmente sair da sua conta?')) {
+      localStorage.removeItem('auth_token');
+      localStorage.removeItem('userId');
+      localStorage.removeItem('userType');
+      localStorage.removeItem('user_data');
+      
+      showToast('Saindo...', 'success');
+      setTimeout(() => {
+        window.location.href = '/Login/index.html';
+      }, 1000);
     }
   });
 }
 
-function loadMockData() {
-  especialidades = ['Design', 'Branding', 'UI/UX'];
-  renderEspecialidades();
-  updateHiddenField();
+// ========== EXCLUIR CONTA ==========
+const excluirContaBtn = document.getElementById('excluirConta');
+if (excluirContaBtn) {
+  excluirContaBtn.addEventListener('click', async (e) => {
+    e.preventDefault();
+    
+    if (!confirm('⚠️ ATENÇÃO: Esta ação é IRREVERSÍVEL!\n\nDeseja realmente excluir sua conta permanentemente?')) {
+      return;
+    }
+    
+    try {
+      const userId = getUserId();
+      const token = getAuthToken();
+      
+      const response = await fetch(`${API_URL}/usuarios/${userId}`, {
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Accept': 'application/json'
+        }
+      });
+      
+      if (response.ok) {
+        showToast('Conta excluída com sucesso', 'success');
+        
+        localStorage.clear();
+        
+        setTimeout(() => {
+          window.location.href = '/';
+        }, 2000);
+      } else {
+        throw new Error('Erro ao excluir conta');
+      }
+    } catch (error) {
+      console.error('Erro ao excluir conta:', error);
+      showToast('Erro ao excluir conta', 'error');
+    }
+  });
 }
 
-loadMockData();
-
-const empresaInput = document.getElementById("empresaAreaInput");
-const empresaHidden = document.getElementById("empresaArea");
-const empresaOptions = document.getElementById("empresaAreaOptions");
-
-// Mostrar lista ao focar
-empresaInput.addEventListener("focus", () => {
-  empresaOptions.classList.remove("hidden");
-});
-
-// Filtrar ao digitar
-empresaInput.addEventListener("input", () => {
-  const filter = empresaInput.value.toLowerCase();
-
-  Array.from(empresaOptions.children).forEach(li => {
-    const text = li.textContent.toLowerCase();
-    li.style.display = text.includes(filter) ? "block" : "none";
-  });
-});
-
-// Selecionar item
-empresaOptions.addEventListener("click", (e) => {
-  if (e.target.tagName === "LI") {
-    const value = e.target.dataset.value;
-    const label = e.target.textContent;
-
-    empresaInput.value = label;   // Mostra texto
-    empresaHidden.value = value;  // Envia valor real
-
-    empresaOptions.classList.add("hidden");
-  }
-});
-
-// Fechar ao clicar fora
-document.addEventListener("click", (e) => {
-  if (!e.target.closest(".searchable-select")) {
-    empresaOptions.classList.add("hidden");
-  }
+// ========== INICIALIZAÇÃO ==========
+document.addEventListener('DOMContentLoaded', () => {
+  console.log('🚀 Página de Perfil Próprio (Prestador) carregada');
+  carregarMeuPerfil();
 });

@@ -1,7 +1,5 @@
-// script.js - Empresas
+// script.js - Empresas (CORRIGIDO)
 const API_URL = 'http://127.0.0.1:8000/api';
-
-// ========== FUNÇÕES DE API ==========
 
 async function carregarEmpresas(filtros = {}) {
   try {
@@ -87,13 +85,24 @@ function criarCardEmpresa(usuario) {
   const categoria = usuario.categoria?.nome || 'Categoria não informada';
   const avaliacao = usuario.avaliacao?.media || 0;
   const numAvaliacoes = usuario.avaliacao?.total || 0;
-  const foto = empresa.foto || null;
   const usuarioId = usuario.id;
+  
+  // Verifica se a foto já é uma URL completa ou apenas o caminho
+  let foto = empresa.foto;
+  if (foto && !foto.startsWith('http')) {
+    foto = `http://127.0.0.1:8000/storage/${foto}`;
+  }
+  
+  console.log('🖼️ URL da foto empresa:', foto);
+  
+  // Verifica se está nos favoritos
+  const favoritos = JSON.parse(localStorage.getItem('favoritos') || '[]');
+  const isFavorito = favoritos.includes(usuarioId);
   
   card.innerHTML = `
     <div class="top-content-card">
       <div class="TCC-center">
-        <div class="foto-perfil" style="${foto ? `background-image: url('${foto}'); background-size: cover; background-position: center;` : 'background-color: #e0e0e0;'}"></div>
+        <div class="foto-perfil" style="${foto ? `background-image: url('${foto}'); background-size: cover; background-position: center;` : 'background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);'}"></div>
         <div class="nome-area">
           <h3 class="nome-card">${razaoSocial}</h3>
           <p class="area-card">
@@ -116,9 +125,9 @@ function criarCardEmpresa(usuario) {
           </p>
         </div>
       </div>
-      <button class="remover-favorito" onclick="toggleFavorito(${usuarioId})">
+      <button class="remover-favorito" onclick="toggleFavorito(${usuarioId})" data-favorito="${isFavorito}">
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" 
-             fill="none" stroke="#ef4343" stroke-width="2" stroke-linecap="round" 
+             fill="${isFavorito ? '#ef4343' : 'none'}" stroke="#ef4343" stroke-width="2" stroke-linecap="round" 
              stroke-linejoin="round" class="lucide lucide-heart w-5 h-5">
           <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"></path>
         </svg>
@@ -129,14 +138,10 @@ function criarCardEmpresa(usuario) {
     
     <div class="avaliacao-content">
       <div class="stars">
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" 
-             fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" 
-             stroke-linejoin="round" class="star pri">
-          <path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"></path>
-        </svg>
+        ${gerarEstrelas(avaliacao)}
       </div>
       <span class="quant-stars">${Number(avaliacao).toFixed(1)}</span>
-      <span class="quant-avaliacoes">(${numAvaliacoes} avaliações)</span>
+      <span class="quant-avaliacoes">(${numAvaliacoes} ${numAvaliacoes === 1 ? 'avaliação' : 'avaliações'})</span>
     </div>
     
     <div class="localizacao">
@@ -176,6 +181,20 @@ function criarCardEmpresa(usuario) {
   return card;
 }
 
+function gerarEstrelas(avaliacao) {
+  let estrelas = '';
+  for (let i = 1; i <= 5; i++) {
+    estrelas += `
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" 
+           fill="${i <= avaliacao ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="2" 
+           stroke-linecap="round" stroke-linejoin="round" class="star">
+        <path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"></path>
+      </svg>
+    `;
+  }
+  return estrelas;
+}
+
 function mostrarErro(error) {
   const cardsContainer = document.querySelector('.home-cards');
   cardsContainer.innerHTML = `
@@ -189,31 +208,32 @@ function mostrarErro(error) {
   `;
 }
 
-// ========== NAVEGAÇÃO ==========
-
+// ✅ CORREÇÃO: Salva perfilVisitadoId (não sobrescreve userId do usuário logado)
 function verPerfil(empresaId) {
   console.log('Redirecionando para perfil da empresa:', empresaId);
-  localStorage.setItem('usuarioId', empresaId);
-  localStorage.setItem('usuarioTipo', 'empresa');
-  window.location.href = '../Perfil/TE/index.html';
+  localStorage.setItem('perfilVisitadoId', empresaId); // 👈 NOME CORRETO!
+  window.location.href = '../Perfil/Acessando/TE/index.html';
 }
 
 function toggleFavorito(empresaId) {
   const favoritos = JSON.parse(localStorage.getItem('favoritos') || '[]');
   const index = favoritos.indexOf(empresaId);
   
+  const btn = document.querySelector(`button[onclick="toggleFavorito(${empresaId})"]`);
+  const svg = btn?.querySelector('svg');
+  
   if (index > -1) {
     favoritos.splice(index, 1);
+    if (svg) svg.setAttribute('fill', 'none');
     showToast('Removido dos favoritos', 'success');
   } else {
     favoritos.push(empresaId);
+    if (svg) svg.setAttribute('fill', '#ef4343');
     showToast('Adicionado aos favoritos', 'success');
   }
   
   localStorage.setItem('favoritos', JSON.stringify(favoritos));
 }
-
-// ========== FILTROS ==========
 
 function configurarFiltros() {
   const buscaBtns = document.querySelectorAll('.icon-btn');
@@ -261,7 +281,6 @@ function limparFiltros() {
   carregarEmpresas();
 }
 
-// ========== RATING BUTTONS ==========
 const ratingBtns = document.querySelectorAll('.rating-btn');
 ratingBtns.forEach(btn => {
   btn.addEventListener('click', () => {
@@ -271,7 +290,6 @@ ratingBtns.forEach(btn => {
   });
 });
 
-// ========== TOAST ==========
 function showToast(message, type = 'info') {
   let toast = document.querySelector('.toast-notification');
   
@@ -289,7 +307,6 @@ function showToast(message, type = 'info') {
   }, 3000);
 }
 
-// ========== INICIALIZAÇÃO ==========
 document.addEventListener('DOMContentLoaded', () => {
   console.log('🚀 Página de Empresas carregada');
   carregarEmpresas();

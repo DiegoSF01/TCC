@@ -1,6 +1,5 @@
-// === PARTE 1 DO CADASTRO - SALVAR EMAIL E SENHA ===
+// === SCRIPT DE LOGIN E CADASTRO PARTE 1 - CORRIGIDO ===
 
-// Estado atual da view
 let currentView = 'login';
 
 const En_btn = document.getElementById('En-btn');
@@ -112,7 +111,7 @@ function setButtonLoading(button, isLoading) {
   }
 }
 
-// === HANDLE LOGIN ===
+// === HANDLE LOGIN - CORRIGIDO ===
 loginForm.addEventListener('submit', async (e) => {
   e.preventDefault();
 
@@ -120,6 +119,7 @@ loginForm.addEventListener('submit', async (e) => {
   const password = document.getElementById('loginPassword').value.trim();
   const submitBtn = loginForm.querySelector('.btn-primary');
 
+  // Validação de campos vazios
   if (!email || !password) {
     showToast('Preencha todos os campos', 'error');
     return;
@@ -128,40 +128,76 @@ loginForm.addEventListener('submit', async (e) => {
   setButtonLoading(submitBtn, true);
 
   try {
-    const formData = new FormData();
-    formData.append('email', email);
-    formData.append('password', password);
-
-    const response = await fetch('process-login.php', {
+    // Fazer requisição para a API Laravel
+    const response = await fetch('http://127.0.0.1:8000/api/login', {
       method: 'POST',
-      body: formData
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+      body: JSON.stringify({
+        email: email,
+        password: password
+      })
     });
 
-    const json = await response.json();
-
-    if (!json.success) {
-      showToast(json.message || 'Erro ao fazer login', 'error');
+    // Verificar se a resposta é JSON
+    const contentType = response.headers.get('content-type');
+    if (!contentType || !contentType.includes('application/json')) {
+      console.error('Resposta não é JSON. Content-Type:', contentType);
+      console.error('Status:', response.status);
+      
+      const textResponse = await response.text();
+      console.error('Resposta recebida:', textResponse);
+      
+      showToast('Erro no servidor. Verifique se a API está rodando corretamente.', 'error');
       setButtonLoading(submitBtn, false);
       return;
     }
 
+    // Fazer parse do JSON
+    const data = await response.json();
+    
+    console.log('✅ Resposta da API:', data);
+
+    // Verificar se houve erro na resposta
+    if (!response.ok || !data.access_token) {
+      const errorMessage = data.error || data.message || 'Email ou senha incorretos';
+      showToast(errorMessage, 'error');
+      setButtonLoading(submitBtn, false);
+      return;
+    }
+
+    // ✅ CORREÇÃO: Salvar com os nomes CORRETOS que os scripts de perfil esperam
+    localStorage.setItem('auth_token', data.access_token);
+    localStorage.setItem('userType', data.logado.type);
+    localStorage.setItem('userId', data.logado.id);
+    localStorage.setItem('user_data', JSON.stringify(data.logado));
+
+    console.log('✅ Dados salvos no localStorage:', {
+      auth_token: data.access_token,
+      userType: data.logado.type,
+      userId: data.logado.id
+    });
+
     showToast('Login realizado com sucesso!', 'success');
 
-    // Redirecionar baseado no tipo
-    const tipo = json.type;
+    // Redirecionar baseado no tipo de usuário
     setTimeout(() => {
-      if (tipo === 'contratante') {
+      if (data.logado.type === 'contratante') {
         window.location.href = '../../Perfil/PróprioC/index.html';
-      } else if (tipo === 'empresa') {
+      } else if (data.logado.type === 'empresa') {
         window.location.href = '../../Perfil/PróprioTE/PróprioE/index.html';
-      } else if (tipo === 'profissional') {
+      } else if (data.logado.type === 'prestador') {
         window.location.href = '../../Perfil/PróprioTE/PróprioT/index.html';
+      } else {
+        showToast('Tipo de usuário não reconhecido', 'error');
       }
     }, 500);
 
   } catch (error) {
-    console.error('Erro:', error);
-    showToast('Erro ao conectar com o servidor', 'error');
+    console.error('❌ Erro ao fazer login:', error);
+    showToast('Erro ao conectar com o servidor. Verifique se a API Laravel está rodando.', 'error');
     setButtonLoading(submitBtn, false);
   }
 });

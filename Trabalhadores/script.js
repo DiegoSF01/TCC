@@ -1,15 +1,8 @@
-// script.js - Prestadores
+// script.js - Prestadores (CORRIGIDO)
 const API_URL = 'http://127.0.0.1:8000/api';
-
-// ========== VARIÁVEIS GLOBAIS ==========
-let especialidades = [];
-const especialidadeInput = document.getElementById('especialidadeInput');
-const addEspecialidadeBtn = document.getElementById('addEspecialidadeBtn');
-const especialidadesList = document.getElementById('especialidadesList');
 
 // ========== FUNÇÕES DE API ==========
 
-// Função para buscar e renderizar prestadores
 async function carregarPrestadores(filtros = {}) {
   try {
     const cardsContainer = document.querySelector('.home-cards');
@@ -26,23 +19,10 @@ async function carregarPrestadores(filtros = {}) {
       }
     };
     
-    console.log('🔵 URL completa:', url);
-    
     const response = await fetch(url, options);
     
-    console.log('📊 Status da resposta:', response.status);
-    
     if (!response.ok) {
-      const errorText = await response.text();
-      console.error('❌ Erro na resposta:', errorText.substring(0, 500));
       throw new Error(`Erro HTTP ${response.status}: ${response.statusText}`);
-    }
-    
-    const contentType = response.headers.get('content-type');
-    if (!contentType || !contentType.includes('application/json')) {
-      const text = await response.text();
-      console.error('❌ Resposta não é JSON:', text.substring(0, 500));
-      throw new Error('A API não retornou JSON válido');
     }
     
     const dados = await response.json();
@@ -78,7 +58,6 @@ async function carregarPrestadores(filtros = {}) {
       return;
     }
     
-    // Limpa o container e renderiza cards
     cardsContainer.innerHTML = '';
     
     prestadores.forEach((prestador, index) => {
@@ -110,13 +89,25 @@ function criarCard(usuario) {
   const tipoProfissao = usuario.ramo?.nome || 'Profissão não informada';
   const avaliacao = usuario.avaliacao?.media || 0;
   const numAvaliacoes = usuario.avaliacao?.total || 0;
-  const foto = prestador.foto || null;
   const usuarioId = usuario.id;
+  
+  // CORREÇÃO: Verifica se a foto já é uma URL completa ou apenas o caminho
+  let foto = prestador.foto;
+  if (foto && !foto.startsWith('http')) {
+    // Se não começa com http, adiciona a URL base do Laravel
+    foto = `http://127.0.0.1:8000/storage/${foto}`;
+  }
+  
+  console.log('🖼️ URL da foto:', foto); // Debug
+  
+  // Verifica se está nos favoritos
+  const favoritos = JSON.parse(localStorage.getItem('favoritos') || '[]');
+  const isFavorito = favoritos.includes(usuarioId);
   
   card.innerHTML = `
     <div class="top-content-card">
       <div class="TCC-center">
-        <div class="foto-perfil" style="${foto ? `background-image: url('${foto}'); background-size: cover; background-position: center;` : 'background-color: #e0e0e0;'}"></div>
+        <div class="foto-perfil" style="${foto ? `background-image: url('${foto}'); background-size: cover; background-position: center;` : 'background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);'}"></div>
         <div class="nome-area">
           <h3 class="nome-card">${nome}</h3>
           <p class="area-card">
@@ -130,9 +121,9 @@ function criarCard(usuario) {
           </p>
         </div>
       </div>
-      <button class="remover-favorito" onclick="toggleFavorito(${usuarioId})">
+      <button class="remover-favorito" onclick="toggleFavorito(${usuarioId})" data-favorito="${isFavorito}">
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" 
-             fill="none" stroke="#ef4343" stroke-width="2" stroke-linecap="round" 
+             fill="${isFavorito ? '#ef4343' : 'none'}" stroke="#ef4343" stroke-width="2" stroke-linecap="round" 
              stroke-linejoin="round" class="lucide lucide-heart w-5 h-5">
           <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"></path>
         </svg>
@@ -143,14 +134,10 @@ function criarCard(usuario) {
     
     <div class="avaliacao-content">
       <div class="stars">
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" 
-             fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" 
-             stroke-linejoin="round" class="star pri">
-          <path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"></path>
-        </svg>
+        ${gerarEstrelas(avaliacao)}
       </div>
       <span class="quant-stars">${Number(avaliacao).toFixed(1)}</span>
-      <span class="quant-avaliacoes">(${numAvaliacoes} avaliações)</span>
+      <span class="quant-avaliacoes">(${numAvaliacoes} ${numAvaliacoes === 1 ? 'avaliação' : 'avaliações'})</span>
     </div>
     
     <div class="localizacao">
@@ -184,10 +171,25 @@ function criarCard(usuario) {
     
     <div class="line"></div>
     
-    <button class="ver-perfil" onclick="verPerfil(${usuarioId})">Ver Perfil</button>
+    <button class="ver-perfil" onclick="verPerfil(${usuarioId}, 'prestador')">Ver Perfil</button>
   `;
   
   return card;
+}
+
+// Função auxiliar para gerar estrelas
+function gerarEstrelas(avaliacao) {
+  let estrelas = '';
+  for (let i = 1; i <= 5; i++) {
+    estrelas += `
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" 
+           fill="${i <= avaliacao ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="2" 
+           stroke-linecap="round" stroke-linejoin="round" class="star">
+        <path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"></path>
+      </svg>
+    `;
+  }
+  return estrelas;
 }
 
 // Função para mostrar erro
@@ -238,22 +240,31 @@ function mostrarErro(error) {
 
 // ========== FUNÇÕES DE NAVEGAÇÃO ==========
 
-function verPerfil(prestadorId) {
-  console.log('Redirecionando para perfil:', prestadorId);
-  localStorage.setItem('usuarioId', prestadorId);
-  localStorage.setItem('usuarioTipo', 'prestador');
-  window.location.href = '../Perfil/TE/index.html';
+// CORRIGIDO: Salva com os nomes corretos que a página de perfil espera
+function verPerfil(prestadorId, tipo) {
+  console.log('Redirecionando para perfil:', prestadorId, tipo);
+  
+  // Salva com os nomes corretos: userId, userType
+  localStorage.setItem('userId', prestadorId);
+  localStorage.setItem('userType', tipo);
+  
+  window.location.href = '../Perfil/Acessando/TE/index.html';
 }
 
 function toggleFavorito(prestadorId) {
   const favoritos = JSON.parse(localStorage.getItem('favoritos') || '[]');
   const index = favoritos.indexOf(prestadorId);
   
+  const btn = document.querySelector(`button[onclick="toggleFavorito(${prestadorId})"]`);
+  const svg = btn?.querySelector('svg');
+  
   if (index > -1) {
     favoritos.splice(index, 1);
+    if (svg) svg.setAttribute('fill', 'none');
     showToast('Removido dos favoritos', 'success');
   } else {
     favoritos.push(prestadorId);
+    if (svg) svg.setAttribute('fill', '#ef4343');
     showToast('Adicionado aos favoritos', 'success');
   }
   

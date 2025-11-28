@@ -583,9 +583,19 @@ async function enviarCadastro(tipo, btn) {
     console.log('✅ Cadastro realizado com sucesso!');
     console.log('🎉 Token recebido:', result.access_token);
 
+    // ✅ SALVAR DADOS NO LOCALSTORAGE COM OS NOMES CORRETOS
     if (result.access_token) {
-      localStorage.setItem('auth_token', result.access_token);
-      console.log('💾 Token salvo no localStorage');
+      localStorage.setItem('auth_token', result.access_token);  // Mudado de 'token' para 'auth_token'
+      console.log('💾 Token salvo no localStorage como "auth_token"');
+    }
+
+    if (result.logado) {
+      localStorage.setItem('userType', result.logado.type);     // Mudado de 'user_type' para 'userType'
+      localStorage.setItem('userId', result.logado.id);         // Mudado de 'user_id' para 'userId'
+      console.log('💾 Dados do usuário salvos:', {
+        userType: result.logado.type,
+        userId: result.logado.id
+      });
     }
 
     // ✅ LIMPAR LOCALSTORAGE DA PARTE 1
