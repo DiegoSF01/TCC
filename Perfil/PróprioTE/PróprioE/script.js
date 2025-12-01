@@ -1,5 +1,5 @@
-// ==========================================
-// SCRIPT PERFIL PRÓPRIO - EMPRESA
+
+// SCRIPT PERFIL PRÓPRIO - EMPRESA (CORRIGIDO)
 // ==========================================
 
 const API_URL = 'http://127.0.0.1:8000/api';
@@ -30,17 +30,11 @@ function showToast(message, type = 'success') {
   toast.textContent = message;
   toast.style.opacity = '1';
   
-  if (type === 'success') {
-    toast.style.background = '#28a745';
-  } else if (type === 'error') {
-    toast.style.background = '#dc3545';
-  } else {
-    toast.style.background = '#007bff';
-  }
+  if (type === 'success') toast.style.background = '#28a745';
+  else if (type === 'error') toast.style.background = '#dc3545';
+  else toast.style.background = '#007bff';
   
-  setTimeout(() => {
-    toast.style.opacity = '0';
-  }, 3000);
+  setTimeout(() => toast.style.opacity = '0', 3000);
 }
 
 function getAuthToken() {
@@ -55,47 +49,7 @@ function getUserType() {
   return localStorage.getItem('userType');
 }
 
-// ========== NAVEGAÇÃO ENTRE ABAS ==========
-const btn_sobre = document.getElementById('btn_navperfil-sobre');
-const btn_postagens = document.getElementById('btn_navperfil-postagens');
-const btn_avaliacao = document.getElementById('btn_navperfil-avaliacao');
-
-const sessao_sobre = document.querySelector('.sobre');
-const sessao_publicacoes = document.querySelector('.publicacoes');
-const sessao_avaliacao = document.querySelector('.avaliacao');
-
-function clicou_sobre() {
-  if (!btn_sobre.classList.contains('ativo')) {
-    document.querySelector('.button-navper.ativo')?.classList.remove('ativo');
-    btn_sobre.classList.add('ativo');
-    document.querySelector('.sessao')?.classList.remove('sessao');
-    sessao_sobre.classList.add('sessao');
-  }
-}
-
-function clicou_postagens() {
-  if (!btn_postagens.classList.contains('ativo')) {
-    document.querySelector('.button-navper.ativo')?.classList.remove('ativo');
-    btn_postagens.classList.add('ativo');
-    document.querySelector('.sessao')?.classList.remove('sessao');
-    sessao_publicacoes.classList.add('sessao');
-  }
-}
-
-function clicou_avaliacao() {
-  if (!btn_avaliacao.classList.contains('ativo')) {
-    document.querySelector('.button-navper.ativo')?.classList.remove('ativo');
-    btn_avaliacao.classList.add('ativo');
-    document.querySelector('.sessao')?.classList.remove('sessao');
-    sessao_avaliacao.classList.add('sessao');
-  }
-}
-
-btn_sobre?.addEventListener('click', clicou_sobre);
-btn_postagens?.addEventListener('click', clicou_postagens);
-btn_avaliacao?.addEventListener('click', clicou_avaliacao);
-
-// ========== CARREGAR MEU PERFIL (EMPRESA LOGADA) ==========
+// ========== CARREGAR MEU PERFIL ==========
 async function carregarMeuPerfil() {
   try {
     const userId = getUserId();
@@ -103,23 +57,19 @@ async function carregarMeuPerfil() {
     const token = getAuthToken();
     
     if (!userId || !token) {
-      console.error('❌ Usuário não autenticado');
       showToast('Você precisa estar logado', 'error');
       setTimeout(() => window.location.href = '/Login/index.html', 2000);
       return;
     }
     
-    // Verificar se é empresa
     if (userType !== 'empresa') {
-      console.error('❌ Tipo de usuário incorreto');
       showToast('Acesso negado', 'error');
       setTimeout(() => window.location.href = '/Login/index.html', 2000);
       return;
     }
     
-    console.log('🔵 Carregando meu perfil (Empresa):', { userId, userType });
+    console.log('🔵 Carregando perfil empresa:', { userId, userType });
     
-    // Buscar meus dados
     const response = await fetch(`${API_URL}/usuarios/${userId}`, {
       headers: {
         'Authorization': `Bearer ${token}`,
@@ -127,16 +77,12 @@ async function carregarMeuPerfil() {
       }
     });
     
-    if (!response.ok) {
-      throw new Error('Erro ao carregar perfil');
-    }
+    if (!response.ok) throw new Error('Erro ao carregar perfil');
     
     const data = await response.json();
-    const usuario = data.user || data.data || data;
+    const usuario = data.user || data;
     
-    console.log('✅ Meus dados recebidos:', usuario);
-    
-    // Preencher perfil
+    console.log('✅ Dados recebidos:', usuario);
     preencherPerfil(usuario);
     
   } catch (error) {
@@ -145,204 +91,126 @@ async function carregarMeuPerfil() {
   }
 }
 
-// ========== PREENCHER DADOS DO PERFIL ==========
+// ========== PREENCHER PERFIL ==========
 function preencherPerfil(usuario) {
-  console.log('🔵 Preenchendo meu perfil com:', usuario);
+  console.log('🔵 Preenchendo perfil empresa:', usuario);
   
   if (!usuario.empresa) {
-    console.error('❌ Dados de empresa não encontrados');
-    showToast('Erro nos dados do perfil', 'error');
+    showToast('Erro: dados da empresa não encontrados', 'error');
     return;
   }
   
   const empresa = usuario.empresa;
+  const contato = usuario.contato || {};
   
-  // Extrair dados
-  const dados = {
-    nome: empresa.razao_social || 'Empresa não informada',
-    profissao: usuario.categoria?.nome || 'Categoria não informada',
-    cidade: empresa.localidade || 'Cidade não informada',
-    uf: empresa.uf || 'UF',
-    foto: empresa.foto,
-    capa: empresa.capa,
-    descricao: empresa.descricao || null,
-    email: usuario.email || 'Email não informado',
-    telefone: usuario.contato?.telefone || null,
-    instagram: usuario.contato?.instagram || null,
-    facebook: usuario.contato?.facebook || null,
-    twitter: usuario.contato?.twitter || null,
-    projetosConcluidos: empresa.projetos_concluidos || null,
-    idadeEmpresa: empresa.idade_empresa || null
-  };
+  // ===== NOME E DADOS BÁSICOS =====
+  document.querySelector('.nome-perfil').textContent = empresa.razao_social || 'Empresa não informada';
+  document.querySelector('.profissao').textContent = usuario.categoria?.nome || 'Categoria não informada';
+  document.querySelector('.lc-cidade').textContent = empresa.localidade || 'Cidade não informada';
+  document.querySelector('.lc-estado').textContent = empresa.uf || 'UF';
   
-  // Corrigir URLs das imagens
-  if (dados.foto && !dados.foto.startsWith('http')) {
-    dados.foto = `${API_URL.replace('/api', '')}/storage/${dados.foto}`;
-  }
-  
-  if (dados.capa && !dados.capa.startsWith('http')) {
-    dados.capa = `${API_URL.replace('/api', '')}/storage/${dados.capa}`;
-  }
-  
-  // ===== PREENCHER ELEMENTOS DA PÁGINA =====
-  
-  // Foto de fundo (capa)
-  const imgFundo = document.querySelector('.img-fundo');
-  if (imgFundo) {
-    if (dados.capa) {
-      imgFundo.style.backgroundImage = `url('${dados.capa}')`;
-      imgFundo.style.backgroundSize = 'cover';
-      imgFundo.style.backgroundPosition = 'center';
-    } else {
-      imgFundo.style.background = 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)';
-    }
-  }
-  
-  // Foto de perfil
+  // ===== FOTO DE PERFIL =====
   const fotoPerfil = document.querySelector('.foto-perfil');
-  if (fotoPerfil) {
-    if (dados.foto) {
-      fotoPerfil.style.backgroundImage = `url('${dados.foto}')`;
-      fotoPerfil.style.backgroundSize = 'cover';
-      fotoPerfil.style.backgroundPosition = 'center';
-    } else {
-      fotoPerfil.style.background = 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)';
-      fotoPerfil.innerHTML = '<span style="color: white; font-size: 48px; font-weight: bold;">' + dados.nome.charAt(0).toUpperCase() + '</span>';
-      fotoPerfil.style.display = 'flex';
-      fotoPerfil.style.alignItems = 'center';
-      fotoPerfil.style.justifyContent = 'center';
-    }
+  if (empresa.foto) {
+    fotoPerfil.style.backgroundImage = `url('${empresa.foto}')`;
+    fotoPerfil.style.backgroundSize = 'cover';
+    fotoPerfil.style.backgroundPosition = 'center';
+    fotoPerfil.innerHTML = '';
+  } else {
+    fotoPerfil.style.background = 'linear-gradient(135deg,rgb(32, 1, 36) 0%, #f5576c 100%)';
+    fotoPerfil.innerHTML = `<span style="color: white; font-size: 48px; font-weight: bold;">${empresa.razao_social.charAt(0).toUpperCase()}</span>`;
+    fotoPerfil.style.display = 'flex';
+    fotoPerfil.style.alignItems = 'center';
+    fotoPerfil.style.justifyContent = 'center';
   }
   
-  // Nome
-  const nomePerfil = document.querySelector('.nome-perfil');
-  if (nomePerfil) nomePerfil.textContent = dados.nome;
-  
-  // Profissão/Categoria
-  const profissao = document.querySelector('.profissao');
-  if (profissao) profissao.textContent = dados.profissao;
-  
-  // Localização
-  const lcCidade = document.querySelector('.lc-cidade');
-  if (lcCidade) lcCidade.textContent = dados.cidade;
-  
-  const lcEstado = document.querySelector('.lc-estado');
-  if (lcEstado) lcEstado.textContent = dados.uf;
-  
-  // Tipo (Empresa)
-  const empProfi = document.querySelector('.empre_profi-text');
-  if (empProfi) empProfi.textContent = 'Empresa';
-  
-  // Disponibilidade (sempre disponível para empresa)
-  const disponibilidade = document.querySelector('.disponibilidade');
-  if (disponibilidade) {
-    disponibilidade.style.display = 'flex';
-    disponibilidade.querySelector('.disponi-text').textContent = 'Disponível';
+  // ===== CAPA =====
+  const imgFundo = document.querySelector('.img-fundo');
+  if (empresa.capa) {
+    imgFundo.style.backgroundImage = `url('${empresa.capa}')`;
+    imgFundo.style.backgroundSize = 'cover';
+    imgFundo.style.backgroundPosition = 'center';
+  } else {
+    imgFundo.style.background = 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)';
   }
   
-  // Projetos Concluídos
-  const projetosConcluidos = document.querySelector('.projetos_concluidos');
-  if (projetosConcluidos) {
-    const textElement = projetosConcluidos.querySelector('.projetos_concluidos-text');
-    if (dados.projetosConcluidos !== null && dados.projetosConcluidos !== undefined) {
-      projetosConcluidos.style.display = 'flex';
-      if (textElement) textElement.textContent = dados.projetosConcluidos;
-    } else {
-      projetosConcluidos.style.display = 'none';
-    }
-  }
-  
-  // Idade da Empresa
-  const idadeEmpresa = document.querySelector('.idade_empresa');
-  if (idadeEmpresa) {
-    const textoElement = idadeEmpresa.querySelector('.idade_empresa-text');
-    if (dados.idadeEmpresa !== null && dados.idadeEmpresa !== undefined) {
-      idadeEmpresa.style.display = 'flex';
-      if (textoElement) {
-        textoElement.textContent = `${dados.idadeEmpresa} ${dados.idadeEmpresa === 1 ? 'ano' : 'anos'}`;
-      }
-    } else {
-      idadeEmpresa.style.display = 'none';
-    }
-  }
-  
-  // Telefone
-  document.querySelectorAll('.tl-numero, .telefone-numero').forEach(el => {
-    if (dados.telefone) {
-      el.textContent = dados.telefone;
-      el.closest('.telefone, .button-telefone')?.style.setProperty('display', 'flex', 'important');
-    } else {
-      el.closest('.telefone, .button-telefone')?.style.setProperty('display', 'none', 'important');
-    }
-  });
-  
-  // Email
-  document.querySelectorAll('.email-text').forEach(el => {
-    el.textContent = dados.email;
-  });
-  
-  // Sobre a Empresa
+  // ===== SOBRE A EMPRESA =====
   const sobreEmpresa = document.querySelector('.sobre_profissional');
-  if (sobreEmpresa) {
-    const paragrafo = sobreEmpresa.querySelector('p');
-    const titulo = sobreEmpresa.querySelector('h3');
-    
-    if (titulo) titulo.textContent = 'Sobre a Empresa';
-    
-    if (dados.descricao) {
-      sobreEmpresa.style.display = 'block';
-      if (paragrafo) {
-        paragrafo.textContent = dados.descricao;
-        paragrafo.style.color = '';
-        paragrafo.style.fontStyle = '';
-      }
-    } else {
-      sobreEmpresa.style.display = 'block';
-      if (paragrafo) {
-        paragrafo.textContent = 'Você ainda não adicionou uma descrição. Clique em "Editar Perfil" para adicionar.';
-        paragrafo.style.color = '#999';
-        paragrafo.style.fontStyle = 'italic';
-      }
-    }
+  const paragrafo = sobreEmpresa.querySelector('p');
+  
+  if (empresa.descricao) {
+    paragrafo.textContent = empresa.descricao;
+    paragrafo.style.color = '';
+    paragrafo.style.fontStyle = '';
+  } else {
+    paragrafo.textContent = 'Você ainda não adicionou uma descrição. Clique em "Editar Perfil" para adicionar.';
+    paragrafo.style.color = '#999';
+    paragrafo.style.fontStyle = 'italic';
   }
   
-  // Instagram
+  // ===== TELEFONE =====
+  const telefoneElements = document.querySelectorAll('.tl-numero, .telefone-numero');
+  const telefoneContainers = document.querySelectorAll('.telefone, .button-telefone');
+  
+  if (contato.telefone) {
+    telefoneElements.forEach(el => el.textContent = contato.telefone);
+    telefoneContainers.forEach(el => el.style.display = 'flex');
+  } else {
+    telefoneContainers.forEach(el => el.style.display = 'none');
+  }
+  
+  // ===== EMAIL =====
+  document.querySelectorAll('.email-text').forEach(el => {
+    el.textContent = usuario.email || 'Email não informado';
+  });
+  
+  // ===== REDES SOCIAIS =====
   const instagram = document.querySelector('.instagram');
-  if (instagram) {
-    const nomeIns = instagram.querySelector('.name_perfil-ins, .name_perfil-x');
-    if (dados.instagram) {
-      instagram.style.display = 'flex';
-      if (nomeIns) nomeIns.textContent = dados.instagram;
-    } else {
-      instagram.style.display = 'none';
-    }
+  if (contato.instagram) {
+    instagram.style.display = 'flex';
+    instagram.querySelector('.name_perfil-x').textContent = contato.instagram;
+  } else {
+    instagram.style.display = 'none';
   }
   
-  // Facebook
   const facebook = document.querySelector('.facebook');
-  if (facebook) {
-    const nomeFac = facebook.querySelector('.name_perfil-fac');
-    if (dados.facebook) {
-      facebook.style.display = 'flex';
-      if (nomeFac) nomeFac.textContent = dados.facebook;
-    } else {
-      facebook.style.display = 'none';
-    }
+  if (contato.facebook) {
+    facebook.style.display = 'flex';
+    facebook.querySelector('.name_perfil-fac').textContent = contato.facebook;
+  } else {
+    facebook.style.display = 'none';
   }
   
-  // Twitter/X
   const twitter = document.querySelector('.X');
-  if (twitter) {
-    const nomeX = twitter.querySelector('.name_perfil-x');
-    if (dados.twitter) {
-      twitter.style.display = 'flex';
-      if (nomeX) nomeX.textContent = dados.twitter;
-    } else {
-      twitter.style.display = 'none';
-    }
+  if (contato.twitter) {
+    twitter.style.display = 'flex';
+    twitter.querySelector('.name_perfil-x').textContent = contato.twitter;
+  } else {
+    twitter.style.display = 'none';
   }
   
-  // Avaliações
+  // ===== PROJETOS CONCLUÍDOS =====
+  const projetosConcluidos = document.querySelector('.projetos_concluidos');
+  if (empresa.projetos_concluidos !== null && empresa.projetos_concluidos !== undefined) {
+    projetosConcluidos.style.display = 'flex';
+    projetosConcluidos.querySelector('.projetos_concluidos-text').textContent = empresa.projetos_concluidos;
+  } else {
+    projetosConcluidos.style.display = 'none';
+  }
+  
+  // ===== IDADE DA EMPRESA =====
+  const idadeEmpresa = document.querySelector('.idade_empresa');
+  if (empresa.idade_empresa !== null && empresa.idade_empresa !== undefined) {
+    idadeEmpresa.style.display = 'flex';
+    const textoElement = idadeEmpresa.querySelector('.idade_empresa-text');
+    if (textoElement) {
+      textoElement.textContent = `${empresa.idade_empresa} ${empresa.idade_empresa === 1 ? 'ano' : 'anos'}`;
+    }
+  } else {
+    idadeEmpresa.style.display = 'none';
+  }
+  
+  // ===== AVALIAÇÕES =====
   const avaliacao = usuario.avaliacao?.media || 0;
   const numAvaliacoes = usuario.avaliacao?.total || 0;
   
@@ -358,97 +226,234 @@ function preencherPerfil(usuario) {
     el.textContent = numAvaliacoes === 1 ? 'avaliação' : 'avaliações';
   });
   
-  // Preencher estrelas
-  const estrelas = document.querySelectorAll('.avaliacao-TCC .star, .avaliacao-BCC .star');
-  estrelas.forEach((star, index) => {
-    if (index < Math.floor(avaliacao)) {
-      star.style.fill = 'currentColor';
-    } else {
-      star.style.fill = 'none';
-    }
-  });
-  
-  // Atualizar média de avaliação
-  const avaliacaoBCC = document.querySelector('.avaliacao-BCC-text');
-  if (avaliacaoBCC) {
-    avaliacaoBCC.textContent = `${avaliacao.toFixed(1)}/5.0`;
-  }
-  
-  // Carregar portfólio
-  if (usuario.portfolios && usuario.portfolios.length > 0) {
-    carregarPublicacoes(usuario.portfolios);
-  } else {
-    const publicacoesContainer = document.querySelector('.home-cards-post');
-    if (publicacoesContainer) {
-      publicacoesContainer.innerHTML = '<p style="text-align: center; padding: 40px; color: #999; font-style: italic;">Você ainda não possui publicações. Clique em "Nova publicação" para adicionar.</p>';
-    }
-  }
-  
-  console.log('✅ Meu perfil preenchido com sucesso');
+  console.log('✅ Perfil preenchido com sucesso');
 }
 
-// ========== CARREGAR PUBLICAÇÕES ==========
-function carregarPublicacoes(portfolios) {
-  const publicacoesContainer = document.querySelector('.home-cards-post');
-  if (!publicacoesContainer) return;
-  
-  publicacoesContainer.innerHTML = '';
-  
-  portfolios.forEach(portfolio => {
-    const card = document.createElement('div');
-    card.className = 'card-publicacoes';
-    
-    const imagemUrl = portfolio.fotos && portfolio.fotos[0] 
-      ? `${API_URL.replace('/api', '')}/storage/${portfolio.fotos[0].caminho}`
-      : '';
-    
-    card.innerHTML = `
-      <div class="img-card_publicacoes" style="background-image: url('${imagemUrl}'); background-size: cover; background-position: center;"></div>
-      <div class="mini-informacoes-card_publicacoes">
-        <h4>${portfolio.titulo || 'Sem título'}</h4>
-        <p>${portfolio.descricao || 'Sem descrição'}</p>
-      </div>
-    `;
-    
-    publicacoesContainer.appendChild(card);
-  });
-}
-
-// ========== BOTÃO EDITAR PERFIL ==========
+// ========== ABRIR MODAL EDITAR PERFIL ==========
 const btnEditarPerfil = document.querySelector('.btn-editar-perfil');
-if (btnEditarPerfil) {
-  btnEditarPerfil.addEventListener('click', () => {
-    const modal = document.getElementById('modalPerfil');
-    if (modal) {
+const modal = document.getElementById('modalPerfil');
+
+if (btnEditarPerfil && modal) {
+  btnEditarPerfil.addEventListener('click', async () => {
+    try {
+      const userId = getUserId();
+      const token = getAuthToken();
+      
+      const response = await fetch(`${API_URL}/usuarios/${userId}`, {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Accept': 'application/json'
+        }
+      });
+      
+      const data = await response.json();
+      const usuario = data.user;
+      const empresa = usuario.empresa;
+      const contato = usuario.contato || {};
+      
+      // PRÉ-PREENCHER FORMULÁRIO
+      document.getElementById('name').value = empresa.razao_social || '';
+      document.getElementById('sobreEmpresa').value = empresa.descricao || '';
+      document.getElementById('instagram').value = contato.instagram || '';
+      document.getElementById('facebook').value = contato.facebook || '';
+      document.getElementById('twitter').value = contato.twitter || '';
+      document.getElementById('phone').value = contato.telefone || '';
+      document.getElementById('registerEmail').value = usuario.email || '';
+      document.getElementById('ProjetosConcluidos').value = empresa.projetos_concluidos || '';
+      document.getElementById('TempoExpe').value = empresa.idade_empresa || '';
+      
+      // 🔥 CARREGAR CATEGORIAS
+      await carregarCategorias();
+      
       modal.classList.add('active');
+      
+    } catch (error) {
+      console.error('Erro ao abrir modal:', error);
+      showToast('Erro ao carregar dados', 'error');
     }
+  });
+}
+
+// ========== CARREGAR CATEGORIAS ==========
+async function carregarCategorias() {
+  try {
+    const response = await fetch(`${API_URL}/categoria`);
+    const categorias = await response.json();
+    
+    const select = document.getElementById('AreaOptions');
+    select.innerHTML = '';
+    
+    categorias.forEach(categoria => {
+      const option = document.createElement('li');
+      option.dataset.value = categoria.id;
+      option.textContent = categoria.nome;
+      select.appendChild(option);
+    });
+    
+    console.log('✅ Categorias carregadas:', categorias);
+    
+  } catch (error) {
+    console.error('❌ Erro ao carregar categorias:', error);
+  }
+}
+
+// ========== SALVAR ALTERAÇÕES ==========
+const formEditarPerfil = document.getElementById('Form');
+
+if (formEditarPerfil) {
+  formEditarPerfil.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    
+    try {
+      const token = getAuthToken();
+      
+      if (!token) {
+        showToast('Você precisa estar logado', 'error');
+        return;
+      }
+      
+      const formData = new FormData();
+      
+      // DADOS BÁSICOS
+      const nome = document.getElementById('name').value.trim();
+      if (nome) formData.append('razao_social', nome);
+      
+      const descricao = document.getElementById('sobreEmpresa').value.trim();
+      if (descricao) formData.append('descricao', descricao);
+      
+      const email = document.getElementById('registerEmail').value.trim();
+      if (email) formData.append('email', email);
+      
+      // CONTATOS
+      const telefone = document.getElementById('phone').value.trim();
+      if (telefone) formData.append('telefone', telefone);
+      
+      const instagram = document.getElementById('instagram').value.trim();
+      if (instagram) formData.append('instagram', instagram);
+      
+      const facebook = document.getElementById('facebook').value.trim();
+      if (facebook) formData.append('facebook', facebook);
+      
+      const twitter = document.getElementById('twitter').value.trim();
+      if (twitter) formData.append('twitter', twitter);
+      
+      // DADOS ADICIONAIS
+      const projetosConcluidos = document.getElementById('ProjetosConcluidos').value.trim();
+      if (projetosConcluidos) formData.append('projetos_concluidos', projetosConcluidos);
+      
+      const idadeEmpresa = document.getElementById('TempoExpe').value.trim();
+      if (idadeEmpresa) formData.append('idade_empresa', idadeEmpresa);
+      
+      // FOTOS
+      const fotoPerfil = document.getElementById('Perfil');
+      if (fotoPerfil && fotoPerfil.files[0]) {
+        formData.append('foto', fotoPerfil.files[0]);
+      }
+      
+      const fotoBanner = document.getElementById('Banner');
+      if (fotoBanner && fotoBanner.files[0]) {
+        formData.append('capa', fotoBanner.files[0]);
+      }
+      
+      console.log('📤 Enviando dados para API...');
+      
+      const response = await fetch(`${API_URL}/usuario/update`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Accept': 'application/json'
+        },
+        body: formData
+      });
+      
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'Erro ao atualizar perfil');
+      }
+      
+      const result = await response.json();
+      console.log('✅ Perfil atualizado:', result);
+      
+      showToast('Perfil atualizado com sucesso!', 'success');
+      
+      modal.classList.remove('active');
+      await carregarMeuPerfil();
+      
+    } catch (error) {
+      console.error('❌ Erro ao atualizar perfil:', error);
+      showToast(error.message || 'Erro ao atualizar perfil', 'error');
+    }
+  });
+}
+
+// ========== PREVIEW DE IMAGENS ==========
+const inputPerfil = document.getElementById('Perfil');
+const inputBanner = document.getElementById('Banner');
+const previewPerfil = document.getElementById('PerfilPreview');
+const previewBanner = document.getElementById('BannerPreview');
+
+if (inputPerfil && previewPerfil) {
+  inputPerfil.addEventListener('change', (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        previewPerfil.style.backgroundImage = `url('${event.target.result}')`;
+        previewPerfil.style.backgroundSize = 'cover';
+        previewPerfil.style.backgroundPosition = 'center';
+        previewPerfil.innerHTML = '';
+      };
+      reader.readAsDataURL(file);
+    }
+  });
+}
+
+if (inputBanner && previewBanner) {
+  inputBanner.addEventListener('change', (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        previewBanner.style.backgroundImage = `url('${event.target.result}')`;
+        previewBanner.style.backgroundSize = 'cover';
+        previewBanner.style.backgroundPosition = 'center';
+        previewBanner.innerHTML = '';
+      };
+      reader.readAsDataURL(file);
+    }
+  });
+}
+
+// ========== CANCELAR EDIÇÃO ==========
+const btnCancelarEdit = document.getElementById('cancelBtn');
+
+if (btnCancelarEdit) {
+  btnCancelarEdit.addEventListener('click', () => {
+    modal.classList.remove('active');
+    formEditarPerfil.reset();
   });
 }
 
 // ========== SAIR DA CONTA ==========
-const sairContaBtn = document.getElementById('SairConta');
-if (sairContaBtn) {
-  sairContaBtn.addEventListener('click', (e) => {
+const btnSair = document.getElementById('SairConta');
+
+if (btnSair) {
+  btnSair.addEventListener('click', (e) => {
     e.preventDefault();
     
     if (confirm('Deseja realmente sair da sua conta?')) {
-      localStorage.removeItem('auth_token');
-      localStorage.removeItem('userId');
-      localStorage.removeItem('userType');
-      localStorage.removeItem('user_data');
-      
+      localStorage.clear();
       showToast('Saindo...', 'success');
-      setTimeout(() => {
-        window.location.href = '/Login/index.html';
-      }, 1000);
+      setTimeout(() => window.location.href = '/Login/index.html', 1000);
     }
   });
 }
 
 // ========== EXCLUIR CONTA ==========
-const excluirContaBtn = document.getElementById('excluirConta');
-if (excluirContaBtn) {
-  excluirContaBtn.addEventListener('click', async (e) => {
+const btnExcluir = document.getElementById('excluirConta');
+
+if (btnExcluir) {
+  btnExcluir.addEventListener('click', async (e) => {
     e.preventDefault();
     
     if (!confirm('⚠️ ATENÇÃO: Esta ação é IRREVERSÍVEL!\n\nDeseja realmente excluir sua conta permanentemente?')) {
@@ -469,12 +474,8 @@ if (excluirContaBtn) {
       
       if (response.ok) {
         showToast('Conta excluída com sucesso', 'success');
-        
         localStorage.clear();
-        
-        setTimeout(() => {
-          window.location.href = '/';
-        }, 2000);
+        setTimeout(() => window.location.href = '/', 2000);
       } else {
         throw new Error('Erro ao excluir conta');
       }

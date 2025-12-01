@@ -87,11 +87,8 @@ function criarCardEmpresa(usuario) {
   const numAvaliacoes = usuario.avaliacao?.total || 0;
   const usuarioId = usuario.id;
   
-  // Verifica se a foto já é uma URL completa ou apenas o caminho
-  let foto = empresa.foto;
-  if (foto && !foto.startsWith('http')) {
-    foto = `http://127.0.0.1:8000/storage/${foto}`;
-  }
+  // 🔥 CORREÇÃO: A API já retorna URL completa, NÃO adicione prefixo
+  const foto = empresa.foto || null;
   
   console.log('🖼️ URL da foto empresa:', foto);
   
@@ -175,7 +172,7 @@ function criarCardEmpresa(usuario) {
     
     <div class="line"></div>
     
-    <button class="ver-perfil" onclick="verPerfil(${usuarioId})">Ver Perfil</button>
+    <button class="ver-perfil" onclick="verPerfil(${usuarioId}, 'empresa')">Ver Perfil</button>
   `;
   
   return card;
@@ -208,10 +205,14 @@ function mostrarErro(error) {
   `;
 }
 
-// ✅ CORREÇÃO: Salva perfilVisitadoId (não sobrescreve userId do usuário logado)
-function verPerfil(empresaId) {
-  console.log('Redirecionando para perfil da empresa:', empresaId);
-  localStorage.setItem('perfilVisitadoId', empresaId); // 👈 NOME CORRETO!
+// 🔥 CORREÇÃO: Não sobrescrever userId do usuário logado
+function verPerfil(empresaId, tipo) {
+  console.log('Redirecionando para perfil:', empresaId, tipo);
+  
+  // ✅ USA NOME DIFERENTE para não sobrescrever dados do usuário logado
+  localStorage.setItem('perfilVisitadoId', empresaId);
+  localStorage.setItem('perfilVisitadoType', tipo);
+  
   window.location.href = '../Perfil/Acessando/TE/index.html';
 }
 

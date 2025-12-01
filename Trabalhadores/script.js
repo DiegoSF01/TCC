@@ -1,8 +1,6 @@
 // script.js - Prestadores (CORRIGIDO)
 const API_URL = 'http://127.0.0.1:8000/api';
 
-// ========== FUNÇÕES DE API ==========
-
 async function carregarPrestadores(filtros = {}) {
   try {
     const cardsContainer = document.querySelector('.home-cards');
@@ -74,12 +72,10 @@ async function carregarPrestadores(filtros = {}) {
   }
 }
 
-// Função para criar um card de prestador
 function criarCard(usuario) {
   const card = document.createElement('div');
   card.className = 'card';
   
-  // Extrai dados
   const prestador = usuario.prestador || {};
   const nome = prestador.nome || 'Nome não informado';
   const cidade = prestador.localidade || 'Cidade';
@@ -91,14 +87,10 @@ function criarCard(usuario) {
   const numAvaliacoes = usuario.avaliacao?.total || 0;
   const usuarioId = usuario.id;
   
-  // CORREÇÃO: Verifica se a foto já é uma URL completa ou apenas o caminho
-  let foto = prestador.foto;
-  if (foto && !foto.startsWith('http')) {
-    // Se não começa com http, adiciona a URL base do Laravel
-    foto = `http://127.0.0.1:8000/storage/${foto}`;
-  }
+  // 🔥 CORREÇÃO: A API já retorna URL completa, NÃO adicione prefixo
+  const foto = prestador.foto || null;
   
-  console.log('🖼️ URL da foto:', foto); // Debug
+  console.log('🖼️ URL da foto:', foto);
   
   // Verifica se está nos favoritos
   const favoritos = JSON.parse(localStorage.getItem('favoritos') || '[]');
@@ -177,7 +169,6 @@ function criarCard(usuario) {
   return card;
 }
 
-// Função auxiliar para gerar estrelas
 function gerarEstrelas(avaliacao) {
   let estrelas = '';
   for (let i = 1; i <= 5; i++) {
@@ -192,7 +183,6 @@ function gerarEstrelas(avaliacao) {
   return estrelas;
 }
 
-// Função para mostrar erro
 function mostrarErro(error) {
   const cardsContainer = document.querySelector('.home-cards');
   let mensagemErro = 'Erro ao carregar dados.';
@@ -238,15 +228,13 @@ function mostrarErro(error) {
   `;
 }
 
-// ========== FUNÇÕES DE NAVEGAÇÃO ==========
-
-// CORRIGIDO: Salva com os nomes corretos que a página de perfil espera
+// 🔥 CORREÇÃO: Não sobrescrever userId do usuário logado
 function verPerfil(prestadorId, tipo) {
   console.log('Redirecionando para perfil:', prestadorId, tipo);
   
-  // Salva com os nomes corretos: userId, userType
-  localStorage.setItem('userId', prestadorId);
-  localStorage.setItem('userType', tipo);
+  // ✅ USA NOME DIFERENTE para não sobrescrever dados do usuário logado
+  localStorage.setItem('perfilVisitadoId', prestadorId);
+  localStorage.setItem('perfilVisitadoType', tipo);
   
   window.location.href = '../Perfil/Acessando/TE/index.html';
 }
@@ -270,8 +258,6 @@ function toggleFavorito(prestadorId) {
   
   localStorage.setItem('favoritos', JSON.stringify(favoritos));
 }
-
-// ========== FUNÇÕES DE FILTROS ==========
 
 function configurarFiltros() {
   const buscaBtns = document.querySelectorAll('.icon-btn');
@@ -324,7 +310,6 @@ function limparFiltros() {
   carregarPrestadores();
 }
 
-// ========== RATING BUTTONS ==========
 const ratingBtns = document.querySelectorAll('.rating-btn');
 ratingBtns.forEach(btn => {
   btn.addEventListener('click', () => {
@@ -334,7 +319,6 @@ ratingBtns.forEach(btn => {
   });
 });
 
-// ========== FUNÇÃO DE TOAST ==========
 function showToast(message, type = 'info') {
   let toast = document.querySelector('.toast-notification');
   
@@ -352,7 +336,6 @@ function showToast(message, type = 'info') {
   }, 3000);
 }
 
-// ========== INICIALIZAÇÃO ==========
 document.addEventListener('DOMContentLoaded', () => {
   console.log('🚀 Página de Prestadores carregada');
   console.log('🔵 URL da API:', API_URL);
@@ -361,7 +344,6 @@ document.addEventListener('DOMContentLoaded', () => {
   configurarFiltros();
 });
 
-// Torna as funções disponíveis globalmente
 window.verPerfil = verPerfil;
 window.toggleFavorito = toggleFavorito;
 window.carregarPrestadores = carregarPrestadores;
