@@ -206,14 +206,29 @@ function mostrarErro(error) {
 }
 
 // 🔥 CORREÇÃO: Não sobrescrever userId do usuário logado
-function verPerfil(empresaId, tipo) {
-  console.log('Redirecionando para perfil:', empresaId, tipo);
+async function verPerfil(empresaId, tipo) {
+  console.log('🔵 Abrindo perfil:', empresaId, tipo);
   
-  // ✅ USA NOME DIFERENTE para não sobrescrever dados do usuário logado
-  localStorage.setItem('perfilVisitadoId', empresaId);
-  localStorage.setItem('perfilVisitadoType', tipo);
-  
-  window.location.href = '../Perfil/Acessando/TE/index.html';
+  try {
+    // Buscar dados completos do usuário
+    const response = await fetch(`${API_URL}/usuarios/${empresaId}`);
+    if (!response.ok) throw new Error('Erro ao buscar dados');
+    
+    const data = await response.json();
+    const usuario = data.user || data;
+    
+    // Salvar dados completos no localStorage
+    localStorage.setItem('perfilVisitado', JSON.stringify(usuario));
+    
+    console.log('✅ Dados salvos, redirecionando...');
+    
+    // Redirecionar para página de perfil
+    window.location.href = '../Perfil/Acessando/TE/index.html';
+    
+  } catch (error) {
+    console.error('❌ Erro ao carregar perfil:', error);
+    showToast('Erro ao carregar perfil', 'error');
+  }
 }
 
 function toggleFavorito(empresaId) {

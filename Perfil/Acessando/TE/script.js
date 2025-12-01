@@ -1,5 +1,5 @@
 // ==========================================
-// SCRIPT PERFIL ACESSADO (DO CARD)
+// SCRIPT PERFIL ACESSADO - CORRIGIDO
 // ==========================================
 
 const API_URL = 'http://127.0.0.1:8000/api';
@@ -35,12 +35,6 @@ function showToast(message, type = 'success') {
   else toast.style.background = '#007bff';
   
   setTimeout(() => toast.style.opacity = '0', 3000);
-}
-
-// ========== PEGAR ID DO USUÁRIO DA URL ==========
-function getUserIdFromURL() {
-  const params = new URLSearchParams(window.location.search);
-  return params.get('id');
 }
 
 // ========== NAVEGAÇÃO ENTRE ABAS ==========
@@ -86,33 +80,64 @@ btn_avaliacao?.addEventListener('click', clicou_avaliacao);
 // ========== CARREGAR PERFIL DO USUÁRIO ==========
 async function carregarPerfilUsuario() {
   try {
-    const userId = getUserIdFromURL();
+    console.log('🔵 Carregando perfil visitado...');
     
-    if (!userId) {
-      showToast('ID do usuário não encontrado', 'error');
-      setTimeout(() => window.location.href = '/Home/index.html', 2000);
+    // Tentar pegar do localStorage
+    const perfilSalvo = localStorage.getItem('perfilVisitado');
+    
+    if (!perfilSalvo) {
+      console.error('❌ Nenhum perfil encontrado no localStorage');
+      showToast('Perfil não encontrado', 'error');
+      setTimeout(() => window.location.href = '../../../Home/index.html', 2000);
       return;
     }
     
-    console.log('🔵 Carregando perfil do usuário:', userId);
-    
-    const response = await fetch(`${API_URL}/usuarios/${userId}`);
-    
-    if (!response.ok) {
-      throw new Error('Erro ao carregar perfil');
-    }
-    
-    const data = await response.json();
-    const usuario = data.user || data;
-    
-    console.log('✅ Dados recebidos:', usuario);
+    const usuario = JSON.parse(perfilSalvo);
+    console.log('✅ Dados do perfil:', usuario);
     
     preencherPerfil(usuario);
+    await carregarPublicacoes(usuario.id);
+    configurarFavoritos(usuario.id);
     
   } catch (error) {
     console.error('❌ Erro ao carregar perfil:', error);
     showToast('Erro ao carregar perfil', 'error');
+    setTimeout(() => window.location.href = '../../../Home/index.html', 2000);
   }
+}
+
+// ========== CONFIGURAR BOTÃO DE FAVORITOS ==========
+function configurarFavoritos(userId) {
+  const btnFavorito = document.querySelector('.add_remove-favoritos');
+  const svg = btnFavorito?.querySelector('svg');
+  
+  if (!btnFavorito) return;
+  
+  const favoritos = JSON.parse(localStorage.getItem('favoritos') || '[]');
+  const isFavorito = favoritos.includes(userId);
+  
+  // Estado inicial
+  if (isFavorito && svg) {
+    svg.setAttribute('fill', '#ef4343');
+  }
+  
+  // Evento de clique
+  btnFavorito.addEventListener('click', () => {
+    const favoritosAtuais = JSON.parse(localStorage.getItem('favoritos') || '[]');
+    const index = favoritosAtuais.indexOf(userId);
+    
+    if (index > -1) {
+      favoritosAtuais.splice(index, 1);
+      if (svg) svg.setAttribute('fill', 'none');
+      showToast('Removido dos favoritos', 'success');
+    } else {
+      favoritosAtuais.push(userId);
+      if (svg) svg.setAttribute('fill', '#ef4343');
+      showToast('Adicionado aos favoritos', 'success');
+    }
+    
+    localStorage.setItem('favoritos', JSON.stringify(favoritosAtuais));
+  });
 }
 
 // ========== PREENCHER DADOS DO PERFIL ==========
@@ -139,7 +164,8 @@ function preencherPerfil(usuario) {
       tipo: 'Profissional',
       projetosConcluidos: usuario.prestador.projetos_concluidos || null,
       tempoExperiencia: usuario.prestador.tempo_experiencia || null,
-      skills: usuario.prestador.skills || []
+      skills: usuario.prestador.skills || [],
+      disponibilidade: usuario.prestador.disponibilidade || 'Não informada'
     };
   } else if (usuario.type === 'empresa' && usuario.empresa) {
     dados = {
@@ -158,7 +184,8 @@ function preencherPerfil(usuario) {
       tipo: 'Empresa',
       projetosConcluidos: usuario.empresa.projetos_concluidos || null,
       idadeEmpresa: usuario.empresa.idade_empresa || null,
-      skills: []
+      skills: [],
+      disponibilidade: 'Disponível'
     };
   } else if (usuario.type === 'contratante' && usuario.contratante) {
     dados = {
@@ -177,7 +204,8 @@ function preencherPerfil(usuario) {
       tipo: 'Contratante',
       projetosConcluidos: null,
       tempoExperiencia: null,
-      skills: []
+      skills: [],
+      disponibilidade: 'Disponível'
     };
   }
   
@@ -189,6 +217,8 @@ function preencherPerfil(usuario) {
     imgFundo.style.backgroundImage = `url('${dados.capa}')`;
     imgFundo.style.backgroundSize = 'cover';
     imgFundo.style.backgroundPosition = 'center';
+  } else {
+    imgFundo.style.background = 'linear-gradient(135deg, #0049ff 0%,  #0049ff 100%)';
   }
   
   // Foto de perfil
@@ -217,6 +247,12 @@ function preencherPerfil(usuario) {
   // Tipo
   document.querySelector('.empre_profi-text').textContent = dados.tipo;
   
+  // Disponibilidade
+  const disponiElement = document.querySelector('.disponi-text');
+  if (disponiElement) {
+    disponiElement.textContent = dados.disponibilidade;
+  }
+  
   // Telefone
   if (dados.telefone) {
     document.querySelectorAll('.tl-numero, .telefone-numero').forEach(el => {
@@ -244,7 +280,7 @@ function preencherPerfil(usuario) {
     paragrafo.style.color = '';
     paragrafo.style.fontStyle = '';
   } else {
-    paragrafo.textContent = 'Este usuário ainda não adicionou uma bio.';
+    paragrafo.textContent = 'Este usuário ainda não adicionou uma descrição.';
     paragrafo.style.color = '#999';
     paragrafo.style.fontStyle = 'italic';
   }
@@ -253,7 +289,7 @@ function preencherPerfil(usuario) {
   const instagram = document.querySelector('.instagram');
   if (dados.instagram) {
     instagram.style.display = 'flex';
-    instagram.querySelector('.name_perfil-ins, .name_perfil-x').textContent = dados.instagram;
+    instagram.querySelector('.name_perfil-ins').textContent = dados.instagram;
   } else {
     instagram.style.display = 'none';
   }
@@ -284,13 +320,18 @@ function preencherPerfil(usuario) {
   }
   
   // Tempo de experiência ou idade da empresa
-  const tempoExperiencia = document.querySelector('.tempo_experiencia, .idade_empresa');
+  const tempoExperiencia = document.querySelector('.tempo_experiencia');
   const valor = dados.tempoExperiencia || dados.idadeEmpresa;
   if (valor !== null && tempoExperiencia) {
     tempoExperiencia.style.display = 'flex';
-    const textoElement = tempoExperiencia.querySelector('.tempo_experiencia-text, .idade_empresa-text');
+    const textoElement = tempoExperiencia.querySelector('.tempo_experiencia-text');
     if (textoElement) {
       textoElement.textContent = `${valor} ${valor === 1 ? 'ano' : 'anos'}`;
+    }
+    // Mudar label se for empresa
+    if (dados.idadeEmpresa) {
+      const label = tempoExperiencia.querySelector('p');
+      if (label) label.textContent = 'Idade da Empresa';
     }
   } else if (tempoExperiencia) {
     tempoExperiencia.style.display = 'none';
@@ -312,6 +353,12 @@ function preencherPerfil(usuario) {
     el.textContent = numAvaliacoes === 1 ? 'avaliação' : 'avaliações';
   });
   
+  // Avaliação média no card inferior
+  const avaliacaoBCC = document.querySelector('.avaliacao-BCC-text');
+  if (avaliacaoBCC) {
+    avaliacaoBCC.textContent = `${avaliacao.toFixed(1)}/5.0`;
+  }
+  
   // Especialidades/Skills
   const especialidadesContainer = document.querySelector('.especialidades');
   if (dados.skills && dados.skills.length > 0) {
@@ -331,8 +378,85 @@ function preencherPerfil(usuario) {
   console.log('✅ Perfil preenchido com sucesso');
 }
 
+// ========== CARREGAR PUBLICAÇÕES ==========
+async function carregarPublicacoes(userId) {
+  try {
+    console.log('🔵 Carregando publicações do usuário:', userId);
+    
+    const response = await fetch(`${API_URL}/publicacoes?usuario_id=${userId}`);
+    
+    if (!response.ok) {
+      console.warn('⚠️ Erro ao buscar publicações');
+      mostrarMensagemSemPublicacoes();
+      return;
+    }
+    
+    const data = await response.json();
+    const publicacoes = Array.isArray(data) ? data : (data.data || data.publicacoes || []);
+    
+    console.log('✅ Publicações encontradas:', publicacoes.length);
+    
+    if (publicacoes.length === 0) {
+      mostrarMensagemSemPublicacoes();
+      return;
+    }
+    
+    renderizarPublicacoes(publicacoes);
+    
+  } catch (error) {
+    console.error('❌ Erro ao carregar publicações:', error);
+    mostrarMensagemSemPublicacoes();
+  }
+}
+
+function mostrarMensagemSemPublicacoes() {
+  const publicacoesContainer = document.querySelector('.publicacoes');
+  publicacoesContainer.innerHTML = `
+    <div style="text-align: center; padding: 40px; color: #999;">
+      <p style="font-size: 18px;">Este usuário ainda não fez nenhuma publicação.</p>
+    </div>
+  `;
+}
+
+function renderizarPublicacoes(publicacoes) {
+  const publicacoesContainer = document.querySelector('.publicacoes');
+  publicacoesContainer.innerHTML = '';
+  
+  publicacoes.forEach(pub => {
+    const card = document.createElement('div');
+    card.className = 'card-publicacoes';
+    
+    const imagem = pub.imagens?.[0] || pub.imagem || null;
+    
+    card.innerHTML = `
+      ${imagem ? `<div class="img-card_publicacoes" style="background-image: url('${imagem}'); background-size: cover; background-position: center;"></div>` : ''}
+      <div class="mini-informacoes-card_publicacoes">
+        <h4>${pub.titulo || 'Sem título'}</h4>
+        <p>${pub.descricao || 'Sem descrição'}</p>
+        ${pub.data_publicacao ? `<small style="color: #999; margin-top: 8px; display: block;">Publicado em ${new Date(pub.data_publicacao).toLocaleDateString('pt-BR')}</small>` : ''}
+      </div>
+    `;
+    
+    publicacoesContainer.appendChild(card);
+  });
+}
+
+// ========== CONFIGURAR SISTEMA DE AVALIAÇÃO ==========
+function configurarAvaliacoes() {
+  const radioInputs = document.querySelectorAll('input[name="rate"]');
+  const ratingValue = document.getElementById('rating-value');
+  
+  radioInputs.forEach(input => {
+    input.addEventListener('change', (e) => {
+      const nota = e.target.value;
+      ratingValue.textContent = `Nota: ${nota} de 5`;
+    });
+  });
+}
+
 // ========== INICIALIZAÇÃO ==========
 document.addEventListener('DOMContentLoaded', () => {
   console.log('🚀 Página de Perfil Acessado carregada');
   carregarPerfilUsuario();
+  configurarAvaliacoes();
 });

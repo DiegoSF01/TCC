@@ -105,7 +105,7 @@ async function carregarMeuPerfil() {
     if (!userId || !token) {
       console.error('❌ Usuário não autenticado');
       showToast('Você precisa estar logado', 'error');
-      setTimeout(() => window.location.href = '/Login/index.html', 2000);
+      setTimeout(() => window.location.href = '../Parte1/index.html', 2000);
       return;
     }
     
@@ -113,7 +113,7 @@ async function carregarMeuPerfil() {
     if (userType !== 'prestador') {
       console.error('❌ Tipo de usuário incorreto');
       showToast('Acesso negado', 'error');
-      setTimeout(() => window.location.href = '/Login/index.html', 2000);
+      setTimeout(() => window.location.href = '../Parte1/index.html', 2000);
       return;
     }
     

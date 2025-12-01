@@ -1,8 +1,9 @@
-
-// SCRIPT PERFIL PRÓPRIO - EMPRESA (CORRIGIDO)
+// ==========================================
+// SCRIPT PERFIL PRÓPRIO - EMPRESA (VERSÃO CORRIGIDA)
 // ==========================================
 
 const API_URL = 'http://127.0.0.1:8000/api';
+const BASE_URL = 'http://127.0.0.1:8000';
 
 // ========== UTILITÁRIOS ==========
 function showToast(message, type = 'success') {
@@ -49,6 +50,54 @@ function getUserType() {
   return localStorage.getItem('userType');
 }
 
+function construirUrlCompleta(caminho) {
+  if (!caminho) return null;
+  if (caminho.startsWith('http')) return caminho;
+  
+  const caminhoLimpo = caminho.replace(/^public\//, '');
+  return `${BASE_URL}/storage/${caminhoLimpo}`;
+}
+
+// ========== NAVEGAÇÃO ENTRE ABAS ==========
+const btn_sobre = document.getElementById('btn_navperfil-sobre');
+const btn_postagens = document.getElementById('btn_navperfil-postagens');
+const btn_avaliacao = document.getElementById('btn_navperfil-avaliacao');
+
+const sessao_sobre = document.querySelector('.sobre');
+const sessao_publicacoes = document.querySelector('.publicacoes');
+const sessao_avaliacao = document.querySelector('.avaliacao');
+
+function clicou_sobre() {
+  if (btn_sobre && !btn_sobre.classList.contains('ativo')) {
+    document.querySelector('.button-navper.ativo')?.classList.remove('ativo');
+    btn_sobre.classList.add('ativo');
+    document.querySelector('.sessao')?.classList.remove('sessao');
+    sessao_sobre?.classList.add('sessao');
+  }
+}
+
+function clicou_postagens() {
+  if (btn_postagens && !btn_postagens.classList.contains('ativo')) {
+    document.querySelector('.button-navper.ativo')?.classList.remove('ativo');
+    btn_postagens.classList.add('ativo');
+    document.querySelector('.sessao')?.classList.remove('sessao');
+    sessao_publicacoes?.classList.add('sessao');
+  }
+}
+
+function clicou_avaliacao() {
+  if (btn_avaliacao && !btn_avaliacao.classList.contains('ativo')) {
+    document.querySelector('.button-navper.ativo')?.classList.remove('ativo');
+    btn_avaliacao.classList.add('ativo');
+    document.querySelector('.sessao')?.classList.remove('sessao');
+    sessao_avaliacao?.classList.add('sessao');
+  }
+}
+
+btn_sobre?.addEventListener('click', clicou_sobre);
+btn_postagens?.addEventListener('click', clicou_postagens);
+btn_avaliacao?.addEventListener('click', clicou_avaliacao);
+
 // ========== CARREGAR MEU PERFIL ==========
 async function carregarMeuPerfil() {
   try {
@@ -80,7 +129,7 @@ async function carregarMeuPerfil() {
     if (!response.ok) throw new Error('Erro ao carregar perfil');
     
     const data = await response.json();
-    const usuario = data.user || data;
+    const usuario = data.user || data.data || data;
     
     console.log('✅ Dados recebidos:', usuario);
     preencherPerfil(usuario);
@@ -103,114 +152,145 @@ function preencherPerfil(usuario) {
   const empresa = usuario.empresa;
   const contato = usuario.contato || {};
   
-  // ===== NOME E DADOS BÁSICOS =====
-  document.querySelector('.nome-perfil').textContent = empresa.razao_social || 'Empresa não informada';
-  document.querySelector('.profissao').textContent = usuario.categoria?.nome || 'Categoria não informada';
-  document.querySelector('.lc-cidade').textContent = empresa.localidade || 'Cidade não informada';
-  document.querySelector('.lc-estado').textContent = empresa.uf || 'UF';
+  // Nome e dados básicos
+  const nomePerfil = document.querySelector('.nome-perfil');
+  if (nomePerfil) nomePerfil.textContent = empresa.razao_social || 'Empresa não informada';
   
-  // ===== FOTO DE PERFIL =====
+  const profissao = document.querySelector('.profissao');
+  if (profissao) profissao.textContent = empresa.categoria?.nome || 'Categoria não informada';
+  
+  const lcCidade = document.querySelector('.lc-cidade');
+  if (lcCidade) lcCidade.textContent = empresa.localidade || 'Cidade não informada';
+  
+  const lcEstado = document.querySelector('.lc-estado');
+  if (lcEstado) lcEstado.textContent = empresa.uf || 'UF';
+  
+  // Foto de perfil
   const fotoPerfil = document.querySelector('.foto-perfil');
-  if (empresa.foto) {
-    fotoPerfil.style.backgroundImage = `url('${empresa.foto}')`;
-    fotoPerfil.style.backgroundSize = 'cover';
-    fotoPerfil.style.backgroundPosition = 'center';
-    fotoPerfil.innerHTML = '';
-  } else {
-    fotoPerfil.style.background = 'linear-gradient(135deg,rgb(32, 1, 36) 0%, #f5576c 100%)';
-    fotoPerfil.innerHTML = `<span style="color: white; font-size: 48px; font-weight: bold;">${empresa.razao_social.charAt(0).toUpperCase()}</span>`;
-    fotoPerfil.style.display = 'flex';
-    fotoPerfil.style.alignItems = 'center';
-    fotoPerfil.style.justifyContent = 'center';
+  if (fotoPerfil) {
+    if (empresa.foto) {
+      const fotoUrl = construirUrlCompleta(empresa.foto);
+      fotoPerfil.style.backgroundImage = `url('${fotoUrl}')`;
+      fotoPerfil.style.backgroundSize = 'cover';
+      fotoPerfil.style.backgroundPosition = 'center';
+      fotoPerfil.innerHTML = '';
+    } else {
+      fotoPerfil.style.background = 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)';
+      fotoPerfil.innerHTML = `<span style="color: white; font-size: 48px; font-weight: bold;">${empresa.razao_social.charAt(0).toUpperCase()}</span>`;
+      fotoPerfil.style.display = 'flex';
+      fotoPerfil.style.alignItems = 'center';
+      fotoPerfil.style.justifyContent = 'center';
+    }
   }
   
-  // ===== CAPA =====
+  // Capa
   const imgFundo = document.querySelector('.img-fundo');
-  if (empresa.capa) {
-    imgFundo.style.backgroundImage = `url('${empresa.capa}')`;
-    imgFundo.style.backgroundSize = 'cover';
-    imgFundo.style.backgroundPosition = 'center';
-  } else {
-    imgFundo.style.background = 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)';
+  if (imgFundo) {
+    if (empresa.capa) {
+      const capaUrl = construirUrlCompleta(empresa.capa);
+      imgFundo.style.backgroundImage = `url('${capaUrl}')`;
+      imgFundo.style.backgroundSize = 'cover';
+      imgFundo.style.backgroundPosition = 'center';
+    } else {
+      imgFundo.style.background = 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)';
+    }
   }
   
-  // ===== SOBRE A EMPRESA =====
+  // Sobre a empresa
   const sobreEmpresa = document.querySelector('.sobre_profissional');
-  const paragrafo = sobreEmpresa.querySelector('p');
-  
-  if (empresa.descricao) {
-    paragrafo.textContent = empresa.descricao;
-    paragrafo.style.color = '';
-    paragrafo.style.fontStyle = '';
-  } else {
-    paragrafo.textContent = 'Você ainda não adicionou uma descrição. Clique em "Editar Perfil" para adicionar.';
-    paragrafo.style.color = '#999';
-    paragrafo.style.fontStyle = 'italic';
+  if (sobreEmpresa) {
+    const paragrafo = sobreEmpresa.querySelector('p');
+    const titulo = sobreEmpresa.querySelector('h3');
+    
+    if (titulo) titulo.textContent = 'Sobre a Empresa';
+    
+    if (paragrafo) {
+      if (empresa.descricao && empresa.descricao.trim()) {
+        paragrafo.textContent = empresa.descricao;
+        paragrafo.style.color = '';
+        paragrafo.style.fontStyle = '';
+      } else {
+        paragrafo.textContent = 'Você ainda não adicionou uma descrição. Clique em "Editar Perfil" para adicionar.';
+        paragrafo.style.color = '#999';
+        paragrafo.style.fontStyle = 'italic';
+      }
+    }
   }
   
-  // ===== TELEFONE =====
-  const telefoneElements = document.querySelectorAll('.tl-numero, .telefone-numero');
-  const telefoneContainers = document.querySelectorAll('.telefone, .button-telefone');
+  // Telefone
+  document.querySelectorAll('.tl-numero, .telefone-numero').forEach(el => {
+    if (contato.telefone) {
+      el.textContent = contato.telefone;
+      el.closest('.telefone, .button-telefone')?.style.setProperty('display', 'flex', 'important');
+    } else {
+      el.closest('.telefone, .button-telefone')?.style.setProperty('display', 'none', 'important');
+    }
+  });
   
-  if (contato.telefone) {
-    telefoneElements.forEach(el => el.textContent = contato.telefone);
-    telefoneContainers.forEach(el => el.style.display = 'flex');
-  } else {
-    telefoneContainers.forEach(el => el.style.display = 'none');
-  }
-  
-  // ===== EMAIL =====
+  // Email
   document.querySelectorAll('.email-text').forEach(el => {
     el.textContent = usuario.email || 'Email não informado';
   });
   
-  // ===== REDES SOCIAIS =====
+  // Redes sociais
   const instagram = document.querySelector('.instagram');
-  if (contato.instagram) {
-    instagram.style.display = 'flex';
-    instagram.querySelector('.name_perfil-x').textContent = contato.instagram;
-  } else {
-    instagram.style.display = 'none';
+  if (instagram) {
+    if (contato.instagram) {
+      instagram.style.display = 'flex';
+      const nameEl = instagram.querySelector('.name_perfil-ins, .name_perfil-x');
+      if (nameEl) nameEl.textContent = contato.instagram;
+    } else {
+      instagram.style.display = 'none';
+    }
   }
   
   const facebook = document.querySelector('.facebook');
-  if (contato.facebook) {
-    facebook.style.display = 'flex';
-    facebook.querySelector('.name_perfil-fac').textContent = contato.facebook;
-  } else {
-    facebook.style.display = 'none';
+  if (facebook) {
+    if (contato.facebook) {
+      facebook.style.display = 'flex';
+      const nameEl = facebook.querySelector('.name_perfil-fac');
+      if (nameEl) nameEl.textContent = contato.facebook;
+    } else {
+      facebook.style.display = 'none';
+    }
   }
   
   const twitter = document.querySelector('.X');
-  if (contato.twitter) {
-    twitter.style.display = 'flex';
-    twitter.querySelector('.name_perfil-x').textContent = contato.twitter;
-  } else {
-    twitter.style.display = 'none';
-  }
-  
-  // ===== PROJETOS CONCLUÍDOS =====
-  const projetosConcluidos = document.querySelector('.projetos_concluidos');
-  if (empresa.projetos_concluidos !== null && empresa.projetos_concluidos !== undefined) {
-    projetosConcluidos.style.display = 'flex';
-    projetosConcluidos.querySelector('.projetos_concluidos-text').textContent = empresa.projetos_concluidos;
-  } else {
-    projetosConcluidos.style.display = 'none';
-  }
-  
-  // ===== IDADE DA EMPRESA =====
-  const idadeEmpresa = document.querySelector('.idade_empresa');
-  if (empresa.idade_empresa !== null && empresa.idade_empresa !== undefined) {
-    idadeEmpresa.style.display = 'flex';
-    const textoElement = idadeEmpresa.querySelector('.idade_empresa-text');
-    if (textoElement) {
-      textoElement.textContent = `${empresa.idade_empresa} ${empresa.idade_empresa === 1 ? 'ano' : 'anos'}`;
+  if (twitter) {
+    if (contato.twitter) {
+      twitter.style.display = 'flex';
+      const nameEl = twitter.querySelector('.name_perfil-x');
+      if (nameEl) nameEl.textContent = contato.twitter;
+    } else {
+      twitter.style.display = 'none';
     }
-  } else {
-    idadeEmpresa.style.display = 'none';
   }
   
-  // ===== AVALIAÇÕES =====
+  // Projetos concluídos
+  const projetosConcluidos = document.querySelector('.projetos_concluidos');
+  if (projetosConcluidos) {
+    const textoProjetos = projetosConcluidos.querySelector('.projetos_concluidos-text');
+    if (textoProjetos && empresa.projetos_concluidos !== null && empresa.projetos_concluidos !== undefined) {
+      projetosConcluidos.style.display = 'flex';
+      textoProjetos.textContent = empresa.projetos_concluidos;
+    } else {
+      projetosConcluidos.style.display = 'none';
+    }
+  }
+  
+  // Idade da empresa
+  const idadeEmpresa = document.querySelector('.idade_empresa');
+  if (idadeEmpresa) {
+    const textoIdade = idadeEmpresa.querySelector('.idade_empresa-text');
+    if (textoIdade && empresa.idade_empresa !== null && empresa.idade_empresa !== undefined) {
+      idadeEmpresa.style.display = 'flex';
+      textoIdade.textContent = `${empresa.idade_empresa} ${empresa.idade_empresa == 1 ? 'ano' : 'anos'}`;
+    } else {
+      idadeEmpresa.style.display = 'none';
+    }
+  }
+  
+  // Avaliações
   const avaliacao = usuario.avaliacao?.media || 0;
   const numAvaliacoes = usuario.avaliacao?.total || 0;
   
@@ -226,10 +306,65 @@ function preencherPerfil(usuario) {
     el.textContent = numAvaliacoes === 1 ? 'avaliação' : 'avaliações';
   });
   
+  // Especialidades
+  const especialidadesContainer = document.querySelector('.especialidades');
+  if (especialidadesContainer) {
+    if (empresa.skills && empresa.skills.length > 0) {
+      especialidadesContainer.style.display = 'block';
+      especialidadesContainer.innerHTML = '<h3>Especialidades</h3>';
+      
+      empresa.skills.forEach(skill => {
+        const spanDiv = document.createElement('div');
+        spanDiv.className = 'span-esp_op';
+        spanDiv.innerHTML = `<span class="especialidade-op">${skill.nome || skill.name || skill}</span>`;
+        especialidadesContainer.appendChild(spanDiv);
+      });
+    } else {
+      especialidadesContainer.style.display = 'none';
+    }
+  }
+  
+  // Carregar publicações
+  if (usuario.portfolios && usuario.portfolios.length > 0) {
+    carregarPublicacoes(usuario.portfolios);
+  } else {
+    const publicacoesContainer = document.querySelector('.home-cards-post');
+    if (publicacoesContainer) {
+      publicacoesContainer.innerHTML = '<p style="text-align: center; padding: 40px; color: #999; font-style: italic;">Você ainda não possui publicações. Clique em "Nova publicação" para adicionar.</p>';
+    }
+  }
+  
   console.log('✅ Perfil preenchido com sucesso');
 }
 
-// ========== ABRIR MODAL EDITAR PERFIL ==========
+// ========== CARREGAR PUBLICAÇÕES ==========
+function carregarPublicacoes(portfolios) {
+  const publicacoesContainer = document.querySelector('.home-cards-post');
+  if (!publicacoesContainer) return;
+  
+  publicacoesContainer.innerHTML = '';
+  
+  portfolios.forEach(portfolio => {
+    const card = document.createElement('div');
+    card.className = 'card-publicacoes';
+    
+    const imagemUrl = portfolio.fotos && portfolio.fotos[0] 
+      ? construirUrlCompleta(portfolio.fotos[0].caminho)
+      : '';
+    
+    card.innerHTML = `
+      <div class="img-card_publicacoes" style="background-image: url('${imagemUrl}'); background-size: cover; background-position: center;"></div>
+      <div class="mini-informacoes-card_publicacoes">
+        <h4>${portfolio.titulo || 'Sem título'}</h4>
+        <p>${portfolio.descricao || 'Sem descrição'}</p>
+      </div>
+    `;
+    
+    publicacoesContainer.appendChild(card);
+  });
+}
+
+// ========== MODAL EDITAR PERFIL ==========
 const btnEditarPerfil = document.querySelector('.btn-editar-perfil');
 const modal = document.getElementById('modalPerfil');
 
@@ -247,11 +382,11 @@ if (btnEditarPerfil && modal) {
       });
       
       const data = await response.json();
-      const usuario = data.user;
+      const usuario = data.user || data.data || data;
       const empresa = usuario.empresa;
       const contato = usuario.contato || {};
       
-      // PRÉ-PREENCHER FORMULÁRIO
+      // Pré-preencher formulário
       document.getElementById('name').value = empresa.razao_social || '';
       document.getElementById('sobreEmpresa').value = empresa.descricao || '';
       document.getElementById('instagram').value = contato.instagram || '';
@@ -262,8 +397,12 @@ if (btnEditarPerfil && modal) {
       document.getElementById('ProjetosConcluidos').value = empresa.projetos_concluidos || '';
       document.getElementById('TempoExpe').value = empresa.idade_empresa || '';
       
-      // 🔥 CARREGAR CATEGORIAS
-      await carregarCategorias();
+      // Pré-selecionar categoria
+      const inputArea = document.getElementById('profission');
+      if (inputArea && usuario.empresa.categoria) {
+        inputArea.value = usuario.empresa.categoria.nome;
+        inputArea.dataset.categoriaId = usuario.empresa.categoria.id;
+      }
       
       modal.classList.add('active');
       
@@ -274,30 +413,7 @@ if (btnEditarPerfil && modal) {
   });
 }
 
-// ========== CARREGAR CATEGORIAS ==========
-async function carregarCategorias() {
-  try {
-    const response = await fetch(`${API_URL}/categoria`);
-    const categorias = await response.json();
-    
-    const select = document.getElementById('AreaOptions');
-    select.innerHTML = '';
-    
-    categorias.forEach(categoria => {
-      const option = document.createElement('li');
-      option.dataset.value = categoria.id;
-      option.textContent = categoria.nome;
-      select.appendChild(option);
-    });
-    
-    console.log('✅ Categorias carregadas:', categorias);
-    
-  } catch (error) {
-    console.error('❌ Erro ao carregar categorias:', error);
-  }
-}
-
-// ========== SALVAR ALTERAÇÕES ==========
+// ========== SALVAR ALTERAÇÕES - CORRIGIDO ==========
 const formEditarPerfil = document.getElementById('Form');
 
 if (formEditarPerfil) {
@@ -306,6 +422,7 @@ if (formEditarPerfil) {
     
     try {
       const token = getAuthToken();
+      const userId = getUserId();
       
       if (!token) {
         showToast('Você precisa estar logado', 'error');
@@ -314,49 +431,54 @@ if (formEditarPerfil) {
       
       const formData = new FormData();
       
-      // DADOS BÁSICOS
-      const nome = document.getElementById('name').value.trim();
+      // Dados básicos
+      const nome = document.getElementById('name')?.value.trim();
       if (nome) formData.append('razao_social', nome);
       
-      const descricao = document.getElementById('sobreEmpresa').value.trim();
+      const descricao = document.getElementById('sobreEmpresa')?.value.trim();
       if (descricao) formData.append('descricao', descricao);
       
-      const email = document.getElementById('registerEmail').value.trim();
+      const email = document.getElementById('registerEmail')?.value.trim();
       if (email) formData.append('email', email);
       
-      // CONTATOS
-      const telefone = document.getElementById('phone').value.trim();
+      const telefone = document.getElementById('phone')?.value.trim();
       if (telefone) formData.append('telefone', telefone);
       
-      const instagram = document.getElementById('instagram').value.trim();
+      const instagram = document.getElementById('instagram')?.value.trim();
       if (instagram) formData.append('instagram', instagram);
       
-      const facebook = document.getElementById('facebook').value.trim();
+      const facebook = document.getElementById('facebook')?.value.trim();
       if (facebook) formData.append('facebook', facebook);
       
-      const twitter = document.getElementById('twitter').value.trim();
+      const twitter = document.getElementById('twitter')?.value.trim();
       if (twitter) formData.append('twitter', twitter);
       
-      // DADOS ADICIONAIS
-      const projetosConcluidos = document.getElementById('ProjetosConcluidos').value.trim();
-      if (projetosConcluidos) formData.append('projetos_concluidos', projetosConcluidos);
+      const projetos = document.getElementById('ProjetosConcluidos')?.value;
+      if (projetos) formData.append('projetos_concluidos', projetos);
       
-      const idadeEmpresa = document.getElementById('TempoExpe').value.trim();
-      if (idadeEmpresa) formData.append('idade_empresa', idadeEmpresa);
+      const idade = document.getElementById('TempoExpe')?.value;
+      if (idade) formData.append('idade_empresa', idade);
       
-      // FOTOS
+      // Categoria
+      const inputArea = document.getElementById('profission');
+      if (inputArea && inputArea.dataset.categoriaId) {
+        formData.append('id_categoria', inputArea.dataset.categoriaId);
+      }
+      
+      // Fotos
       const fotoPerfil = document.getElementById('Perfil');
-      if (fotoPerfil && fotoPerfil.files[0]) {
+      if (fotoPerfil?.files[0]) {
         formData.append('foto', fotoPerfil.files[0]);
       }
       
       const fotoBanner = document.getElementById('Banner');
-      if (fotoBanner && fotoBanner.files[0]) {
+      if (fotoBanner?.files[0]) {
         formData.append('capa', fotoBanner.files[0]);
       }
       
-      console.log('📤 Enviando dados para API...');
+      console.log('📤 Enviando dados...');
       
+      // 🔥 CORRIGIDO: usar a rota correta /usuario/update com POST
       const response = await fetch(`${API_URL}/usuario/update`, {
         method: 'POST',
         headers: {
@@ -424,6 +546,141 @@ if (inputBanner && previewBanner) {
   });
 }
 
+// ========== MODAL ADICIONAR PUBLICAÇÃO ==========
+const btnAddPost = document.querySelector('.btn-add-post');
+const modalAddPost = document.getElementById('modalAddPub');
+const btnFecharAddPub = document.getElementById('fecharAddPub');
+const btnCancelarAddPub = document.getElementById('cancelarAddPub');
+const btnConfirmarAddPub = document.getElementById('confirmarAddPub');
+
+if (btnAddPost && modalAddPost) {
+  btnAddPost.addEventListener('click', () => {
+    modalAddPost.classList.add('active');
+    document.body.style.overflow = 'hidden';
+  });
+}
+
+if (btnFecharAddPub && modalAddPost) {
+  btnFecharAddPub.addEventListener('click', () => {
+    modalAddPost.classList.remove('active');
+    document.body.style.overflow = 'auto';
+    limparFormularioPublicacao();
+  });
+}
+
+if (btnCancelarAddPub && modalAddPost) {
+  btnCancelarAddPub.addEventListener('click', () => {
+    modalAddPost.classList.remove('active');
+    document.body.style.overflow = 'auto';
+    limparFormularioPublicacao();
+  });
+}
+
+function limparFormularioPublicacao() {
+  const descricao = document.getElementById('pubDescricao');
+  const midias = document.getElementById('pubMidias');
+  const preview = document.getElementById('previewContainer');
+  
+  if (descricao) descricao.value = '';
+  if (midias) midias.value = '';
+  if (preview) preview.innerHTML = '';
+}
+
+// PREVIEW DE MÍDIAS
+const inputMidias = document.getElementById('pubMidias');
+const previewContainer = document.getElementById('previewContainer');
+
+if (inputMidias && previewContainer) {
+  inputMidias.addEventListener('change', (e) => {
+    previewContainer.innerHTML = '';
+    const files = Array.from(e.target.files);
+    
+    files.forEach((file, index) => {
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        const preview = document.createElement('div');
+        preview.className = 'preview-item';
+        preview.style.cssText = 'position: relative; width: 100px; height: 100px; margin: 5px; display: inline-block;';
+        
+        if (file.type.startsWith('image/')) {
+          preview.innerHTML = `<img src="${event.target.result}" alt="Preview ${index + 1}" style="width: 100%; height: 100%; object-fit: cover; border-radius: 8px;">`;
+        } else if (file.type.startsWith('video/')) {
+          preview.innerHTML = `<video src="${event.target.result}" style="width: 100%; height: 100%; object-fit: cover; border-radius: 8px;"></video>`;
+        }
+        
+        previewContainer.appendChild(preview);
+      };
+      reader.readAsDataURL(file);
+    });
+  });
+}
+
+// CONFIRMAR PUBLICAÇÃO - CORRIGIDO
+if (btnConfirmarAddPub) {
+  btnConfirmarAddPub.addEventListener('click', async () => {
+    try {
+      const descricao = document.getElementById('pubDescricao')?.value.trim();
+      const midias = document.getElementById('pubMidias')?.files;
+      
+      if (!descricao) {
+        showToast('Preencha a descrição', 'error');
+        return;
+      }
+      
+      if (!midias || midias.length === 0) {
+        showToast('Adicione pelo menos uma mídia', 'error');
+        return;
+      }
+      
+      const formData = new FormData();
+      formData.append('descricao', descricao);
+      
+      // Separar imagens e vídeos
+      Array.from(midias).forEach((file) => {
+        if (file.type.startsWith('image/')) {
+          formData.append('imagens[]', file);
+        } else if (file.type.startsWith('video/')) {
+          formData.append('videos[]', file);
+        }
+      });
+      
+      const token = getAuthToken();
+      
+      showToast('Criando publicação...', 'info');
+      
+      // 🔥 CORRIGIDO: usar a rota correta /portfolio/cadastro
+      const response = await fetch(`${API_URL}/portfolio/cadastro`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Accept': 'application/json'
+        },
+        body: formData
+      });
+      
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'Erro ao criar publicação');
+      }
+      
+      const result = await response.json();
+      console.log('✅ Publicação criada:', result);
+      
+      showToast('Publicação criada com sucesso!', 'success');
+      modalAddPost.classList.remove('active');
+      document.body.style.overflow = 'auto';
+      limparFormularioPublicacao();
+      
+      // Recarregar perfil para mostrar nova publicação
+      await carregarMeuPerfil();
+      
+    } catch (error) {
+      console.error('Erro ao criar publicação:', error);
+      showToast(error.message || 'Erro ao criar publicação', 'error');
+    }
+  });
+}
+
 // ========== CANCELAR EDIÇÃO ==========
 const btnCancelarEdit = document.getElementById('cancelBtn');
 
@@ -485,6 +742,8 @@ if (btnExcluir) {
     }
   });
 }
+
+
 
 // ========== INICIALIZAÇÃO ==========
 document.addEventListener('DOMContentLoaded', () => {
