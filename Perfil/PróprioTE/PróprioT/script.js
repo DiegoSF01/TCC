@@ -1,5 +1,5 @@
 // ==========================================
-// SCRIPT PERFIL PRÓPRIO - PRESTADOR/TRABALHADOR (VERSÃO CORRIGIDA COMPLETA)
+// SCRIPT PERFIL PRÓPRIO - PRESTADOR/TRABALHADOR (VERSÃO CORRIGIDA COMPLETA) trabalhador1
 // ==========================================
 
 const API_URL = 'http://127.0.0.1:8000/api';
@@ -54,7 +54,7 @@ function construirUrlCompleta(caminho) {
   if (!caminho || caminho === 'null') return null;
   if (caminho.startsWith('http')) return caminho;
   
-  const caminhoLimpo = caminho.replace(/^public\//, '');
+  const caminhoLimpo = caminho.replace(/^public\//, '').replace(/^storage\//, '');
   return `${BASE_URL}/storage/${caminhoLimpo}`;
 }
 
@@ -98,7 +98,7 @@ btn_sobre?.addEventListener('click', clicou_sobre);
 btn_postagens?.addEventListener('click', clicou_postagens);
 btn_avaliacao?.addEventListener('click', clicou_avaliacao);
 
-// ========== DEBUG: CARREGAR MEU PERFIL ==========
+// ========== CARREGAR MEU PERFIL ==========
 async function carregarMeuPerfil() {
   try {
     const userId = getUserId();
@@ -144,25 +144,17 @@ async function carregarMeuPerfil() {
     const usuario = data.user || data.data || data;
     console.log('📦 Objeto usuario extraído:', usuario);
     
-    // DEBUG: Verificar estrutura
-    console.log('🔍 Verificando prestador:', usuario.prestador);
-    console.log('🔍 Verificando ramo:', usuario.prestador?.ramo);
-    console.log('🔍 Verificando contato:', usuario.contato);
-    console.log('🔍 Verificando avaliacao:', usuario.avaliacao);
-    
     preencherPerfil(usuario);
     
   } catch (error) {
     console.error('❌ Erro completo:', error);
-    console.error('Stack trace:', error.stack);
     showToast('Erro ao carregar perfil', 'error');
   }
 }
 
-// ========== PREENCHER PERFIL (CORRIGIDO COM FALLBACKS) ==========
+// ========== PREENCHER PERFIL ==========
 function preencherPerfil(usuario) {
   console.log('🎨 Iniciando preenchimento do perfil');
-  console.log('📦 Dados recebidos:', usuario);
   
   if (!usuario.prestador) {
     console.error('❌ ERRO: dados do prestador não encontrados');
@@ -173,54 +165,40 @@ function preencherPerfil(usuario) {
   const prestador = usuario.prestador;
   const contato = usuario.contato || {};
   
-  console.log('👷 Dados do prestador:', prestador);
-  console.log('📞 Dados de contato:', contato);
-  
-  // ===== NOME E PROFISSÃO =====
+  // Nome e Profissão
   const nomePerfil = document.querySelector('.nome-perfil');
   if (nomePerfil) {
     nomePerfil.textContent = prestador.nome || 'Nome não informado';
-    console.log('✅ Nome preenchido:', nomePerfil.textContent);
   }
   
-  // CORRIGIDO: buscar ramo de múltiplas fontes
   const profissao = document.querySelector('.profissao');
   if (profissao) {
-    const ramo = prestador.ramo?.nome || 
-                 usuario.ramo?.nome || 
-                 prestador.categoria?.nome ||
-                 usuario.categoria?.nome ||
-                 'Profissão não informada';
+    const ramo = prestador.ramo?.nome || 'Profissão não informada';
     profissao.textContent = ramo;
-    console.log('✅ Profissão preenchida:', ramo);
   }
   
-  // ===== LOCALIZAÇÃO =====
+  // Localização
   const lcCidade = document.querySelector('.lc-cidade');
   if (lcCidade) {
     lcCidade.textContent = prestador.localidade || 'Cidade não informada';
-    console.log('✅ Cidade:', lcCidade.textContent);
   }
   
   const lcEstado = document.querySelector('.lc-estado');
   if (lcEstado) {
     lcEstado.textContent = prestador.uf || 'UF';
-    console.log('✅ Estado:', lcEstado.textContent);
   }
   
-  // ===== FOTO DE PERFIL (CORRIGIDO) =====
+  // Foto de Perfil
   const fotoPerfil = document.querySelector('.foto-perfil');
   if (fotoPerfil) {
     if (prestador.foto && prestador.foto !== 'null') {
-      const fotoUrl = construirUrlCompleta(prestador.foto);
-      console.log('🖼️ URL da foto:', fotoUrl);
+      const fotoUrl = prestador.foto.startsWith('http') ? prestador.foto : construirUrlCompleta(prestador.foto);
       fotoPerfil.style.backgroundImage = `url('${fotoUrl}')`;
       fotoPerfil.style.backgroundSize = 'cover';
       fotoPerfil.style.backgroundPosition = 'center';
       fotoPerfil.innerHTML = '';
     } else {
-      console.log('ℹ️ Sem foto, usando inicial');
-      fotoPerfil.style.background = 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)';
+      fotoPerfil.style.background = 'linear-gradient(135deg,  #0048ff 0%, #0048ff 100%)';
       fotoPerfil.innerHTML = `<span style="color: white; font-size: 48px; font-weight: bold;">${prestador.nome.charAt(0).toUpperCase()}</span>`;
       fotoPerfil.style.display = 'flex';
       fotoPerfil.style.alignItems = 'center';
@@ -228,26 +206,24 @@ function preencherPerfil(usuario) {
     }
   }
   
-  // ===== CAPA (CORRIGIDO) =====
+  // Capa
   const imgFundo = document.querySelector('.img-fundo');
   if (imgFundo) {
     if (prestador.capa && prestador.capa !== 'null') {
-      const capaUrl = construirUrlCompleta(prestador.capa);
-      console.log('🎨 URL da capa:', capaUrl);
+      const capaUrl = prestador.capa.startsWith('http') ? prestador.capa : construirUrlCompleta(prestador.capa);
       imgFundo.style.backgroundImage = `url('${capaUrl}')`;
       imgFundo.style.backgroundSize = 'cover';
       imgFundo.style.backgroundPosition = 'center';
     } else {
-      console.log('ℹ️ Sem capa, usando gradiente');
       imgFundo.style.background = 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)';
     }
   }
   
-  // ===== TIPO (PROFISSIONAL) =====
+  // Tipo
   const empProfi = document.querySelector('.empre_profi-text');
   if (empProfi) empProfi.textContent = 'Profissional';
   
-  // ===== DISPONIBILIDADE =====
+  // Disponibilidade
   const disponibilidade = document.querySelector('.disponibilidade');
   if (disponibilidade) {
     disponibilidade.style.display = 'flex';
@@ -257,26 +233,28 @@ function preencherPerfil(usuario) {
     }
   }
   
-  // ===== PROJETOS CONCLUÍDOS (CORRIGIDO - SEMPRE VISÍVEL) =====
+  // Projetos Concluídos
   const projetosConcluidos = document.querySelector('.projetos_concluidos');
   if (projetosConcluidos) {
     const textElement = projetosConcluidos.querySelector('.projetos_concluidos-text');
     projetosConcluidos.style.display = 'flex';
     
     if (prestador.projetos_concluidos !== null && prestador.projetos_concluidos !== undefined) {
-      if (textElement) textElement.textContent = prestador.projetos_concluidos;
-      console.log('✅ Projetos concluídos:', prestador.projetos_concluidos);
+      if (textElement) {
+        textElement.textContent = prestador.projetos_concluidos;
+        textElement.style.color = '';
+        textElement.style.fontStyle = '';
+      }
     } else {
       if (textElement) {
         textElement.textContent = 'Não editado';
         textElement.style.color = '#999';
         textElement.style.fontStyle = 'italic';
       }
-      console.log('ℹ️ Projetos concluídos: não editado');
     }
   }
   
-  // ===== TEMPO DE EXPERIÊNCIA (CORRIGIDO - SEMPRE VISÍVEL) =====
+  // Tempo de Experiência
   const tempoExperiencia = document.querySelector('.tempo_experiencia');
   if (tempoExperiencia) {
     const textElement = tempoExperiencia.querySelector('.tempo_experiencia-text');
@@ -284,26 +262,25 @@ function preencherPerfil(usuario) {
     
     if (prestador.tempo_experiencia !== null && prestador.tempo_experiencia !== undefined) {
       const anos = prestador.tempo_experiencia;
-      if (textElement) textElement.textContent = `${anos} ${anos === 1 ? 'ano' : 'anos'}`;
-      console.log('✅ Tempo de experiência:', anos);
+      if (textElement) {
+        textElement.textContent = `${anos} ${anos === 1 ? 'ano' : 'anos'}`;
+        textElement.style.color = '';
+        textElement.style.fontStyle = '';
+      }
     } else {
       if (textElement) {
         textElement.textContent = 'Não editado';
         textElement.style.color = '#999';
         textElement.style.fontStyle = 'italic';
       }
-      console.log('ℹ️ Tempo de experiência: não editado');
     }
   }
   
-  // ===== AVALIAÇÃO (CORRIGIDO) =====
+  // Avaliação
   const avaliacaoObj = usuario.avaliacao || {};
   const avaliacao = avaliacaoObj.media || 0;
   const numAvaliacoes = avaliacaoObj.total || 0;
   
-  console.log('⭐ Avaliação:', { media: avaliacao, total: numAvaliacoes });
-  
-  // Atualizar todos os elementos de avaliação
   document.querySelectorAll('.quant-stars').forEach(el => {
     el.textContent = avaliacao.toFixed(1);
   });
@@ -321,7 +298,7 @@ function preencherPerfil(usuario) {
     avaliacaoBCC.textContent = `${avaliacao.toFixed(1)}/5.0`;
   }
   
-  // Preencher estrelas
+  // Estrelas
   const estrelas = document.querySelectorAll('.avaliacao-TCC .star, .avaliacao-BCC .star, .top-sess_avali .star');
   estrelas.forEach((star, index) => {
     if (index < Math.floor(avaliacao)) {
@@ -331,24 +308,21 @@ function preencherPerfil(usuario) {
     }
   });
   
-  // ===== CONTATOS =====
-  // Telefone
+  // Contatos
   document.querySelectorAll('.tl-numero, .telefone-numero').forEach(el => {
     if (contato.telefone) {
       el.textContent = contato.telefone;
       el.closest('.telefone, .button-telefone')?.style.setProperty('display', 'flex', 'important');
-      console.log('✅ Telefone:', contato.telefone);
     } else {
       el.closest('.telefone, .button-telefone')?.style.setProperty('display', 'none', 'important');
     }
   });
   
-  // Email
   document.querySelectorAll('.email-text').forEach(el => {
     el.textContent = usuario.email || 'Email não informado';
   });
   
-  // ===== SOBRE O PROFISSIONAL =====
+  // Sobre o Profissional
   const sobreProfissional = document.querySelector('.sobre_profissional');
   if (sobreProfissional) {
     const paragrafo = sobreProfissional.querySelector('p');
@@ -362,57 +336,49 @@ function preencherPerfil(usuario) {
         paragrafo.textContent = prestador.descricao;
         paragrafo.style.color = '';
         paragrafo.style.fontStyle = '';
-        console.log('✅ Descrição presente');
       } else {
         paragrafo.textContent = 'Você ainda não adicionou uma descrição. Clique em "Editar Perfil" para adicionar.';
         paragrafo.style.color = '#999';
         paragrafo.style.fontStyle = 'italic';
-        console.log('ℹ️ Sem descrição');
       }
     }
   }
   
-  // ===== REDES SOCIAIS =====
-  // Instagram
+  // Redes Sociais
   const instagram = document.querySelector('.instagram');
   if (instagram) {
     const nomeIns = instagram.querySelector('.name_perfil-ins');
     if (contato.instagram) {
       instagram.style.display = 'flex';
       if (nomeIns) nomeIns.textContent = contato.instagram;
-      console.log('✅ Instagram:', contato.instagram);
     } else {
       instagram.style.display = 'none';
     }
   }
   
-  // Facebook
   const facebook = document.querySelector('.facebook');
   if (facebook) {
     const nomeFac = facebook.querySelector('.name_perfil-fac');
     if (contato.facebook) {
       facebook.style.display = 'flex';
       if (nomeFac) nomeFac.textContent = contato.facebook;
-      console.log('✅ Facebook:', contato.facebook);
     } else {
       facebook.style.display = 'none';
     }
   }
   
-  // Twitter/X
   const twitter = document.querySelector('.X');
   if (twitter) {
     const nomeX = twitter.querySelector('.name_perfil-x');
     if (contato.twitter) {
       twitter.style.display = 'flex';
       if (nomeX) nomeX.textContent = contato.twitter;
-      console.log('✅ Twitter/X:', contato.twitter);
     } else {
       twitter.style.display = 'none';
     }
   }
   
-  // ===== ESPECIALIDADES =====
+  // Especialidades
   const especialidadesContainer = document.querySelector('.especialidades');
   if (especialidadesContainer) {
     if (prestador.skills && prestador.skills.length > 0) {
@@ -425,29 +391,23 @@ function preencherPerfil(usuario) {
         spanDiv.innerHTML = `<span class="especialidade-op">${skill.nome || skill.name || skill}</span>`;
         especialidadesContainer.appendChild(spanDiv);
       });
-      console.log('✅ Especialidades:', prestador.skills.length);
     } else {
       especialidadesContainer.style.display = 'none';
-      console.log('ℹ️ Sem especialidades');
     }
   }
   
-  // ===== PUBLICAÇÕES =====
+  // Publicações
   if (usuario.portfolios && usuario.portfolios.length > 0) {
-    console.log('📸 Carregando', usuario.portfolios.length, 'publicações');
     carregarPublicacoes(usuario.portfolios);
   } else {
-    console.log('ℹ️ Sem publicações');
     const publicacoesContainer = document.querySelector('.home-cards-post');
     if (publicacoesContainer) {
       publicacoesContainer.innerHTML = '<p style="text-align: center; padding: 40px; color: #999; font-style: italic;">Você ainda não possui publicações. Clique em "Nova publicação" para adicionar.</p>';
     }
   }
-  
-  console.log('✅ Perfil preenchido com sucesso');
 }
 
-// ========== CARREGAR PUBLICAÇÕES ==========
+// ========== CARREGAR PUBLICAÇÕES (CORRIGIDO) ==========
 function carregarPublicacoes(portfolios) {
   const publicacoesContainer = document.querySelector('.home-cards-post');
   if (!publicacoesContainer) return;
@@ -458,16 +418,24 @@ function carregarPublicacoes(portfolios) {
     const card = document.createElement('div');
     card.className = 'card-publicacoes';
     
-    let imagemUrl = '';
-    if (portfolio.fotos && portfolio.fotos.length > 0 && portfolio.fotos[0].caminho) {
-      imagemUrl = construirUrlCompleta(portfolio.fotos[0].caminho);
+    let imagemUrl = '/assets/placeholder.jpg';
+    if (portfolio.fotos && portfolio.fotos.length > 0) {
+      const foto = portfolio.fotos[0];
+      if (foto.caminho) {
+        imagemUrl = foto.caminho.startsWith('http') 
+          ? foto.caminho 
+          : construirUrlCompleta(foto.caminho);
+      }
     }
+    
+    const titulo = portfolio.titulo || 'Sem título';
+    const descricao = portfolio.descricao || 'Sem descrição';
     
     card.innerHTML = `
       <div class="img-card_publicacoes" style="background-image: url('${imagemUrl}'); background-size: cover; background-position: center;"></div>
       <div class="mini-informacoes-card_publicacoes">
-        <h4>${portfolio.titulo || 'Sem título'}</h4>
-        <p>${portfolio.descricao || 'Sem descrição'}</p>
+        <h4>${titulo}</h4>
+        <p>${descricao}</p>
       </div>
     `;
     
@@ -475,13 +443,18 @@ function carregarPublicacoes(portfolios) {
   });
 }
 
-// ========== BOTÃO EDITAR PERFIL ==========
+// ========== BOTÃO EDITAR PERFIL (CORRIGIDO) ==========
 const btnEditarPerfil = document.querySelector('.btn-editar-perfil');
 if (btnEditarPerfil) {
   btnEditarPerfil.addEventListener('click', () => {
+    console.log('🔘 Botão Editar Perfil clicado');
     const modal = document.getElementById('modalPerfil');
     if (modal) {
       modal.classList.add('active');
+      document.body.style.overflow = 'hidden';
+      console.log('✅ Modal aberto');
+    } else {
+      console.error('❌ Modal não encontrado no DOM');
     }
   });
 }
@@ -530,9 +503,7 @@ if (excluirContaBtn) {
       
       if (response.ok) {
         showToast('Conta excluída com sucesso', 'success');
-        
         localStorage.clear();
-        
         setTimeout(() => {
           window.location.href = '/';
         }, 2000);
@@ -549,11 +520,5 @@ if (excluirContaBtn) {
 // ========== INICIALIZAÇÃO ==========
 document.addEventListener('DOMContentLoaded', () => {
   console.log('🚀 Página de Perfil Próprio (Prestador) carregada');
-  console.log('🔍 LocalStorage:', {
-    userId: getUserId(),
-    userType: getUserType(),
-    token: getAuthToken() ? 'presente' : 'ausente'
-  });
-  
   carregarMeuPerfil();
 });

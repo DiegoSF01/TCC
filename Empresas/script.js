@@ -1,4 +1,4 @@
-// script.js - Empresas (CORRIGIDO)
+// script.js - Empresas 2(CORRIGIDO)
 const API_URL = 'http://127.0.0.1:8000/api';
 
 async function carregarEmpresas(filtros = {}) {
