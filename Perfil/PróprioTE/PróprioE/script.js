@@ -1,5 +1,5 @@
 // ==========================================
-// SCRIPT PERFIL PRÓPRIO - EMPRESA (VERSÃO CORRIGIDA)
+// SCRIPT PERFIL PRÓPRIO - EMPRESA (VERSÃO CORRIGIDA COMPLETA)
 // ==========================================
 
 const API_URL = 'http://127.0.0.1:8000/api';
@@ -51,73 +51,37 @@ function getUserType() {
 }
 
 function construirUrlCompleta(caminho) {
-  if (!caminho) return null;
+  if (!caminho || caminho === 'null') return null;
   if (caminho.startsWith('http')) return caminho;
   
   const caminhoLimpo = caminho.replace(/^public\//, '');
   return `${BASE_URL}/storage/${caminhoLimpo}`;
 }
 
-// ========== NAVEGAÇÃO ENTRE ABAS ==========
-const btn_sobre = document.getElementById('btn_navperfil-sobre');
-const btn_postagens = document.getElementById('btn_navperfil-postagens');
-const btn_avaliacao = document.getElementById('btn_navperfil-avaliacao');
-
-const sessao_sobre = document.querySelector('.sobre');
-const sessao_publicacoes = document.querySelector('.publicacoes');
-const sessao_avaliacao = document.querySelector('.avaliacao');
-
-function clicou_sobre() {
-  if (btn_sobre && !btn_sobre.classList.contains('ativo')) {
-    document.querySelector('.button-navper.ativo')?.classList.remove('ativo');
-    btn_sobre.classList.add('ativo');
-    document.querySelector('.sessao')?.classList.remove('sessao');
-    sessao_sobre?.classList.add('sessao');
-  }
-}
-
-function clicou_postagens() {
-  if (btn_postagens && !btn_postagens.classList.contains('ativo')) {
-    document.querySelector('.button-navper.ativo')?.classList.remove('ativo');
-    btn_postagens.classList.add('ativo');
-    document.querySelector('.sessao')?.classList.remove('sessao');
-    sessao_publicacoes?.classList.add('sessao');
-  }
-}
-
-function clicou_avaliacao() {
-  if (btn_avaliacao && !btn_avaliacao.classList.contains('ativo')) {
-    document.querySelector('.button-navper.ativo')?.classList.remove('ativo');
-    btn_avaliacao.classList.add('ativo');
-    document.querySelector('.sessao')?.classList.remove('sessao');
-    sessao_avaliacao?.classList.add('sessao');
-  }
-}
-
-btn_sobre?.addEventListener('click', clicou_sobre);
-btn_postagens?.addEventListener('click', clicou_postagens);
-btn_avaliacao?.addEventListener('click', clicou_avaliacao);
-
-// ========== CARREGAR MEU PERFIL ==========
+// ========== DEBUG: CARREGAR MEU PERFIL ==========
 async function carregarMeuPerfil() {
   try {
     const userId = getUserId();
     const userType = getUserType();
     const token = getAuthToken();
     
+    console.log('🔍 DEBUG - Iniciando carregamento:', { userId, userType, token: token ? 'presente' : 'ausente' });
+    
     if (!userId || !token) {
+      console.error('❌ Usuário não autenticado');
       showToast('Você precisa estar logado', 'error');
       setTimeout(() => window.location.href = '/Login/index.html', 2000);
       return;
     }
     
     if (userType !== 'empresa') {
+      console.error('❌ Tipo de usuário incorreto:', userType);
       showToast('Acesso negado', 'error');
       setTimeout(() => window.location.href = '/Login/index.html', 2000);
       return;
     }
     
-    console.log('🔵 Carregando perfil empresa:', { userId, userType });
+    console.log('📡 Fazendo requisição para:', `${API_URL}/usuarios/${userId}`);
     
     const response = await fetch(`${API_URL}/usuarios/${userId}`, {
       headers: {
@@ -126,25 +90,42 @@ async function carregarMeuPerfil() {
       }
     });
     
-    if (!response.ok) throw new Error('Erro ao carregar perfil');
+    console.log('📥 Status da resposta:', response.status);
+    
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error('❌ Erro na resposta:', errorText);
+      throw new Error('Erro ao carregar perfil');
+    }
     
     const data = await response.json();
-    const usuario = data.user || data.data || data;
+    console.log('✅ Dados brutos recebidos:', JSON.stringify(data, null, 2));
     
-    console.log('✅ Dados recebidos:', usuario);
+    const usuario = data.user || data.data || data;
+    console.log('📦 Objeto usuario extraído:', usuario);
+    
+    // DEBUG: Verificar estrutura
+    console.log('🔍 Verificando empresa:', usuario.empresa);
+    console.log('🔍 Verificando categoria:', usuario.empresa?.categoria);
+    console.log('🔍 Verificando contato:', usuario.contato);
+    console.log('🔍 Verificando avaliacao:', usuario.avaliacao);
+    
     preencherPerfil(usuario);
     
   } catch (error) {
-    console.error('❌ Erro ao carregar perfil:', error);
+    console.error('❌ Erro completo:', error);
+    console.error('Stack trace:', error.stack);
     showToast('Erro ao carregar perfil', 'error');
   }
 }
 
-// ========== PREENCHER PERFIL ==========
+// ========== PREENCHER PERFIL (CORRIGIDO COM FALLBACKS) ==========
 function preencherPerfil(usuario) {
-  console.log('🔵 Preenchendo perfil empresa:', usuario);
+  console.log('🎨 Iniciando preenchimento do perfil');
+  console.log('📦 Dados recebidos:', usuario);
   
   if (!usuario.empresa) {
+    console.error('❌ ERRO: dados da empresa não encontrados');
     showToast('Erro: dados da empresa não encontrados', 'error');
     return;
   }
@@ -152,29 +133,53 @@ function preencherPerfil(usuario) {
   const empresa = usuario.empresa;
   const contato = usuario.contato || {};
   
-  // Nome e dados básicos
+  console.log('🏢 Dados da empresa:', empresa);
+  console.log('📞 Dados de contato:', contato);
+  
+  // ===== NOME E CATEGORIA =====
   const nomePerfil = document.querySelector('.nome-perfil');
-  if (nomePerfil) nomePerfil.textContent = empresa.razao_social || 'Empresa não informada';
+  if (nomePerfil) {
+    nomePerfil.textContent = empresa.razao_social || 'Empresa não informada';
+    console.log('✅ Nome preenchido:', nomePerfil.textContent);
+  }
   
+  // CORRIGIDO: buscar categoria de múltiplas fontes
   const profissao = document.querySelector('.profissao');
-  if (profissao) profissao.textContent = empresa.categoria?.nome || 'Categoria não informada';
+  if (profissao) {
+    const categoria = empresa.categoria?.nome || 
+                     usuario.categoria?.nome || 
+                     empresa.ramo?.nome ||
+                     usuario.ramo?.nome ||
+                     'Categoria não informada';
+    profissao.textContent = categoria;
+    console.log('✅ Categoria preenchida:', categoria);
+  }
   
+  // ===== LOCALIZAÇÃO =====
   const lcCidade = document.querySelector('.lc-cidade');
-  if (lcCidade) lcCidade.textContent = empresa.localidade || 'Cidade não informada';
+  if (lcCidade) {
+    lcCidade.textContent = empresa.localidade || 'Cidade não informada';
+    console.log('✅ Cidade:', lcCidade.textContent);
+  }
   
   const lcEstado = document.querySelector('.lc-estado');
-  if (lcEstado) lcEstado.textContent = empresa.uf || 'UF';
+  if (lcEstado) {
+    lcEstado.textContent = empresa.uf || 'UF';
+    console.log('✅ Estado:', lcEstado.textContent);
+  }
   
-  // Foto de perfil
+  // ===== FOTO DE PERFIL (CORRIGIDO) =====
   const fotoPerfil = document.querySelector('.foto-perfil');
   if (fotoPerfil) {
-    if (empresa.foto) {
+    if (empresa.foto && empresa.foto !== 'null') {
       const fotoUrl = construirUrlCompleta(empresa.foto);
+      console.log('🖼️ URL da foto:', fotoUrl);
       fotoPerfil.style.backgroundImage = `url('${fotoUrl}')`;
       fotoPerfil.style.backgroundSize = 'cover';
       fotoPerfil.style.backgroundPosition = 'center';
       fotoPerfil.innerHTML = '';
     } else {
+      console.log('ℹ️ Sem foto, usando inicial');
       fotoPerfil.style.background = 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)';
       fotoPerfil.innerHTML = `<span style="color: white; font-size: 48px; font-weight: bold;">${empresa.razao_social.charAt(0).toUpperCase()}</span>`;
       fotoPerfil.style.display = 'flex';
@@ -183,117 +188,64 @@ function preencherPerfil(usuario) {
     }
   }
   
-  // Capa
+  // ===== CAPA (CORRIGIDO) =====
   const imgFundo = document.querySelector('.img-fundo');
   if (imgFundo) {
-    if (empresa.capa) {
+    if (empresa.capa && empresa.capa !== 'null') {
       const capaUrl = construirUrlCompleta(empresa.capa);
+      console.log('🎨 URL da capa:', capaUrl);
       imgFundo.style.backgroundImage = `url('${capaUrl}')`;
       imgFundo.style.backgroundSize = 'cover';
       imgFundo.style.backgroundPosition = 'center';
     } else {
+      console.log('ℹ️ Sem capa, usando gradiente');
       imgFundo.style.background = 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)';
     }
   }
   
-  // Sobre a empresa
-  const sobreEmpresa = document.querySelector('.sobre_profissional');
-  if (sobreEmpresa) {
-    const paragrafo = sobreEmpresa.querySelector('p');
-    const titulo = sobreEmpresa.querySelector('h3');
-    
-    if (titulo) titulo.textContent = 'Sobre a Empresa';
-    
-    if (paragrafo) {
-      if (empresa.descricao && empresa.descricao.trim()) {
-        paragrafo.textContent = empresa.descricao;
-        paragrafo.style.color = '';
-        paragrafo.style.fontStyle = '';
-      } else {
-        paragrafo.textContent = 'Você ainda não adicionou uma descrição. Clique em "Editar Perfil" para adicionar.';
-        paragrafo.style.color = '#999';
-        paragrafo.style.fontStyle = 'italic';
-      }
-    }
-  }
-  
-  // Telefone
-  document.querySelectorAll('.tl-numero, .telefone-numero').forEach(el => {
-    if (contato.telefone) {
-      el.textContent = contato.telefone;
-      el.closest('.telefone, .button-telefone')?.style.setProperty('display', 'flex', 'important');
-    } else {
-      el.closest('.telefone, .button-telefone')?.style.setProperty('display', 'none', 'important');
-    }
-  });
-  
-  // Email
-  document.querySelectorAll('.email-text').forEach(el => {
-    el.textContent = usuario.email || 'Email não informado';
-  });
-  
-  // Redes sociais
-  const instagram = document.querySelector('.instagram');
-  if (instagram) {
-    if (contato.instagram) {
-      instagram.style.display = 'flex';
-      const nameEl = instagram.querySelector('.name_perfil-ins, .name_perfil-x');
-      if (nameEl) nameEl.textContent = contato.instagram;
-    } else {
-      instagram.style.display = 'none';
-    }
-  }
-  
-  const facebook = document.querySelector('.facebook');
-  if (facebook) {
-    if (contato.facebook) {
-      facebook.style.display = 'flex';
-      const nameEl = facebook.querySelector('.name_perfil-fac');
-      if (nameEl) nameEl.textContent = contato.facebook;
-    } else {
-      facebook.style.display = 'none';
-    }
-  }
-  
-  const twitter = document.querySelector('.X');
-  if (twitter) {
-    if (contato.twitter) {
-      twitter.style.display = 'flex';
-      const nameEl = twitter.querySelector('.name_perfil-x');
-      if (nameEl) nameEl.textContent = contato.twitter;
-    } else {
-      twitter.style.display = 'none';
-    }
-  }
-  
-  // Projetos concluídos
+  // ===== PROJETOS CONCLUÍDOS (CORRIGIDO - SEMPRE VISÍVEL) =====
   const projetosConcluidos = document.querySelector('.projetos_concluidos');
   if (projetosConcluidos) {
-    const textoProjetos = projetosConcluidos.querySelector('.projetos_concluidos-text');
-    if (textoProjetos && empresa.projetos_concluidos !== null && empresa.projetos_concluidos !== undefined) {
-      projetosConcluidos.style.display = 'flex';
-      textoProjetos.textContent = empresa.projetos_concluidos;
+    const textElement = projetosConcluidos.querySelector('.projetos_concluidos-text');
+    projetosConcluidos.style.display = 'flex';
+    
+    if (empresa.projetos_concluidos !== null && empresa.projetos_concluidos !== undefined) {
+      if (textElement) textElement.textContent = empresa.projetos_concluidos;
+      console.log('✅ Projetos concluídos:', empresa.projetos_concluidos);
     } else {
-      projetosConcluidos.style.display = 'none';
+      if (textElement) textElement.textContent = 'Não editado';
+      textElement.style.color = '#999';
+      textElement.style.fontStyle = 'italic';
+      console.log('ℹ️ Projetos concluídos: não editado');
     }
   }
   
-  // Idade da empresa
+  // ===== IDADE DA EMPRESA (CORRIGIDO - SEMPRE VISÍVEL) =====
   const idadeEmpresa = document.querySelector('.idade_empresa');
   if (idadeEmpresa) {
-    const textoIdade = idadeEmpresa.querySelector('.idade_empresa-text');
-    if (textoIdade && empresa.idade_empresa !== null && empresa.idade_empresa !== undefined) {
-      idadeEmpresa.style.display = 'flex';
-      textoIdade.textContent = `${empresa.idade_empresa} ${empresa.idade_empresa == 1 ? 'ano' : 'anos'}`;
+    const textElement = idadeEmpresa.querySelector('.idade_empresa-text');
+    idadeEmpresa.style.display = 'flex';
+    
+    if (empresa.tempo_experiencia !== null && empresa.tempo_experiencia !== undefined) {
+      const anos = empresa.tempo_experiencia;
+      if (textElement) textElement.textContent = `${anos} ${anos === 1 ? 'ano' : 'anos'}`;
+      console.log('✅ Idade da empresa:', anos);
     } else {
-      idadeEmpresa.style.display = 'none';
+      if (textElement) textElement.textContent = 'Não editado';
+      textElement.style.color = '#999';
+      textElement.style.fontStyle = 'italic';
+      console.log('ℹ️ Idade da empresa: não editado');
     }
   }
   
-  // Avaliações
-  const avaliacao = usuario.avaliacao?.media || 0;
-  const numAvaliacoes = usuario.avaliacao?.total || 0;
+  // ===== AVALIAÇÃO (CORRIGIDO) =====
+  const avaliacaoObj = usuario.avaliacao || {};
+  const avaliacao = avaliacaoObj.media || 0;
+  const numAvaliacoes = avaliacaoObj.total || 0;
   
+  console.log('⭐ Avaliação:', { media: avaliacao, total: numAvaliacoes });
+  
+  // Atualizar todos os elementos de avaliação
   document.querySelectorAll('.quant-stars').forEach(el => {
     el.textContent = avaliacao.toFixed(1);
   });
@@ -306,7 +258,76 @@ function preencherPerfil(usuario) {
     el.textContent = numAvaliacoes === 1 ? 'avaliação' : 'avaliações';
   });
   
-  // Especialidades
+  const avaliacaoBCC = document.querySelector('.avaliacao-BCC-text');
+  if (avaliacaoBCC) {
+    avaliacaoBCC.textContent = `${avaliacao.toFixed(1)}/5.0`;
+  }
+  
+  // Preencher estrelas
+  const estrelas = document.querySelectorAll('.avaliacao-TCC .star, .avaliacao-BCC .star, .top-sess_avali .star');
+  estrelas.forEach((star, index) => {
+    if (index < Math.floor(avaliacao)) {
+      star.style.fill = 'currentColor';
+    } else {
+      star.style.fill = 'none';
+    }
+  });
+  
+  // ===== CONTATOS =====
+  // Telefone
+  document.querySelectorAll('.tl-numero, .telefone-numero').forEach(el => {
+    if (contato.telefone) {
+      el.textContent = contato.telefone;
+      el.closest('.telefone, .button-telefone')?.style.setProperty('display', 'flex', 'important');
+      console.log('✅ Telefone:', contato.telefone);
+    } else {
+      el.closest('.telefone, .button-telefone')?.style.setProperty('display', 'none', 'important');
+    }
+  });
+  
+  // Email
+  document.querySelectorAll('.email-text').forEach(el => {
+    el.textContent = usuario.email || 'Email não informado';
+  });
+  
+  // Instagram
+  const instagram = document.querySelector('.instagram');
+  if (instagram) {
+    const nomeIns = instagram.querySelector('.name_perfil-x');
+    if (contato.instagram) {
+      instagram.style.display = 'flex';
+      if (nomeIns) nomeIns.textContent = contato.instagram;
+      console.log('✅ Instagram:', contato.instagram);
+    } else {
+      instagram.style.display = 'none';
+    }
+  }
+  
+  // ===== SOBRE A EMPRESA =====
+  const sobreEmpresa = document.querySelector('.sobre_profissional');
+  if (sobreEmpresa) {
+    const paragrafo = sobreEmpresa.querySelector('p');
+    const titulo = sobreEmpresa.querySelector('h3');
+    
+    if (titulo) titulo.textContent = 'Sobre a Empresa';
+    
+    sobreEmpresa.style.display = 'block';
+    if (paragrafo) {
+      if (empresa.descricao) {
+        paragrafo.textContent = empresa.descricao;
+        paragrafo.style.color = '';
+        paragrafo.style.fontStyle = '';
+        console.log('✅ Descrição presente');
+      } else {
+        paragrafo.textContent = 'Você ainda não adicionou uma descrição. Clique em "Editar Perfil" para adicionar.';
+        paragrafo.style.color = '#999';
+        paragrafo.style.fontStyle = 'italic';
+        console.log('ℹ️ Sem descrição');
+      }
+    }
+  }
+  
+  // ===== ESPECIALIDADES =====
   const especialidadesContainer = document.querySelector('.especialidades');
   if (especialidadesContainer) {
     if (empresa.skills && empresa.skills.length > 0) {
@@ -319,15 +340,19 @@ function preencherPerfil(usuario) {
         spanDiv.innerHTML = `<span class="especialidade-op">${skill.nome || skill.name || skill}</span>`;
         especialidadesContainer.appendChild(spanDiv);
       });
+      console.log('✅ Especialidades:', empresa.skills.length);
     } else {
       especialidadesContainer.style.display = 'none';
+      console.log('ℹ️ Sem especialidades');
     }
   }
   
-  // Carregar publicações
+  // ===== PUBLICAÇÕES =====
   if (usuario.portfolios && usuario.portfolios.length > 0) {
+    console.log('📸 Carregando', usuario.portfolios.length, 'publicações');
     carregarPublicacoes(usuario.portfolios);
   } else {
+    console.log('ℹ️ Sem publicações');
     const publicacoesContainer = document.querySelector('.home-cards-post');
     if (publicacoesContainer) {
       publicacoesContainer.innerHTML = '<p style="text-align: center; padding: 40px; color: #999; font-style: italic;">Você ainda não possui publicações. Clique em "Nova publicação" para adicionar.</p>';
@@ -348,9 +373,10 @@ function carregarPublicacoes(portfolios) {
     const card = document.createElement('div');
     card.className = 'card-publicacoes';
     
-    const imagemUrl = portfolio.fotos && portfolio.fotos[0] 
-      ? construirUrlCompleta(portfolio.fotos[0].caminho)
-      : '';
+    let imagemUrl = '';
+    if (portfolio.fotos && portfolio.fotos.length > 0 && portfolio.fotos[0].caminho) {
+      imagemUrl = construirUrlCompleta(portfolio.fotos[0].caminho);
+    }
     
     card.innerHTML = `
       <div class="img-card_publicacoes" style="background-image: url('${imagemUrl}'); background-size: cover; background-position: center;"></div>
@@ -364,194 +390,16 @@ function carregarPublicacoes(portfolios) {
   });
 }
 
-// ========== MODAL EDITAR PERFIL ==========
-const btnEditarPerfil = document.querySelector('.btn-editar-perfil');
-const modal = document.getElementById('modalPerfil');
-
-if (btnEditarPerfil && modal) {
-  btnEditarPerfil.addEventListener('click', async () => {
-    try {
-      const userId = getUserId();
-      const token = getAuthToken();
-      
-      const response = await fetch(`${API_URL}/usuarios/${userId}`, {
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Accept': 'application/json'
-        }
-      });
-      
-      const data = await response.json();
-      const usuario = data.user || data.data || data;
-      const empresa = usuario.empresa;
-      const contato = usuario.contato || {};
-      
-      // Pré-preencher formulário
-      document.getElementById('name').value = empresa.razao_social || '';
-      document.getElementById('sobreEmpresa').value = empresa.descricao || '';
-      document.getElementById('instagram').value = contato.instagram || '';
-      document.getElementById('facebook').value = contato.facebook || '';
-      document.getElementById('twitter').value = contato.twitter || '';
-      document.getElementById('phone').value = contato.telefone || '';
-      document.getElementById('registerEmail').value = usuario.email || '';
-      document.getElementById('ProjetosConcluidos').value = empresa.projetos_concluidos || '';
-      document.getElementById('TempoExpe').value = empresa.idade_empresa || '';
-      
-      // Pré-selecionar categoria
-      const inputArea = document.getElementById('profission');
-      if (inputArea && usuario.empresa.categoria) {
-        inputArea.value = usuario.empresa.categoria.nome;
-        inputArea.dataset.categoriaId = usuario.empresa.categoria.id;
-      }
-      
-      modal.classList.add('active');
-      
-    } catch (error) {
-      console.error('Erro ao abrir modal:', error);
-      showToast('Erro ao carregar dados', 'error');
-    }
-  });
-}
-
-// ========== SALVAR ALTERAÇÕES - CORRIGIDO ==========
-const formEditarPerfil = document.getElementById('Form');
-
-if (formEditarPerfil) {
-  formEditarPerfil.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    
-    try {
-      const token = getAuthToken();
-      const userId = getUserId();
-      
-      if (!token) {
-        showToast('Você precisa estar logado', 'error');
-        return;
-      }
-      
-      const formData = new FormData();
-      
-      // Dados básicos
-      const nome = document.getElementById('name')?.value.trim();
-      if (nome) formData.append('razao_social', nome);
-      
-      const descricao = document.getElementById('sobreEmpresa')?.value.trim();
-      if (descricao) formData.append('descricao', descricao);
-      
-      const email = document.getElementById('registerEmail')?.value.trim();
-      if (email) formData.append('email', email);
-      
-      const telefone = document.getElementById('phone')?.value.trim();
-      if (telefone) formData.append('telefone', telefone);
-      
-      const instagram = document.getElementById('instagram')?.value.trim();
-      if (instagram) formData.append('instagram', instagram);
-      
-      const facebook = document.getElementById('facebook')?.value.trim();
-      if (facebook) formData.append('facebook', facebook);
-      
-      const twitter = document.getElementById('twitter')?.value.trim();
-      if (twitter) formData.append('twitter', twitter);
-      
-      const projetos = document.getElementById('ProjetosConcluidos')?.value;
-      if (projetos) formData.append('projetos_concluidos', projetos);
-      
-      const idade = document.getElementById('TempoExpe')?.value;
-      if (idade) formData.append('idade_empresa', idade);
-      
-      // Categoria
-      const inputArea = document.getElementById('profission');
-      if (inputArea && inputArea.dataset.categoriaId) {
-        formData.append('id_categoria', inputArea.dataset.categoriaId);
-      }
-      
-      // Fotos
-      const fotoPerfil = document.getElementById('Perfil');
-      if (fotoPerfil?.files[0]) {
-        formData.append('foto', fotoPerfil.files[0]);
-      }
-      
-      const fotoBanner = document.getElementById('Banner');
-      if (fotoBanner?.files[0]) {
-        formData.append('capa', fotoBanner.files[0]);
-      }
-      
-      console.log('📤 Enviando dados...');
-      
-      // 🔥 CORRIGIDO: usar a rota correta /usuario/update com POST
-      const response = await fetch(`${API_URL}/usuario/update`, {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Accept': 'application/json'
-        },
-        body: formData
-      });
-      
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || 'Erro ao atualizar perfil');
-      }
-      
-      const result = await response.json();
-      console.log('✅ Perfil atualizado:', result);
-      
-      showToast('Perfil atualizado com sucesso!', 'success');
-      
-      modal.classList.remove('active');
-      await carregarMeuPerfil();
-      
-    } catch (error) {
-      console.error('❌ Erro ao atualizar perfil:', error);
-      showToast(error.message || 'Erro ao atualizar perfil', 'error');
-    }
-  });
-}
-
-// ========== PREVIEW DE IMAGENS ==========
-const inputPerfil = document.getElementById('Perfil');
-const inputBanner = document.getElementById('Banner');
-const previewPerfil = document.getElementById('PerfilPreview');
-const previewBanner = document.getElementById('BannerPreview');
-
-if (inputPerfil && previewPerfil) {
-  inputPerfil.addEventListener('change', (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = (event) => {
-        previewPerfil.style.backgroundImage = `url('${event.target.result}')`;
-        previewPerfil.style.backgroundSize = 'cover';
-        previewPerfil.style.backgroundPosition = 'center';
-        previewPerfil.innerHTML = '';
-      };
-      reader.readAsDataURL(file);
-    }
-  });
-}
-
-if (inputBanner && previewBanner) {
-  inputBanner.addEventListener('change', (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = (event) => {
-        previewBanner.style.backgroundImage = `url('${event.target.result}')`;
-        previewBanner.style.backgroundSize = 'cover';
-        previewBanner.style.backgroundPosition = 'center';
-        previewBanner.innerHTML = '';
-      };
-      reader.readAsDataURL(file);
-    }
-  });
-}
-
 // ========== MODAL ADICIONAR PUBLICAÇÃO ==========
 const btnAddPost = document.querySelector('.btn-add-post');
 const modalAddPost = document.getElementById('modalAddPub');
 const btnFecharAddPub = document.getElementById('fecharAddPub');
 const btnCancelarAddPub = document.getElementById('cancelarAddPub');
 const btnConfirmarAddPub = document.getElementById('confirmarAddPub');
+const inputMidias = document.getElementById('pubMidias');
+const previewContainer = document.getElementById('previewContainer');
+
+let selectedFiles = [];
 
 if (btnAddPost && modalAddPost) {
   btnAddPost.addEventListener('click', () => {
@@ -560,96 +408,135 @@ if (btnAddPost && modalAddPost) {
   });
 }
 
-if (btnFecharAddPub && modalAddPost) {
-  btnFecharAddPub.addEventListener('click', () => {
-    modalAddPost.classList.remove('active');
-    document.body.style.overflow = 'auto';
-    limparFormularioPublicacao();
-  });
+function fecharModalPublicacao() {
+  modalAddPost.classList.remove('active');
+  document.body.style.overflow = 'auto';
+  limparFormularioPublicacao();
 }
 
-if (btnCancelarAddPub && modalAddPost) {
-  btnCancelarAddPub.addEventListener('click', () => {
-    modalAddPost.classList.remove('active');
-    document.body.style.overflow = 'auto';
-    limparFormularioPublicacao();
-  });
-}
+if (btnFecharAddPub) btnFecharAddPub.addEventListener('click', fecharModalPublicacao);
+if (btnCancelarAddPub) btnCancelarAddPub.addEventListener('click', fecharModalPublicacao);
 
 function limparFormularioPublicacao() {
+  const titulo = document.getElementById('pubTitulo');
   const descricao = document.getElementById('pubDescricao');
-  const midias = document.getElementById('pubMidias');
-  const preview = document.getElementById('previewContainer');
   
+  if (titulo) titulo.value = '';
   if (descricao) descricao.value = '';
-  if (midias) midias.value = '';
-  if (preview) preview.innerHTML = '';
+  if (inputMidias) inputMidias.value = '';
+  if (previewContainer) previewContainer.innerHTML = '';
+  
+  selectedFiles = [];
 }
 
-// PREVIEW DE MÍDIAS
-const inputMidias = document.getElementById('pubMidias');
-const previewContainer = document.getElementById('previewContainer');
-
+// ========== PREVIEW DE ARQUIVOS ==========
 if (inputMidias && previewContainer) {
   inputMidias.addEventListener('change', (e) => {
-    previewContainer.innerHTML = '';
-    const files = Array.from(e.target.files);
-    
-    files.forEach((file, index) => {
-      const reader = new FileReader();
-      reader.onload = (event) => {
-        const preview = document.createElement('div');
-        preview.className = 'preview-item';
-        preview.style.cssText = 'position: relative; width: 100px; height: 100px; margin: 5px; display: inline-block;';
-        
-        if (file.type.startsWith('image/')) {
-          preview.innerHTML = `<img src="${event.target.result}" alt="Preview ${index + 1}" style="width: 100%; height: 100%; object-fit: cover; border-radius: 8px;">`;
-        } else if (file.type.startsWith('video/')) {
-          preview.innerHTML = `<video src="${event.target.result}" style="width: 100%; height: 100%; object-fit: cover; border-radius: 8px;"></video>`;
-        }
-        
-        previewContainer.appendChild(preview);
-      };
-      reader.readAsDataURL(file);
-    });
+    const newFiles = Array.from(e.target.files);
+    selectedFiles = [...selectedFiles, ...newFiles];
+    atualizarPreview();
   });
 }
 
-// CONFIRMAR PUBLICAÇÃO - CORRIGIDO
+function atualizarPreview() {
+  previewContainer.innerHTML = '';
+  
+  if (selectedFiles.length === 0) return;
+  
+  selectedFiles.forEach((file, index) => {
+    const reader = new FileReader();
+    
+    reader.onload = (event) => {
+      const preview = document.createElement('div');
+      preview.className = 'preview-item';
+      preview.style.cssText = 'position: relative; width: 150px; height: 150px; border-radius: 8px; overflow: hidden; margin: 5px;';
+      
+      if (file.type.startsWith('image/')) {
+        preview.innerHTML = `
+          <img src="${event.target.result}" style="width: 100%; height: 100%; object-fit: cover;">
+          <button class="remove-btn" data-index="${index}" style="position: absolute; top: 5px; right: 5px; background: red; color: white; border: none; border-radius: 50%; width: 25px; height: 25px; cursor: pointer;">×</button>
+        `;
+      } else if (file.type.startsWith('video/')) {
+        preview.innerHTML = `
+          <video src="${event.target.result}" style="width: 100%; height: 100%; object-fit: cover;"></video>
+          <button class="remove-btn" data-index="${index}" style="position: absolute; top: 5px; right: 5px; background: red; color: white; border: none; border-radius: 50%; width: 25px; height: 25px; cursor: pointer;">×</button>
+        `;
+      }
+      
+      previewContainer.appendChild(preview);
+      
+      const removeBtn = preview.querySelector('.remove-btn');
+      removeBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        removerArquivo(index);
+      });
+    };
+    
+    reader.readAsDataURL(file);
+  });
+}
+
+function removerArquivo(index) {
+  selectedFiles.splice(index, 1);
+  atualizarPreview();
+}
+
+// ========== CONFIRMAR PUBLICAÇÃO (DEBUG COMPLETO) ==========
 if (btnConfirmarAddPub) {
   btnConfirmarAddPub.addEventListener('click', async () => {
     try {
+      const titulo = document.getElementById('pubTitulo')?.value.trim();
       const descricao = document.getElementById('pubDescricao')?.value.trim();
-      const midias = document.getElementById('pubMidias')?.files;
+      
+      console.log('📤 DEBUG - Dados da publicação:', { titulo, descricao, arquivos: selectedFiles.length });
+      
+      // Validações
+      if (!titulo) {
+        showToast('Digite um título para a publicação', 'error');
+        return;
+      }
       
       if (!descricao) {
-        showToast('Preencha a descrição', 'error');
+        showToast('Digite uma descrição para a publicação', 'error');
         return;
       }
       
-      if (!midias || midias.length === 0) {
-        showToast('Adicione pelo menos uma mídia', 'error');
+      if (selectedFiles.length === 0) {
+        showToast('Adicione pelo menos uma imagem ou vídeo', 'error');
         return;
       }
       
+      // Criar FormData
       const formData = new FormData();
+      formData.append('titulo', titulo);
       formData.append('descricao', descricao);
       
-      // Separar imagens e vídeos
-      Array.from(midias).forEach((file) => {
+      // Adicionar arquivos
+      selectedFiles.forEach((file) => {
         if (file.type.startsWith('image/')) {
           formData.append('imagens[]', file);
+          console.log('🖼️ Adicionando imagem:', file.name);
         } else if (file.type.startsWith('video/')) {
           formData.append('videos[]', file);
+          console.log('🎥 Adicionando vídeo:', file.name);
         }
       });
       
+      // Debug: ver conteúdo do FormData
+      console.log('📦 Conteúdo do FormData:');
+      for (let [key, value] of formData.entries()) {
+        console.log(`  ${key}:`, value instanceof File ? `${value.name} (${value.size} bytes)` : value);
+      }
+      
       const token = getAuthToken();
+      const url = `${API_URL}/portfolio/cadastro`;
+      
+      console.log('🌐 URL da requisição:', url);
+      console.log('🔑 Token presente:', !!token);
       
       showToast('Criando publicação...', 'info');
       
-      // 🔥 CORRIGIDO: usar a rota correta /portfolio/cadastro
-      const response = await fetch(`${API_URL}/portfolio/cadastro`, {
+      const response = await fetch(url, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -658,95 +545,48 @@ if (btnConfirmarAddPub) {
         body: formData
       });
       
+      console.log('📡 Status da resposta:', response.status);
+      console.log('📡 Headers da resposta:', [...response.headers.entries()]);
+      
+      const responseText = await response.text();
+      console.log('📥 Resposta bruta:', responseText);
+      
       if (!response.ok) {
-        const errorData = await response.json();
+        let errorData;
+        try {
+          errorData = JSON.parse(responseText);
+        } catch {
+          errorData = { message: responseText };
+        }
+        console.error('❌ Erro na API:', errorData);
         throw new Error(errorData.message || 'Erro ao criar publicação');
       }
       
-      const result = await response.json();
+      const result = JSON.parse(responseText);
       console.log('✅ Publicação criada:', result);
       
       showToast('Publicação criada com sucesso!', 'success');
-      modalAddPost.classList.remove('active');
-      document.body.style.overflow = 'auto';
-      limparFormularioPublicacao();
+      fecharModalPublicacao();
       
-      // Recarregar perfil para mostrar nova publicação
+      // Recarregar perfil
       await carregarMeuPerfil();
       
     } catch (error) {
-      console.error('Erro ao criar publicação:', error);
+      console.error('❌ Erro completo:', error);
+      console.error('Stack trace:', error.stack);
       showToast(error.message || 'Erro ao criar publicação', 'error');
     }
   });
 }
 
-// ========== CANCELAR EDIÇÃO ==========
-const btnCancelarEdit = document.getElementById('cancelBtn');
-
-if (btnCancelarEdit) {
-  btnCancelarEdit.addEventListener('click', () => {
-    modal.classList.remove('active');
-    formEditarPerfil.reset();
-  });
-}
-
-// ========== SAIR DA CONTA ==========
-const btnSair = document.getElementById('SairConta');
-
-if (btnSair) {
-  btnSair.addEventListener('click', (e) => {
-    e.preventDefault();
-    
-    if (confirm('Deseja realmente sair da sua conta?')) {
-      localStorage.clear();
-      showToast('Saindo...', 'success');
-      setTimeout(() => window.location.href = '/Login/index.html', 1000);
-    }
-  });
-}
-
-// ========== EXCLUIR CONTA ==========
-const btnExcluir = document.getElementById('excluirConta');
-
-if (btnExcluir) {
-  btnExcluir.addEventListener('click', async (e) => {
-    e.preventDefault();
-    
-    if (!confirm('⚠️ ATENÇÃO: Esta ação é IRREVERSÍVEL!\n\nDeseja realmente excluir sua conta permanentemente?')) {
-      return;
-    }
-    
-    try {
-      const userId = getUserId();
-      const token = getAuthToken();
-      
-      const response = await fetch(`${API_URL}/usuarios/${userId}`, {
-        method: 'DELETE',
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Accept': 'application/json'
-        }
-      });
-      
-      if (response.ok) {
-        showToast('Conta excluída com sucesso', 'success');
-        localStorage.clear();
-        setTimeout(() => window.location.href = '/', 2000);
-      } else {
-        throw new Error('Erro ao excluir conta');
-      }
-    } catch (error) {
-      console.error('Erro ao excluir conta:', error);
-      showToast('Erro ao excluir conta', 'error');
-    }
-  });
-}
-
-
-
 // ========== INICIALIZAÇÃO ==========
 document.addEventListener('DOMContentLoaded', () => {
-  console.log('🚀 Página de Perfil Próprio (Empresa) carregada');
+  console.log('🚀 Página de Perfil Próprio (Empresa) vaiii carregada');
+  console.log('🔍 LocalStorage:', {
+    userId: getUserId(),
+    userType: getUserType(),
+    token: getAuthToken() ? 'presente' : 'ausente'
+  });
+  
   carregarMeuPerfil();
 });

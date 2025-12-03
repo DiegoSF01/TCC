@@ -1,5 +1,5 @@
 // ==========================================
-// SCRIPT FEED - VERSÃO COMPLETA COM API
+// SCRIPT FEED - VERSÃO 100% FUNCIONAL
 // ==========================================
 
 const API_URL = 'http://127.0.0.1:8000/api';
@@ -14,8 +14,12 @@ function construirUrlCompleta(caminho) {
   if (!caminho) return null;
   if (caminho.startsWith('http')) return caminho;
   
-  const caminhoLimpo = caminho.replace(/^public\//, '');
+  const caminhoLimpo = caminho.replace(/^public\//, '').replace(/^storage\//, '');
   return `${BASE_URL}/storage/${caminhoLimpo}`;
+}
+
+function showToast(message, type = 'info') {
+  console.log(`[${type.toUpperCase()}] ${message}`);
 }
 
 // ========== ELEMENTOS DE FILTRO ==========
@@ -97,9 +101,9 @@ async function carregarPublicacoesFeed() {
     
   } catch (error) {
     console.error('❌ Erro ao carregar feed:', error);
-    const feedContainer = document.querySelector('.feed-list');
+    const feedContainer = document.querySelector('.feed-grid');
     if (feedContainer) {
-      feedContainer.innerHTML = '<p style="text-align: center; padding: 40px; color: #999;">Erro ao carregar publicações</p>';
+      feedContainer.innerHTML = '<p style="text-align: center; padding: 40px; color: #999; grid-column: 1/-1;">Erro ao carregar publicações</p>';
     }
   }
 }
@@ -138,7 +142,7 @@ function aplicarFiltros(publicacoes) {
   
   if (!mostrarProfissional || !mostrarEmpresa) {
     resultado = resultado.filter(pub => {
-      const tipoConta = pub.usuario?.tipo_conta || pub.user?.tipo_conta;
+      const tipoConta = pub.user?.tipo_conta;
       if (mostrarProfissional && !mostrarEmpresa) return tipoConta === 'prestador';
       if (!mostrarProfissional && mostrarEmpresa) return tipoConta === 'empresa';
       return false;
@@ -149,7 +153,7 @@ function aplicarFiltros(publicacoes) {
   const profissaoFiltro = profissaoInput?.value.trim().toLowerCase();
   if (profissaoFiltro) {
     resultado = resultado.filter(pub => {
-      const ramo = pub.usuario?.ramo?.nome || pub.user?.ramo?.nome || '';
+      const ramo = pub.user_ramo || '';
       return ramo.toLowerCase().includes(profissaoFiltro);
     });
   }
@@ -165,16 +169,16 @@ function aplicarFiltros(publicacoes) {
   }
   
   // Ordenação
-  const ordenacao = orderBySelect?.value || 'recente';
+  const ordenacao = orderBySelect?.value || 'recent';
   
-  if (ordenacao === 'recente') {
+  if (ordenacao === 'recent') {
     resultado.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
-  } else if (ordenacao === 'antigo') {
+  } else if (ordenacao === 'oldest') {
     resultado.sort((a, b) => new Date(a.created_at) - new Date(b.created_at));
-  } else if (ordenacao === 'avaliacao') {
+  } else if (ordenacao === 'rating') {
     resultado.sort((a, b) => {
-      const avalA = a.usuario?.avaliacao?.media || a.user?.avaliacao?.media || 0;
-      const avalB = b.usuario?.avaliacao?.media || b.user?.avaliacao?.media || 0;
+      const avalA = a.user?.avaliacao?.media || 0;
+      const avalB = b.user?.avaliacao?.media || 0;
       return avalB - avalA;
     });
   }
@@ -184,29 +188,25 @@ function aplicarFiltros(publicacoes) {
 
 // ========== RENDERIZAR PUBLICAÇÕES ==========
 function renderizarPublicacoes(publicacoes) {
-  const feedContainer = document.querySelector('.feed-list');
+  const feedContainer = document.querySelector('.feed-grid');
   
   if (!feedContainer) return;
   
   if (publicacoes.length === 0) {
-    feedContainer.innerHTML = '<p style="text-align: center; padding: 40px; color: #999; font-style: italic;">Nenhuma publicação encontrada</p>';
+    feedContainer.innerHTML = '<p style="text-align: center; padding: 40px; color: #999; font-style: italic; grid-column: 1/-1;">Nenhuma publicação encontrada</p>';
     return;
   }
   
   feedContainer.innerHTML = '';
   
   publicacoes.forEach(pub => {
-    const usuario = pub.usuario || pub.user;
+    const usuario = pub.user;
     if (!usuario) return;
     
     const tipoConta = usuario.tipo_conta;
-    const perfilData = tipoConta === 'prestador' ? usuario.prestador : usuario.empresa;
-    
-    if (!perfilData) return;
-    
-    const nome = tipoConta === 'prestador' ? perfilData.nome : perfilData.razao_social;
-    const foto = construirUrlCompleta(perfilData.foto);
-    const ramo = usuario.ramo?.nome || 'Sem categoria';
+    const nome = pub.user_nome || 'Usuário';
+    const foto = pub.user_foto || '/assets/default-avatar.png';
+    const ramo = pub.user_ramo || 'Sem categoria';
     const avaliacao = usuario.avaliacao?.media || 0;
     const badge = tipoConta === 'prestador' ? 'Profissional' : 'Empresa';
     const badgeClass = tipoConta === 'prestador' ? 'profissional' : 'empresa';
@@ -216,26 +216,28 @@ function renderizarPublicacoes(publicacoes) {
     const card = document.createElement('div');
     card.className = 'feed-card';
     card.setAttribute('data-portfolio-id', pub.id);
+    card.style.cursor = 'pointer';
     
     card.innerHTML = `
       <div class="feed-card-header">
-        <img src="${foto || '/assets/default-avatar.png'}" alt="${nome}" class="profile-pic">
-        <div class="feed-card-user-info">
-          <div class="user-info-top">
+        <img src="${foto}" alt="${nome}" class="profile-pic" onerror="this.src='/assets/default-avatar.png'">
+        <div class="profile-info">
+          <div class="profile-name-row">
             <h3 class="profile-name">${nome}</h3>
             <span class="account-type ${badgeClass}">${badge}</span>
           </div>
           <p class="profile-sector">${ramo}</p>
           <div class="rating">
             ${gerarEstrelas(avaliacao)}
+            <span class="rating-text">${avaliacao.toFixed(1)}</span>
           </div>
         </div>
       </div>
-      <div class="feed-card-body">
-        <h4 class="feed-title">${pub.titulo || 'Sem título'}</h4>
-        <div class="feed-card-image">
-          <img src="${imagemUrl}" alt="${pub.titulo || 'Publicação'}">
-        </div>
+      <div class="feed-card-image">
+        <img src="${imagemUrl}" alt="${pub.titulo || 'Publicação'}" onerror="this.src='/assets/placeholder.jpg'">
+      </div>
+      <div class="feed-card-content">
+        <h2 class="feed-title">${pub.titulo || 'Sem título'}</h2>
         <p class="feed-description">${pub.descricao || 'Sem descrição'}</p>
       </div>
     `;
@@ -254,13 +256,80 @@ function gerarEstrelas(avaliacao) {
   
   for (let i = 0; i < 5; i++) {
     if (i < estrelasCheias) {
-      html += '<span class="star filled">★</span>';
+      html += `<svg class="star" width="14" height="14" viewBox="0 0 24 24" fill="#fbbf24">
+        <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+      </svg>`;
     } else {
-      html += '<span class="star">☆</span>';
+      html += `<svg class="star" width="14" height="14" viewBox="0 0 24 24" fill="#e5e7eb">
+        <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+      </svg>`;
     }
   }
   
   return html;
+}
+
+// ========== EVENTOS DE CLIQUE NOS CARDS ==========
+function adicionarEventosCards() {
+  const feedCards = document.querySelectorAll('.feed-card');
+  
+  feedCards.forEach(card => {
+    card.addEventListener('click', async function () {
+      const portfolioId = this.getAttribute('data-portfolio-id');
+      await abrirModalPublicacao(portfolioId);
+    });
+  });
+}
+
+// ========== ABRIR MODAL COM DADOS DA API ==========
+async function abrirModalPublicacao(portfolioId) {
+  try {
+    const token = getAuthToken();
+    
+    const response = await fetch(`${API_URL}/portfolio/${portfolioId}`, {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Accept': 'application/json'
+      }
+    });
+    
+    if (!response.ok) throw new Error('Erro ao carregar publicação');
+    
+    const data = await response.json();
+    const pub = data.data || data.portfolio || data;
+    
+    const usuario = pub.user;
+    const tipoConta = usuario.tipo_conta;
+    const perfilData = tipoConta === 'prestador' ? usuario.prestador : usuario.empresa;
+    
+    const nome = tipoConta === 'prestador' ? perfilData.nome : perfilData.razao_social;
+    const foto = construirUrlCompleta(perfilData.foto);
+    const ramo = usuario.ramo?.nome || usuario.categoria?.nome || 'Sem categoria';
+    const avaliacao = usuario.avaliacao?.media || 0;
+    const badge = tipoConta === 'prestador' ? 'Profissional' : 'Empresa';
+    const badgeClass = tipoConta === 'prestador' ? 'badge-profissional' : 'badge-empresa';
+    
+    const imagemUrl = pub.fotos && pub.fotos[0] ? construirUrlCompleta(pub.fotos[0].caminho) : '';
+    
+    // Preencher modal
+    document.getElementById('modalAvatar').src = foto || '/assets/default-avatar.png';
+    document.getElementById('modalUserName').textContent = nome;
+    document.getElementById('modalUserSector').textContent = ramo;
+    document.getElementById('modalBadge').textContent = badge;
+    document.getElementById('modalBadge').className = `modal-user-badge ${badgeClass}`;
+    document.getElementById('modalTitle').textContent = pub.titulo || 'Sem título';
+    document.getElementById('modalDescription').textContent = pub.descricao || 'Sem descrição';
+    document.getElementById('modalImage').innerHTML = `<img src="${imagemUrl}" alt="${pub.titulo}" onerror="this.src='/assets/placeholder.jpg'">`;
+    document.getElementById('modalRating').innerHTML = gerarEstrelas(avaliacao) + `<span class="rating-text">${avaliacao.toFixed(1)}</span>`;
+    
+    // Abrir modal
+    const modal = document.getElementById('modalPublicacao');
+    modal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+    
+  } catch (error) {
+    console.error('Erro ao abrir modal:', error);
+  }
 }
 
 // ========== MODAL DE PUBLICAÇÃO ==========
@@ -318,69 +387,6 @@ window.addEventListener('load', function () {
     document.body.style.overflow = 'auto';
   }
 });
-
-// ========== EVENTOS DE CLIQUE NOS CARDS ==========
-function adicionarEventosCards() {
-  const feedCards = document.querySelectorAll('.feed-card');
-  
-  feedCards.forEach(card => {
-    card.addEventListener('click', async function () {
-      const portfolioId = this.getAttribute('data-portfolio-id');
-      await abrirModalPublicacao(portfolioId);
-    });
-  });
-}
-
-// ========== ABRIR MODAL COM DADOS DA API ==========
-async function abrirModalPublicacao(portfolioId) {
-  try {
-    const token = getAuthToken();
-    
-    const response = await fetch(`${API_URL}/portfolio/${portfolioId}`, {
-      headers: {
-        'Authorization': `Bearer ${token}`,
-        'Accept': 'application/json'
-      }
-    });
-    
-    if (!response.ok) throw new Error('Erro ao carregar publicação');
-    
-    const data = await response.json();
-    const pub = data.data || data.portfolio || data;
-    
-    const usuario = pub.usuario || pub.user;
-    const tipoConta = usuario.tipo_conta;
-    const perfilData = tipoConta === 'prestador' ? usuario.prestador : usuario.empresa;
-    
-    const nome = tipoConta === 'prestador' ? perfilData.nome : perfilData.razao_social;
-    const foto = construirUrlCompleta(perfilData.foto);
-    const ramo = usuario.ramo?.nome || 'Sem categoria';
-    const avaliacao = usuario.avaliacao?.media || 0;
-    const badge = tipoConta === 'prestador' ? 'Profissional' : 'Empresa';
-    const badgeClass = tipoConta === 'prestador' ? 'badge-profissional' : 'badge-empresa';
-    
-    const imagemUrl = pub.fotos && pub.fotos[0] ? construirUrlCompleta(pub.fotos[0].caminho) : '';
-    
-    // Preencher modal
-    document.getElementById('modalAvatar').src = foto || '/assets/default-avatar.png';
-    document.getElementById('modalUserName').textContent = nome;
-    document.getElementById('modalUserSector').textContent = ramo;
-    document.getElementById('modalBadge').textContent = badge;
-    document.getElementById('modalBadge').className = `modal-user-badge ${badgeClass}`;
-    document.getElementById('modalTitle').textContent = pub.titulo || 'Sem título';
-    document.getElementById('modalDescription').textContent = pub.descricao || 'Sem descrição';
-    document.getElementById('modalImage').innerHTML = `<img src="${imagemUrl}" alt="${pub.titulo}">`;
-    document.getElementById('modalRating').innerHTML = gerarEstrelas(avaliacao);
-    
-    // Abrir modal
-    const modal = document.getElementById('modalPublicacao');
-    modal.classList.add('active');
-    document.body.style.overflow = 'hidden';
-    
-  } catch (error) {
-    console.error('Erro ao abrir modal:', error);
-  }
-}
 
 // ========== INICIALIZAÇÃO ==========
 document.addEventListener('DOMContentLoaded', () => {

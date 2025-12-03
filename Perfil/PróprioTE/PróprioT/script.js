@@ -1,8 +1,9 @@
 // ==========================================
-// SCRIPT PERFIL PRÓPRIO - PRESTADOR/TRABALHADOR
+// SCRIPT PERFIL PRÓPRIO - PRESTADOR/TRABALHADOR (VERSÃO CORRIGIDA COMPLETA)
 // ==========================================
 
 const API_URL = 'http://127.0.0.1:8000/api';
+const BASE_URL = 'http://127.0.0.1:8000';
 
 // ========== UTILITÁRIOS ==========
 function showToast(message, type = 'success') {
@@ -30,17 +31,11 @@ function showToast(message, type = 'success') {
   toast.textContent = message;
   toast.style.opacity = '1';
   
-  if (type === 'success') {
-    toast.style.background = '#28a745';
-  } else if (type === 'error') {
-    toast.style.background = '#dc3545';
-  } else {
-    toast.style.background = '#007bff';
-  }
+  if (type === 'success') toast.style.background = '#28a745';
+  else if (type === 'error') toast.style.background = '#dc3545';
+  else toast.style.background = '#007bff';
   
-  setTimeout(() => {
-    toast.style.opacity = '0';
-  }, 3000);
+  setTimeout(() => toast.style.opacity = '0', 3000);
 }
 
 function getAuthToken() {
@@ -53,6 +48,14 @@ function getUserId() {
 
 function getUserType() {
   return localStorage.getItem('userType');
+}
+
+function construirUrlCompleta(caminho) {
+  if (!caminho || caminho === 'null') return null;
+  if (caminho.startsWith('http')) return caminho;
+  
+  const caminhoLimpo = caminho.replace(/^public\//, '');
+  return `${BASE_URL}/storage/${caminhoLimpo}`;
 }
 
 // ========== NAVEGAÇÃO ENTRE ABAS ==========
@@ -95,12 +98,14 @@ btn_sobre?.addEventListener('click', clicou_sobre);
 btn_postagens?.addEventListener('click', clicou_postagens);
 btn_avaliacao?.addEventListener('click', clicou_avaliacao);
 
-// ========== CARREGAR MEU PERFIL (PRESTADOR LOGADO) ==========
+// ========== DEBUG: CARREGAR MEU PERFIL ==========
 async function carregarMeuPerfil() {
   try {
     const userId = getUserId();
     const userType = getUserType();
     const token = getAuthToken();
+    
+    console.log('🔍 DEBUG - Iniciando carregamento:', { userId, userType, token: token ? 'presente' : 'ausente' });
     
     if (!userId || !token) {
       console.error('❌ Usuário não autenticado');
@@ -109,17 +114,15 @@ async function carregarMeuPerfil() {
       return;
     }
     
-    // Verificar se é prestador
     if (userType !== 'prestador') {
-      console.error('❌ Tipo de usuário incorreto');
+      console.error('❌ Tipo de usuário incorreto:', userType);
       showToast('Acesso negado', 'error');
       setTimeout(() => window.location.href = '../Parte1/index.html', 2000);
       return;
     }
     
-    console.log('🔵 Carregando meu perfil (Prestador):', { userId, userType });
+    console.log('📡 Fazendo requisição para:', `${API_URL}/usuarios/${userId}`);
     
-    // Buscar meus dados
     const response = await fetch(`${API_URL}/usuarios/${userId}`, {
       headers: {
         'Authorization': `Bearer ${token}`,
@@ -127,245 +130,180 @@ async function carregarMeuPerfil() {
       }
     });
     
+    console.log('📥 Status da resposta:', response.status);
+    
     if (!response.ok) {
+      const errorText = await response.text();
+      console.error('❌ Erro na resposta:', errorText);
       throw new Error('Erro ao carregar perfil');
     }
     
     const data = await response.json();
+    console.log('✅ Dados brutos recebidos:', JSON.stringify(data, null, 2));
+    
     const usuario = data.user || data.data || data;
+    console.log('📦 Objeto usuario extraído:', usuario);
     
-    console.log('✅ Meus dados recebidos:', usuario);
+    // DEBUG: Verificar estrutura
+    console.log('🔍 Verificando prestador:', usuario.prestador);
+    console.log('🔍 Verificando ramo:', usuario.prestador?.ramo);
+    console.log('🔍 Verificando contato:', usuario.contato);
+    console.log('🔍 Verificando avaliacao:', usuario.avaliacao);
     
-    // Preencher perfil
     preencherPerfil(usuario);
     
   } catch (error) {
-    console.error('❌ Erro ao carregar perfil:', error);
+    console.error('❌ Erro completo:', error);
+    console.error('Stack trace:', error.stack);
     showToast('Erro ao carregar perfil', 'error');
   }
 }
 
-// ========== PREENCHER DADOS DO PERFIL ==========
+// ========== PREENCHER PERFIL (CORRIGIDO COM FALLBACKS) ==========
 function preencherPerfil(usuario) {
-  console.log('🔵 Preenchendo meu perfil com:', usuario);
+  console.log('🎨 Iniciando preenchimento do perfil');
+  console.log('📦 Dados recebidos:', usuario);
   
   if (!usuario.prestador) {
-    console.error('❌ Dados de prestador não encontrados');
-    showToast('Erro nos dados do perfil', 'error');
+    console.error('❌ ERRO: dados do prestador não encontrados');
+    showToast('Erro: dados do prestador não encontrados', 'error');
     return;
   }
   
   const prestador = usuario.prestador;
+  const contato = usuario.contato || {};
   
-  // Extrair dados
-  const dados = {
-    nome: prestador.nome || 'Nome não informado',
-    profissao: usuario.ramo?.nome || 'Profissão não informada',
-    cidade: prestador.localidade || 'Cidade não informada',
-    uf: prestador.uf || 'UF',
-    foto: prestador.foto,
-    capa: prestador.capa,
-    descricao: prestador.descricao || null,
-    email: usuario.email || 'Email não informado',
-    telefone: usuario.contato?.telefone || null,
-    instagram: usuario.contato?.instagram || null,
-    facebook: usuario.contato?.facebook || null,
-    twitter: usuario.contato?.twitter || null,
-    projetosConcluidos: prestador.projetos_concluidos || null,
-    tempoExperiencia: prestador.tempo_experiencia || null,
-    skills: prestador.skills || [],
-    disponibilidade: prestador.disponivel ? 'Disponível' : 'Indisponível'
-  };
+  console.log('👷 Dados do prestador:', prestador);
+  console.log('📞 Dados de contato:', contato);
   
-  // Corrigir URLs das imagens
-  if (dados.foto && !dados.foto.startsWith('http')) {
-    dados.foto = `${API_URL.replace('/api', '')}/storage/${dados.foto}`;
+  // ===== NOME E PROFISSÃO =====
+  const nomePerfil = document.querySelector('.nome-perfil');
+  if (nomePerfil) {
+    nomePerfil.textContent = prestador.nome || 'Nome não informado';
+    console.log('✅ Nome preenchido:', nomePerfil.textContent);
   }
   
-  if (dados.capa && !dados.capa.startsWith('http')) {
-    dados.capa = `${API_URL.replace('/api', '')}/storage/${dados.capa}`;
+  // CORRIGIDO: buscar ramo de múltiplas fontes
+  const profissao = document.querySelector('.profissao');
+  if (profissao) {
+    const ramo = prestador.ramo?.nome || 
+                 usuario.ramo?.nome || 
+                 prestador.categoria?.nome ||
+                 usuario.categoria?.nome ||
+                 'Profissão não informada';
+    profissao.textContent = ramo;
+    console.log('✅ Profissão preenchida:', ramo);
   }
   
-  // ===== PREENCHER ELEMENTOS DA PÁGINA =====
-  
-  // Foto de fundo (capa)
-  const imgFundo = document.querySelector('.img-fundo');
-  if (imgFundo) {
-    if (dados.capa) {
-      imgFundo.style.backgroundImage = `url('${dados.capa}')`;
-      imgFundo.style.backgroundSize = 'cover';
-      imgFundo.style.backgroundPosition = 'center';
-    } else {
-      imgFundo.style.background = 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)';
-    }
+  // ===== LOCALIZAÇÃO =====
+  const lcCidade = document.querySelector('.lc-cidade');
+  if (lcCidade) {
+    lcCidade.textContent = prestador.localidade || 'Cidade não informada';
+    console.log('✅ Cidade:', lcCidade.textContent);
   }
   
-  // Foto de perfil
+  const lcEstado = document.querySelector('.lc-estado');
+  if (lcEstado) {
+    lcEstado.textContent = prestador.uf || 'UF';
+    console.log('✅ Estado:', lcEstado.textContent);
+  }
+  
+  // ===== FOTO DE PERFIL (CORRIGIDO) =====
   const fotoPerfil = document.querySelector('.foto-perfil');
   if (fotoPerfil) {
-    if (dados.foto) {
-      fotoPerfil.style.backgroundImage = `url('${dados.foto}')`;
+    if (prestador.foto && prestador.foto !== 'null') {
+      const fotoUrl = construirUrlCompleta(prestador.foto);
+      console.log('🖼️ URL da foto:', fotoUrl);
+      fotoPerfil.style.backgroundImage = `url('${fotoUrl}')`;
       fotoPerfil.style.backgroundSize = 'cover';
       fotoPerfil.style.backgroundPosition = 'center';
+      fotoPerfil.innerHTML = '';
     } else {
+      console.log('ℹ️ Sem foto, usando inicial');
       fotoPerfil.style.background = 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)';
-      fotoPerfil.innerHTML = '<span style="color: white; font-size: 48px; font-weight: bold;">' + dados.nome.charAt(0).toUpperCase() + '</span>';
+      fotoPerfil.innerHTML = `<span style="color: white; font-size: 48px; font-weight: bold;">${prestador.nome.charAt(0).toUpperCase()}</span>`;
       fotoPerfil.style.display = 'flex';
       fotoPerfil.style.alignItems = 'center';
       fotoPerfil.style.justifyContent = 'center';
     }
   }
   
-  // Nome
-  const nomePerfil = document.querySelector('.nome-perfil');
-  if (nomePerfil) nomePerfil.textContent = dados.nome;
+  // ===== CAPA (CORRIGIDO) =====
+  const imgFundo = document.querySelector('.img-fundo');
+  if (imgFundo) {
+    if (prestador.capa && prestador.capa !== 'null') {
+      const capaUrl = construirUrlCompleta(prestador.capa);
+      console.log('🎨 URL da capa:', capaUrl);
+      imgFundo.style.backgroundImage = `url('${capaUrl}')`;
+      imgFundo.style.backgroundSize = 'cover';
+      imgFundo.style.backgroundPosition = 'center';
+    } else {
+      console.log('ℹ️ Sem capa, usando gradiente');
+      imgFundo.style.background = 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)';
+    }
+  }
   
-  // Profissão
-  const profissao = document.querySelector('.profissao');
-  if (profissao) profissao.textContent = dados.profissao;
-  
-  // Localização
-  const lcCidade = document.querySelector('.lc-cidade');
-  if (lcCidade) lcCidade.textContent = dados.cidade;
-  
-  const lcEstado = document.querySelector('.lc-estado');
-  if (lcEstado) lcEstado.textContent = dados.uf;
-  
-  // Tipo (Profissional)
+  // ===== TIPO (PROFISSIONAL) =====
   const empProfi = document.querySelector('.empre_profi-text');
   if (empProfi) empProfi.textContent = 'Profissional';
   
-  // Disponibilidade
+  // ===== DISPONIBILIDADE =====
   const disponibilidade = document.querySelector('.disponibilidade');
   if (disponibilidade) {
     disponibilidade.style.display = 'flex';
-    disponibilidade.querySelector('.disponi-text').textContent = dados.disponibilidade;
+    const textoDisp = disponibilidade.querySelector('.disponi-text');
+    if (textoDisp) {
+      textoDisp.textContent = prestador.disponivel ? 'Disponível' : 'Indisponível';
+    }
   }
   
-  // Projetos Concluídos
+  // ===== PROJETOS CONCLUÍDOS (CORRIGIDO - SEMPRE VISÍVEL) =====
   const projetosConcluidos = document.querySelector('.projetos_concluidos');
   if (projetosConcluidos) {
     const textElement = projetosConcluidos.querySelector('.projetos_concluidos-text');
-    if (dados.projetosConcluidos !== null && dados.projetosConcluidos !== undefined) {
-      projetosConcluidos.style.display = 'flex';
-      if (textElement) textElement.textContent = dados.projetosConcluidos;
+    projetosConcluidos.style.display = 'flex';
+    
+    if (prestador.projetos_concluidos !== null && prestador.projetos_concluidos !== undefined) {
+      if (textElement) textElement.textContent = prestador.projetos_concluidos;
+      console.log('✅ Projetos concluídos:', prestador.projetos_concluidos);
     } else {
-      projetosConcluidos.style.display = 'none';
+      if (textElement) {
+        textElement.textContent = 'Não editado';
+        textElement.style.color = '#999';
+        textElement.style.fontStyle = 'italic';
+      }
+      console.log('ℹ️ Projetos concluídos: não editado');
     }
   }
   
-  // Tempo de Experiência
+  // ===== TEMPO DE EXPERIÊNCIA (CORRIGIDO - SEMPRE VISÍVEL) =====
   const tempoExperiencia = document.querySelector('.tempo_experiencia');
   if (tempoExperiencia) {
-    const textoElement = tempoExperiencia.querySelector('.tempo_experiencia-text');
-    if (dados.tempoExperiencia !== null && dados.tempoExperiencia !== undefined) {
-      tempoExperiencia.style.display = 'flex';
-      if (textoElement) {
-        textoElement.textContent = `${dados.tempoExperiencia} ${dados.tempoExperiencia === 1 ? 'ano' : 'anos'}`;
-      }
-    } else {
-      tempoExperiencia.style.display = 'none';
-    }
-  }
-  
-  // Telefone
-  document.querySelectorAll('.tl-numero, .telefone-numero').forEach(el => {
-    if (dados.telefone) {
-      el.textContent = dados.telefone;
-      el.closest('.telefone, .button-telefone')?.style.setProperty('display', 'flex', 'important');
-    } else {
-      el.closest('.telefone, .button-telefone')?.style.setProperty('display', 'none', 'important');
-    }
-  });
-  
-  // Email
-  document.querySelectorAll('.email-text').forEach(el => {
-    el.textContent = dados.email;
-  });
-  
-  // Sobre o Profissional
-  const sobreProfissional = document.querySelector('.sobre_profissional');
-  if (sobreProfissional) {
-    const paragrafo = sobreProfissional.querySelector('p');
-    const titulo = sobreProfissional.querySelector('h3');
+    const textElement = tempoExperiencia.querySelector('.tempo_experiencia-text');
+    tempoExperiencia.style.display = 'flex';
     
-    if (titulo) titulo.textContent = 'Sobre o Profissional';
-    
-    if (dados.descricao) {
-      sobreProfissional.style.display = 'block';
-      if (paragrafo) {
-        paragrafo.textContent = dados.descricao;
-        paragrafo.style.color = '';
-        paragrafo.style.fontStyle = '';
+    if (prestador.tempo_experiencia !== null && prestador.tempo_experiencia !== undefined) {
+      const anos = prestador.tempo_experiencia;
+      if (textElement) textElement.textContent = `${anos} ${anos === 1 ? 'ano' : 'anos'}`;
+      console.log('✅ Tempo de experiência:', anos);
+    } else {
+      if (textElement) {
+        textElement.textContent = 'Não editado';
+        textElement.style.color = '#999';
+        textElement.style.fontStyle = 'italic';
       }
-    } else {
-      sobreProfissional.style.display = 'block';
-      if (paragrafo) {
-        paragrafo.textContent = 'Você ainda não adicionou uma descrição. Clique em "Editar Perfil" para adicionar.';
-        paragrafo.style.color = '#999';
-        paragrafo.style.fontStyle = 'italic';
-      }
+      console.log('ℹ️ Tempo de experiência: não editado');
     }
   }
   
-  // Instagram
-  const instagram = document.querySelector('.instagram');
-  if (instagram) {
-    const nomeIns = instagram.querySelector('.name_perfil-ins');
-    if (dados.instagram) {
-      instagram.style.display = 'flex';
-      if (nomeIns) nomeIns.textContent = dados.instagram;
-    } else {
-      instagram.style.display = 'none';
-    }
-  }
+  // ===== AVALIAÇÃO (CORRIGIDO) =====
+  const avaliacaoObj = usuario.avaliacao || {};
+  const avaliacao = avaliacaoObj.media || 0;
+  const numAvaliacoes = avaliacaoObj.total || 0;
   
-  // Facebook
-  const facebook = document.querySelector('.facebook');
-  if (facebook) {
-    const nomeFac = facebook.querySelector('.name_perfil-fac');
-    if (dados.facebook) {
-      facebook.style.display = 'flex';
-      if (nomeFac) nomeFac.textContent = dados.facebook;
-    } else {
-      facebook.style.display = 'none';
-    }
-  }
+  console.log('⭐ Avaliação:', { media: avaliacao, total: numAvaliacoes });
   
-  // Twitter/X
-  const twitter = document.querySelector('.X');
-  if (twitter) {
-    const nomeX = twitter.querySelector('.name_perfil-x');
-    if (dados.twitter) {
-      twitter.style.display = 'flex';
-      if (nomeX) nomeX.textContent = dados.twitter;
-    } else {
-      twitter.style.display = 'none';
-    }
-  }
-  
-  // Especialidades
-  const especialidadesContainer = document.querySelector('.especialidades');
-  if (especialidadesContainer) {
-    if (dados.skills && dados.skills.length > 0) {
-      especialidadesContainer.style.display = 'block';
-      especialidadesContainer.innerHTML = '<h3>Especialidades</h3>';
-      
-      dados.skills.forEach(skill => {
-        const spanDiv = document.createElement('div');
-        spanDiv.className = 'span-esp_op';
-        spanDiv.innerHTML = `<span class="especialidade-op">${skill.nome || skill.name || skill}</span>`;
-        especialidadesContainer.appendChild(spanDiv);
-      });
-    } else {
-      especialidadesContainer.style.display = 'none';
-    }
-  }
-  
-  // Avaliações
-  const avaliacao = usuario.avaliacao?.media || 0;
-  const numAvaliacoes = usuario.avaliacao?.total || 0;
-  
+  // Atualizar todos os elementos de avaliação
   document.querySelectorAll('.quant-stars').forEach(el => {
     el.textContent = avaliacao.toFixed(1);
   });
@@ -378,8 +316,13 @@ function preencherPerfil(usuario) {
     el.textContent = numAvaliacoes === 1 ? 'avaliação' : 'avaliações';
   });
   
+  const avaliacaoBCC = document.querySelector('.avaliacao-BCC-text');
+  if (avaliacaoBCC) {
+    avaliacaoBCC.textContent = `${avaliacao.toFixed(1)}/5.0`;
+  }
+  
   // Preencher estrelas
-  const estrelas = document.querySelectorAll('.avaliacao-TCC .star, .avaliacao-BCC .star');
+  const estrelas = document.querySelectorAll('.avaliacao-TCC .star, .avaliacao-BCC .star, .top-sess_avali .star');
   estrelas.forEach((star, index) => {
     if (index < Math.floor(avaliacao)) {
       star.style.fill = 'currentColor';
@@ -388,23 +331,120 @@ function preencherPerfil(usuario) {
     }
   });
   
-  // Atualizar média de avaliação
-  const avaliacaoBCC = document.querySelector('.avaliacao-BCC-text');
-  if (avaliacaoBCC) {
-    avaliacaoBCC.textContent = `${avaliacao.toFixed(1)}/5.0`;
+  // ===== CONTATOS =====
+  // Telefone
+  document.querySelectorAll('.tl-numero, .telefone-numero').forEach(el => {
+    if (contato.telefone) {
+      el.textContent = contato.telefone;
+      el.closest('.telefone, .button-telefone')?.style.setProperty('display', 'flex', 'important');
+      console.log('✅ Telefone:', contato.telefone);
+    } else {
+      el.closest('.telefone, .button-telefone')?.style.setProperty('display', 'none', 'important');
+    }
+  });
+  
+  // Email
+  document.querySelectorAll('.email-text').forEach(el => {
+    el.textContent = usuario.email || 'Email não informado';
+  });
+  
+  // ===== SOBRE O PROFISSIONAL =====
+  const sobreProfissional = document.querySelector('.sobre_profissional');
+  if (sobreProfissional) {
+    const paragrafo = sobreProfissional.querySelector('p');
+    const titulo = sobreProfissional.querySelector('h3');
+    
+    if (titulo) titulo.textContent = 'Sobre o Profissional';
+    
+    sobreProfissional.style.display = 'block';
+    if (paragrafo) {
+      if (prestador.descricao) {
+        paragrafo.textContent = prestador.descricao;
+        paragrafo.style.color = '';
+        paragrafo.style.fontStyle = '';
+        console.log('✅ Descrição presente');
+      } else {
+        paragrafo.textContent = 'Você ainda não adicionou uma descrição. Clique em "Editar Perfil" para adicionar.';
+        paragrafo.style.color = '#999';
+        paragrafo.style.fontStyle = 'italic';
+        console.log('ℹ️ Sem descrição');
+      }
+    }
   }
   
-  // Carregar portfólio
+  // ===== REDES SOCIAIS =====
+  // Instagram
+  const instagram = document.querySelector('.instagram');
+  if (instagram) {
+    const nomeIns = instagram.querySelector('.name_perfil-ins');
+    if (contato.instagram) {
+      instagram.style.display = 'flex';
+      if (nomeIns) nomeIns.textContent = contato.instagram;
+      console.log('✅ Instagram:', contato.instagram);
+    } else {
+      instagram.style.display = 'none';
+    }
+  }
+  
+  // Facebook
+  const facebook = document.querySelector('.facebook');
+  if (facebook) {
+    const nomeFac = facebook.querySelector('.name_perfil-fac');
+    if (contato.facebook) {
+      facebook.style.display = 'flex';
+      if (nomeFac) nomeFac.textContent = contato.facebook;
+      console.log('✅ Facebook:', contato.facebook);
+    } else {
+      facebook.style.display = 'none';
+    }
+  }
+  
+  // Twitter/X
+  const twitter = document.querySelector('.X');
+  if (twitter) {
+    const nomeX = twitter.querySelector('.name_perfil-x');
+    if (contato.twitter) {
+      twitter.style.display = 'flex';
+      if (nomeX) nomeX.textContent = contato.twitter;
+      console.log('✅ Twitter/X:', contato.twitter);
+    } else {
+      twitter.style.display = 'none';
+    }
+  }
+  
+  // ===== ESPECIALIDADES =====
+  const especialidadesContainer = document.querySelector('.especialidades');
+  if (especialidadesContainer) {
+    if (prestador.skills && prestador.skills.length > 0) {
+      especialidadesContainer.style.display = 'block';
+      especialidadesContainer.innerHTML = '<h3>Especialidades</h3>';
+      
+      prestador.skills.forEach(skill => {
+        const spanDiv = document.createElement('div');
+        spanDiv.className = 'span-esp_op';
+        spanDiv.innerHTML = `<span class="especialidade-op">${skill.nome || skill.name || skill}</span>`;
+        especialidadesContainer.appendChild(spanDiv);
+      });
+      console.log('✅ Especialidades:', prestador.skills.length);
+    } else {
+      especialidadesContainer.style.display = 'none';
+      console.log('ℹ️ Sem especialidades');
+    }
+  }
+  
+  // ===== PUBLICAÇÕES =====
   if (usuario.portfolios && usuario.portfolios.length > 0) {
+    console.log('📸 Carregando', usuario.portfolios.length, 'publicações');
     carregarPublicacoes(usuario.portfolios);
   } else {
+    console.log('ℹ️ Sem publicações');
     const publicacoesContainer = document.querySelector('.home-cards-post');
     if (publicacoesContainer) {
       publicacoesContainer.innerHTML = '<p style="text-align: center; padding: 40px; color: #999; font-style: italic;">Você ainda não possui publicações. Clique em "Nova publicação" para adicionar.</p>';
     }
   }
   
-  console.log('✅ Meu perfil preenchido com sucesso');
+  console.log('✅ Perfil preenchido com sucesso');
 }
 
 // ========== CARREGAR PUBLICAÇÕES ==========
@@ -418,9 +458,10 @@ function carregarPublicacoes(portfolios) {
     const card = document.createElement('div');
     card.className = 'card-publicacoes';
     
-    const imagemUrl = portfolio.fotos && portfolio.fotos[0] 
-      ? `${API_URL.replace('/api', '')}/storage/${portfolio.fotos[0].caminho}`
-      : '';
+    let imagemUrl = '';
+    if (portfolio.fotos && portfolio.fotos.length > 0 && portfolio.fotos[0].caminho) {
+      imagemUrl = construirUrlCompleta(portfolio.fotos[0].caminho);
+    }
     
     card.innerHTML = `
       <div class="img-card_publicacoes" style="background-image: url('${imagemUrl}'); background-size: cover; background-position: center;"></div>
@@ -508,5 +549,11 @@ if (excluirContaBtn) {
 // ========== INICIALIZAÇÃO ==========
 document.addEventListener('DOMContentLoaded', () => {
   console.log('🚀 Página de Perfil Próprio (Prestador) carregada');
+  console.log('🔍 LocalStorage:', {
+    userId: getUserId(),
+    userType: getUserType(),
+    token: getAuthToken() ? 'presente' : 'ausente'
+  });
+  
   carregarMeuPerfil();
 });
