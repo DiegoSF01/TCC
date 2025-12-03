@@ -99,7 +99,7 @@ function criarCardEmpresa(usuario) {
   card.innerHTML = `
     <div class="top-content-card">
       <div class="TCC-center">
-        <div class="foto-perfil" style="${foto ? `background-image: url('${foto}'); background-size: cover; background-position: center;` : 'background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);'}"></div>
+        <div class="foto-perfil" style="${foto ? `background-image: url('${foto}'); background-size: cover; background-position: center;` : 'background: linear-gradient(135deg, #0036ff 0%, #f5576c 100%);'}"></div>
         <div class="nome-area">
           <h3 class="nome-card">${razaoSocial}</h3>
           <p class="area-card">

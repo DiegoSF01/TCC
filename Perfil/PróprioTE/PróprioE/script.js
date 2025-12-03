@@ -381,17 +381,25 @@ function carregarPublicacoes(portfolios) {
     const card = document.createElement('div');
     card.className = 'card-publicacoes';
 
-    let imagemUrl = '/assets/placeholder.jpg';
+    let imagemUrl = 'https://via.placeholder.com/400x300?text=Sem+Imagem';
+    
     if (portfolio.fotos && portfolio.fotos.length > 0) {
       const foto = portfolio.fotos[0];
+      
+      // ✅ PRIORIDADE: caminho > url > foto
       if (foto.caminho) {
-        // DEBUG: veja o caminho original como está vindo
-        console.log('DEBUG: caminho da foto no banco:', foto.caminho);
-        imagemUrl = foto.caminho.startsWith('http')
-          ? foto.caminho
-          : construirUrlCompleta(foto.caminho);
-        console.log('DEBUG: url final da imagem:', imagemUrl);
+        imagemUrl = foto.caminho.startsWith('http') 
+          ? foto.caminho 
+          : `${BASE_URL}/storage/${foto.caminho}`;
+      } else if (foto.url) {
+        imagemUrl = foto.url.startsWith('http') 
+          ? foto.url 
+          : `${BASE_URL}${foto.url}`;
+      } else if (foto.foto) {
+        imagemUrl = `${BASE_URL}/storage/${foto.foto}`;
       }
+      
+      console.log('🖼️ URL da imagem construída:', imagemUrl);
     }
 
     const titulo = portfolio.titulo || 'Sem título';
